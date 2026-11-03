@@ -9,10 +9,10 @@ DROP POLICY IF EXISTS "Users can update their own profile" ON public.profiles;
 -- A regular user cannot change their own role; only service_role (Edge Functions / admin SQL) can.
 CREATE POLICY "Users can update their own profile"
 ON public.profiles FOR UPDATE
-USING (auth.uid() = user_id)
+USING (auth.uid() = id)
 WITH CHECK (
-  auth.uid() = user_id
-  AND role = (SELECT role FROM public.profiles WHERE user_id = auth.uid())
+  auth.uid() = id
+  AND role = (SELECT role FROM public.profiles WHERE id = auth.uid())
 );
 
 -- Admin UPDATE policy: admins can update any profile (needed for role promotion via admin UI)
@@ -24,7 +24,7 @@ ON public.profiles FOR UPDATE
 USING (
   EXISTS (
     SELECT 1 FROM public.profiles admin_profile
-    WHERE admin_profile.user_id = auth.uid()
+    WHERE admin_profile.id = auth.uid()
     AND admin_profile.role = 'admin'
   )
 );
