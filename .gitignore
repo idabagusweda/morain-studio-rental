@@ -37,3 +37,7 @@ supabase/.temp/
 # OS
 *.local
 Thumbs.db
+
+# Lighthouse reports
+lighthouse-report.html
+lighthouse-report.json

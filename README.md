@@ -1,425 +1,353 @@
-# Panduan Lengkap Pembuatan Website Morain Studio
+<div align="center">
 
-> Dokumentasi step-by-step dari konsep hingga siap digunakan
+# 📸 Morain Studio Rental
 
----
+### Professional Photography Studio Booking System
 
-## Gambaran Teknologi (Stack)
+*Streamline your photography studio bookings with automated scheduling, secure payments, and real-time availability tracking*
 
-### Frontend (Tampilan Website)
-| Komponen | Teknologi | Fungsi |
-|----------|-----------|--------|
-| Framework | **React + Vite** | Membangun antarmuka yang cepat dan interaktif |
-| Bahasa | **TypeScript** | JavaScript dengan pengecekan tipe untuk kode yang lebih aman |
-| Styling | **TailwindCSS** | Styling cepat dengan utility classes |
-| UI Components | **Shadcn/UI** | Komponen siap pakai (Button, Dialog, Calendar, dll) |
+[![React](https://img.shields.io/badge/React-18.3.1-61DAFB?logo=react)](https://reactjs.org/)
+[![TypeScript](https://img.shields.io/badge/TypeScript-5.8-3178C6?logo=typescript)](https://www.typescriptlang.org/)
+[![Vite](https://img.shields.io/badge/Vite-5.4-646CFF?logo=vite)](https://vitejs.dev/)
+[![Supabase](https://img.shields.io/badge/Supabase-PostgreSQL-3ECF8E?logo=supabase)](https://supabase.com/)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](./LICENSE)
 
-### Backend (Server & Logika)
-| Komponen | Teknologi | Fungsi |
-|----------|-----------|--------|
-| Backend-as-a-Service | **Supabase** | Database, Auth, dan API dalam satu platform |
-| Edge Functions | **Deno/TypeScript** | Logika server (pembayaran, webhook) |
-| Database | **PostgreSQL** | Menyimpan data user, booking, pembayaran |
+[Live Demo](https://morain-studio.vercel.app) • [Report Bug](https://github.com/idabagusweda/morain-studio-rental/issues) • [Request Feature](https://github.com/idabagusweda/morain-studio-rental/issues)
 
-### Tabel Database Utama
-```
-profiles       → Data profil user (nama, WA, email, role)
-bookings       → Data booking (kode, tanggal, jam, status, total)
-```
-
-### Hosting & Deployment
-| Platform | Keunggulan |
-|----------|------------|
-| **Vercel** | Gratis, cepat, auto-deploy dari GitHub (tunggu aku fix semuanya baru tak deploy ke vercel |
-| **Supabase** | Database & Auth sudah termasuk hosting |
-
-### Library Penting
-- **react-router-dom** → Navigasi antar halaman
-- **date-fns** → Format tanggal Indonesia
-- **lucide-react** → Ikon modern
-- **zustand** → State management (login session)
+</div>
 
 ---
 
-## Tahap 1 — Perencanaan (Menggunakan ChatGPT)
+## 📋 About The Project
 
-### 1.1 Menentukan Tujuan Website
-```
-✅ Website untuk jasa foto studio dan photobox
-✅ Target: pelanggan yang ingin booking sesi foto
-✅ Fitur utama: Landing page + Booking online + Dashboard
-```
+**Morain Studio Rental** is a modern, full-stack web application designed for photography studios to manage bookings, payments, and customer interactions seamlessly. Built with React and Supabase, it provides a complete solution for studio owners and their clients.
 
-### 1.2 Menentukan Section Landing Page
-| Section | Isi |
-|---------|-----|
-| **Hero** | Tagline + CTA "Pesan Sekarang" |
-| **Paket Studio** | Small, Medium, Large dengan harga |
-| **Photobox** | 5 style tema (Cowboy, Retro, Cyberpunk, dll) |
-| **Gallery** | Contoh hasil foto |
-| **Testimoni** | Review dari pelanggan |
-| **FAQ** | Pertanyaan umum |
-| **Contact** | WhatsApp + Lokasi |
+### Why This Project?
 
-### 1.3 Menentukan Flow Booking
-```
-1️⃣ Pilih Jadwal (Tanggal + Jam)
-     ↓
-2️⃣ Pilih Paket/Style
-     ↓
-3️⃣ Isi Data Pemesan (Nama, WA, Email, Jumlah Orang)
-     ↓
-4️⃣ Pilih Metode Pembayaran (DP 50% / Full)
-     ↓
-5️⃣ Konfirmasi (Kode Booking + Redirect Pembayaran)
-```
-
-### 1.4 Aturan Bisnis
-| Aturan | Detail |
-|--------|--------|
-| Jam operasional | 09:00 - 19:00 WITA |
-| Booking minimal | H-1 (besok baru bisa booking) |
-| Kapasitas studio | Small (3 orang), Medium (5), Large (8) |
-| Durasi photobox | 15 menit per sesi |
-| Pembayaran | DP 50% atau Full payment |
-| Status booking | PENDING → DP/LUNAS → DONE/CANCELLED |
-
-### 1.5 Desain & Branding
-```
-🎨 Warna utama: Sage Green (#849283)
-🎨 Tone: Minimalis, warm, premium
-🎨 Font: Modern sans-serif (Inter/Outfit)
-🎨 Spacing: Luas, tidak padat
-```
+- **Real-time Availability:** Prevents double bookings with database-level constraints and live slot checking
+- **Secure Authentication:** Multi-provider auth (Email/Password + Google OAuth) with row-level security
+- **Payment Integration:** Midtrans payment gateway with webhook notifications and automatic status updates
+- **Admin Dashboard:** Comprehensive management tools for bookings, users, and operational settings
+- **Mobile-First:** Responsive design optimized for desktop, tablet, and mobile devices
 
 ---
 
-## Tahap 2 — Build Landing Page di Lovable
+## ✨ Key Features
 
-### 2.1 Cara Menulis Prompt
-Contoh prompt untuk Lovable:
-```
-Buatkan landing page untuk "Morain Studio" dengan:
-- Hero section dengan tagline "Abadikan Momen Berharga"
-- Section paket studio (3 pilihan: Small, Medium, Large)
-- Section photobox dengan 5 style tema
-- Gallery dengan grid foto 6-8 gambar
-- CTA floating WhatsApp
-- Warna sage green (#849283), minimalis, premium
-```
+### For Customers
+- 🔐 **Secure Authentication** — Email/password or Google sign-in
+- 📅 **Smart Booking System** — Multi-step wizard with real-time slot availability
+- 💳 **Flexible Payments** — Full payment or 50% down payment options via Midtrans
+- 📱 **User Dashboard** — Track booking history, view invoices, manage profile
+- ⏱️ **Payment Timer** — 15-minute countdown to secure your booking slot
+- 📧 **Auto-fill Forms** — Profile data automatically populated for returning customers
 
-### 2.2 Komponen yang Dibuat
-| Komponen | File |
-|----------|------|
-| Header/Navbar | `Header.tsx` |
-| Hero Section | `HeroSection.tsx` |
-| Studio Packages | `StudioPackages.tsx` |
-| Photobox Section | `PhotoboxSection.tsx` |
-| Gallery | `Gallery.tsx` |
-| Footer | `Footer.tsx` |
+### For Studio Owners
+- 👥 **User Management** — View all users, promote admins, search by name/email
+- 📊 **Booking Overview** — Real-time statistics and revenue tracking
+- 🗓️ **Calendar View** — Visual representation of all bookings
+- ✏️ **Status Management** — Update booking and payment statuses
+- ⚙️ **Operational Settings** — Configure studio hours and slot durations
+- 🔒 **Role-Based Access** — Secure admin-only routes and data protection
 
-### 2.3 Memastikan Konsistensi Desain
-- **Warna**: Gunakan variabel CSS (`--primary: #849283`)
-- **Font**: Import Google Fonts di `index.css`
-- **Spacing**: Gunakan Tailwind (p-4, gap-6, dll)
-- **Responsive**: Test di mobile, tablet, desktop
+### Technical Highlights
+- 🚀 **Optimized Performance** — Code-split bundles, lazy loading, <600KB chunks
+- 🔒 **Security Headers** — CSP, X-Frame-Options, HSTS, Referrer-Policy
+- 🛡️ **RLS Policies** — Database-level security with Supabase Row Level Security
+- 🎯 **Type Safety** — Full TypeScript coverage with strict mode
+- 🧪 **Production Ready** — Environment-based configs, error boundaries, graceful fallbacks
 
 ---
 
-## Tahap 3 — Implementasi Booking Flow
+## 🛠️ Tech Stack
 
-### 3.1 Membuat Modal Booking
-```
-📦 BookingModal.tsx (Studio)
-📦 PhotoboxBookingModal.tsx (Photobox)
+### Frontend
+| Technology | Purpose |
+|-----------|---------|
+| **React 18.3** | UI library with hooks and context |
+| **TypeScript 5.8** | Type-safe JavaScript |
+| **Vite 5.4** | Lightning-fast build tool |
+| **Tailwind CSS 3.4** | Utility-first styling |
+| **shadcn/ui** | Accessible component library (Radix UI) |
+| **React Router 7** | Client-side routing |
+| **React Hook Form + Zod** | Form validation and schema validation |
+| **TanStack Query 5** | Server state management |
 
-Bentuk: Floating window yang muncul saat klik "Pesan"
-```
+### Backend
+| Technology | Purpose |
+|-----------|---------|
+| **Supabase** | Backend-as-a-Service (PostgreSQL, Auth, Storage) |
+| **PostgreSQL** | Relational database with RLS |
+| **Deno Edge Functions** | Serverless functions (payment, webhooks) |
+| **Midtrans API** | Payment gateway (Indonesia) |
 
-### 3.2 Membuat Kalender Ketersediaan
-| Logika | Penjelasan |
-|--------|------------|
-| `fromDate` | Minimal H-1 (besok) |
-| `toDate` | Maksimal 2 bulan ke depan |
-| `disabled` | Tanggal yang sudah lewat |
-| Outside days | Warna berbeda (abu-abu) |
-
-### 3.3 Pemilihan Jam Real-Time
-```javascript
-// Contoh logika slot waktu
-- Jam yang sudah lewat → Disabled
-- Jam yang sudah dibooking → Disabled (cek dari database)
-- Jam tersedia → Bisa diklik
-```
-
-### 3.4 Stepper Progress
-```
-[1]──────[2]──────[3]──────[4]──────[5]
-Jadwal   Paket    Data    Bayar   Konfirmasi
-```
-
-### 3.5 Generate Booking Code
-```
-Format: MOR-2025-XXXX (Studio)
-        PBX-2025-XXXX (Photobox)
-```
+### DevOps & Tools
+| Tool | Purpose |
+|------|---------|
+| **Vercel** | Frontend hosting and deployment |
+| **Git** | Version control |
+| **ESLint + Prettier** | Code quality and formatting |
 
 ---
 
-## Tahap 4 — Authentication & User Dashboard
+## 🖼️ Screenshots
 
-### 4.1 Wajib Login Sebelum Booking
-```
-Saat klik "Pesan" tanpa login:
-→ Muncul AuthModal (Login/Register)
-→ Setelah login, lanjut ke booking
-```
+<details>
+<summary>View Application Screenshots</summary>
 
-### 4.2 Metode Login
-| Metode | Implementasi |
-|--------|--------------|
-| Email/Password | Supabase Auth (native) |
-| Google Sign-In | Supabase OAuth (masih tahap sambungin ke web) |
+### Landing Page
+Modern hero section with studio packages, photobox styles, gallery, testimonials, and FAQ sections.
 
-### 4.3 Auto-Fill Data dari Profil
-```
-Saat user sudah pernah isi profil:
-- Nama otomatis terisi
-- WhatsApp otomatis terisi
-- Email otomatis terisi
-```
+### Booking Flow
+5-step wizard: Date & Time → Duration → Customer Info → Payment Type → Confirmation
 
-### 4.4 Struktur Dashboard User
-| Route | Isi |
-|-------|-----|
-| `/dashboard` | Overview (statistik booking) |
-| Riwayat Booking | Daftar booking + status + invoice |
-| Pengaturan | Edit profil (nama, WA, email) |
+### Admin Dashboard
+Comprehensive overview with booking statistics, revenue tracking, and user management.
+
+### User Dashboard
+Personal booking history with invoice generation and profile management.
+
+</details>
 
 ---
 
-## Tahap 5 — Database & Backend (Supabase)
+## 🚀 Getting Started
 
-### 5.1 Membuat Project Supabase
-1. Buka [supabase.com](https://supabase.com)
-2. Klik "New Project"
-3. Pilih region terdekat (Singapore)
-4. Copy URL dan Anon Key ke file `.env`
+### Prerequisites
 
-### 5.2 Struktur Tabel
+- Node.js 18+ or Bun 1.0+
+- npm, yarn, or bun package manager
+- Supabase account (free tier available)
+- Midtrans sandbox account for testing payments
 
-**Tabel `profiles`**
-| Kolom | Tipe | Keterangan |
-|-------|------|------------|
-| id | UUID | Primary key (sama dengan auth.users.id) |
-| full_name | TEXT | Nama lengkap |
-| email | TEXT | Email |
-| whatsapp | TEXT | Nomor WA |
-| role | TEXT | 'user' atau 'admin' |
+### Installation
 
-**Tabel `bookings`**
-| Kolom | Tipe | Keterangan |
-|-------|------|------------|
-| id | UUID | Primary key |
-| user_id | UUID | Foreign key ke profiles |
-| booking_code | TEXT | MOR-2025-XXXX |
-| service_type | TEXT | 'studio' atau 'photobox' |
-| booking_date | DATE | Tanggal booking |
-| start_time | TIME | Jam mulai |
-| end_time | TIME | Jam selesai |
-| payment_status | TEXT | PENDING/DP/LUNAS/EXPIRED/CANCELLED |
-| booking_status | TEXT | PENDING/ACTIVE/DONE/CANCELLED |
-| total_amount | INTEGER | Total harga |
-| expires_at | TIMESTAMP | Batas waktu bayar |
-
-### 5.3 RLS Policy (Row Level Security)
-```sql
--- User hanya bisa lihat booking sendiri
-CREATE POLICY "Users can view own bookings"
-ON bookings FOR SELECT
-USING (auth.uid() = user_id);
-
--- Admin bisa lihat semua
-CREATE POLICY "Admin can view all"
-ON bookings FOR ALL
-USING (EXISTS (
-  SELECT 1 FROM profiles 
-  WHERE id = auth.uid() AND role = 'admin'
-));
-```
-
-### 5.4 Trigger Auto-Create Profile
-```sql
--- Saat user register, otomatis buat profile
-CREATE OR REPLACE FUNCTION handle_new_user()
-RETURNS TRIGGER AS $$
-BEGIN
-  INSERT INTO profiles (id, email, role)
-  VALUES (NEW.id, NEW.email, 'user');
-  RETURN NEW;
-END;
-$$ LANGUAGE plpgsql;
-
-CREATE TRIGGER on_auth_user_created
-AFTER INSERT ON auth.users
-FOR EACH ROW EXECUTE FUNCTION handle_new_user();
-```
-
----
-
-## Tahap 6 — Admin Dashboard
-
-### 6.1 Akun Khusus Admin
-```
-Role "admin" diset manual di tabel profiles
-Contoh: UPDATE profiles SET role = 'admin' WHERE email = 'admin@morain.com';
-```
-
-### 6.2 Fitur Admin Dashboard
-| Fitur | Fungsi |
-|-------|--------|
-| Daftar Booking | Lihat semua booking |
-| Filter | By status, tanggal, layanan |
-| Update Status | Ubah PENDING → LUNAS |
-| Kalender | Lihat jadwal harian |
-| Daftar User | Lihat semua pengguna |
-
-### 6.3 Akses Halaman
-```
-Route: /admin
-Proteksi: Redirect ke home jika bukan admin
-```
-
----
-
-## Tahap 7 — Pembayaran (Konsep)
-
-### 7.1 Opsi Pembayaran
-| Opsi | Persentase |
-|------|------------|
-| DP (Down Payment) | 50% dari total |
-| Full Payment | 100% |
-
-### 7.2 Alur Status Pembayaran
-```
-PENDING (belum bayar)
-   ↓
-[Bayar DP] → DP (sudah bayar 50%)
-   ↓
-[Lunasi di lokasi] → LUNAS
-   ↓
-[Sesi selesai] → DONE
-
---- Alternatif ---
-PENDING → EXPIRED (timeout)
-PENDING → CANCELLED (dibatalkan user)
-```
-
-### 7.3 On-Demand Expiry
-```
-Setiap booking PENDING punya countdown 15 menit
-Jika tidak bayar dalam waktu tersebut → EXPIRED
-Slot kembali tersedia untuk user lain
-```
-
-### 7.4 Invoice
-- Bisa dilihat di Dashboard
-- Bisa di-print/download
-- Format: Kode booking, tanggal, paket, total, status
-
-### 7.5 Roadmap (Jika Belum Ada Payment Gateway)
-```
-🔜 Integrasi Midtrans untuk:
-   - Virtual Account (BCA, BNI, Mandiri)
-   - E-Wallet (GoPay, Dana, OVO)
-   - QRIS
-```
-
----
-
-## Tahap 8 — Testing & Deployment
-
-### 8.1 Testing Double Booking
-```
-✅ Gunakan unique constraint di database:
-   UNIQUE(service_type, package_name, booking_date, start_time)
-✅ Cek slot sebelum insert
-```
-
-### 8.2 Testing Timezone (WITA)
-```
-✅ Semua waktu ditampilkan dalam WITA
-✅ Gunakan: new Date().toLocaleString('en-US', { timeZone: 'Asia/Makassar' })
-✅ Pastikan tanggal tidak mundur 1 hari saat simpan
-```
-
-### 8.3 Testing Mobile Responsiveness
-```
-✅ Test di Chrome DevTools (iPhone, Android)
-✅ Modal tidak terpotong
-✅ Button bisa diklik di mobile
-✅ Teks tidak terlalu kecil
-```
-
-### 8.4 Deploy ke Vercel
-1. Push kode ke GitHub
-2. Connect repo ke Vercel
-3. Set Environment Variables:
+1. **Clone the repository**
+   ```bash
+   git clone https://github.com/idabagusweda/morain-studio-rental.git
+   cd morain-studio-rental
    ```
-   VITE_SUPABASE_URL=https://xxx.supabase.co
-   VITE_SUPABASE_ANON_KEY=eyJxxxxx
+
+2. **Install dependencies**
+   ```bash
+   npm install
+   # or
+   bun install
    ```
-4. Deploy! (ini cek situasi nanti untuk deploy nya)
+
+3. **Set up environment variables**
+
+   Copy `.env.example` to `.env` and configure:
+   ```bash
+   cp .env.example .env
+   ```
+
+   Update `.env` with your credentials:
+   ```env
+   VITE_SUPABASE_PROJECT_ID=your_project_id
+   VITE_SUPABASE_PUBLISHABLE_KEY=your_anon_key
+   VITE_SUPABASE_URL=https://your-project.supabase.co
+   ```
+
+4. **Set up Supabase database**
+
+   Run migrations in Supabase SQL Editor:
+   ```bash
+   # Navigate to supabase/migrations/ and execute SQL files in order
+   # Or use Supabase CLI:
+   supabase db push
+   ```
+
+5. **Configure Edge Functions secrets**
+
+   In Supabase Dashboard → Edge Functions → Secrets:
+   ```env
+   MIDTRANS_SERVER_KEY=your_midtrans_server_key
+   MIDTRANS_IS_PRODUCTION=false
+   FRONTEND_BASE_URL=http://localhost:8080
+   ```
+
+6. **Start development server**
+   ```bash
+   npm run dev
+   # or
+   bun run dev
+   ```
+
+   App will be available at `http://localhost:8080`
 
 ---
 
-## Checklist Akhir (Supaya Siap Dipakai)
+## 📦 Environment Variables
 
-### ✅ UI/UX
-- [ ] Semua halaman responsive (mobile, tablet, desktop)
-- [ ] Loading state ada di semua aksi
-- [ ] Error message jelas dan dalam Bahasa Indonesia
-- [ ] Warna konsisten dengan branding
+### Frontend (.env in root)
 
-### ✅ Booking Logic
-- [ ] Tidak bisa double booking
-- [ ] Jam yang lewat otomatis disabled
-- [ ] Countdown payment berjalan
-- [ ] Booking expired otomatis update status
+| Variable | Description | Example |
+|----------|-------------|---------|
+| `VITE_SUPABASE_PROJECT_ID` | Supabase project identifier | `tjkwiztehdcxrsdqdoaz` |
+| `VITE_SUPABASE_PUBLISHABLE_KEY` | Supabase anon/public key (JWT) | `eyJ***` |
+| `VITE_SUPABASE_URL` | Supabase project URL | `https://***.supabase.co` |
 
-### ✅ RLS (Row Level Security)
-- [ ] User hanya bisa akses data sendiri
-- [ ] Admin bisa akses semua
-- [ ] Tidak ada data bocor ke user lain
+### Edge Functions (Supabase Dashboard)
 
-### ✅ Admin Tools
-- [ ] Bisa lihat semua booking
-- [ ] Bisa update status pembayaran
-- [ ] Bisa lihat kalender
-- [ ] Bisa lihat daftar user
+| Variable | Description | Example |
+|----------|-------------|---------|
+| `MIDTRANS_SERVER_KEY` | Midtrans server key (sandbox or production) | `SB-Mid-***` |
+| `MIDTRANS_IS_PRODUCTION` | Production mode flag | `false` |
+| `FRONTEND_BASE_URL` | Frontend URL for CORS | `https://morain-studio.vercel.app` |
 
-### ✅ Error Handling
-- [ ] Network error ditangani
-- [ ] Form validation lengkap
-- [ ] Session expired redirect ke login
-
-### ✅ Monitoring (Minimal)
-- [ ] Console.error untuk debugging
-- [ ] Toast notification untuk feedback user
-- [ ] Supabase Dashboard untuk monitoring database
+**Important:** Never commit real credentials. Use `.env.example` as a template without sensitive values.
 
 ---
 
-## Ringkasan Tools yang Digunakan
+## 🗂️ Project Structure
 
-| Tahap | Tool | Fungsi |
-|-------|------|--------|
-| Perencanaan | ChatGPT | Prompt, UX flow, copywriting |
-| Landing Page | Lovable | Generate komponen awal |
-| Development | Antigravity | Edit kode, fitur, bug fix |
-| Backend | Supabase | Database, Auth, Edge Functions |
-| Hosting | Vercel | Deploy website ke publik |
+```
+morain-studio-rental/
+├── public/                    # Static assets
+│   └── images/               # Gallery images, photobox themes
+├── src/
+│   ├── components/           # React components
+│   │   ├── ui/              # shadcn/ui components
+│   │   ├── AuthModal.tsx    # Login/register modal
+│   │   ├── BookingModal.tsx # Studio booking wizard
+│   │   └── ...
+│   ├── pages/               # Route pages
+│   │   ├── Index.tsx        # Landing page
+│   │   ├── Dashboard.tsx    # User dashboard
+│   │   ├── PaymentReturn.tsx# Midtrans return handler
+│   │   └── admin/           # Admin-only pages
+│   ├── hooks/               # Custom React hooks
+│   │   ├── useAuth.tsx      # Authentication context
+│   │   ├── useBookingSlots.ts
+│   │   └── usePaymentLogic.ts
+│   ├── integrations/supabase/
+│   │   ├── client.ts        # Supabase client
+│   │   └── types.ts         # Generated DB types
+│   └── layouts/             # Layout components
+├── supabase/
+│   ├── functions/           # Deno Edge Functions
+│   │   ├── create-midtrans-transaction/
+│   │   ├── midtrans-webhook/
+│   │   └── cancel-booking/
+│   └── migrations/          # SQL migration files
+├── .env.example             # Environment template
+├── vite.config.ts           # Vite configuration
+└── vercel.json              # Vercel deployment config
+```
 
 ---
 
-> **Catatan**: Dokumen ini adalah gambaran umum. Detail implementasi ada di kode sumber masing-masing file.
+## 🧪 Testing
+
+Currently, the project does not have automated tests. Manual testing procedures:
+
+### Manual Testing Checklist
+- [ ] Register new user → verify profile creation
+- [ ] Login with email/password → verify session
+- [ ] Create booking → verify slot availability
+- [ ] Complete payment (sandbox) → verify webhook updates
+- [ ] Admin: view all bookings → verify RLS policies
+- [ ] Mobile responsiveness → test on Chrome DevTools
+
+**Future improvement:** Add Playwright for E2E testing and Vitest for unit tests.
+
+---
+
+## 📦 Build & Deployment
+
+### Production Build
+
+```bash
+npm run build
+# Output: dist/
+```
+
+Build creates optimized, code-split bundles:
+- Main bundle: ~364KB (gzipped: ~93KB)
+- Vendor chunks: React, Supabase, UI components separated
+- CSS: ~95KB (gzipped: ~16KB)
+
+### Deploy to Vercel
+
+1. **Push to GitHub**
+   ```bash
+   git push origin main
+   ```
+
+2. **Connect Vercel**
+   - Import repository on [vercel.com](https://vercel.com)
+   - Configure environment variables in Vercel dashboard
+   - Deploy automatically on every push
+
+3. **Set Environment Variables in Vercel**
+   ```
+   VITE_SUPABASE_PROJECT_ID=***
+   VITE_SUPABASE_PUBLISHABLE_KEY=***
+   VITE_SUPABASE_URL=***
+   ```
+
+4. **Update Edge Function Environment**
+   In Supabase Dashboard, update `FRONTEND_BASE_URL` to your Vercel URL
+
+---
+
+## 🤝 Contributing
+
+Contributions are welcome! Please follow these guidelines:
+
+1. **Fork the repository**
+2. **Create a feature branch**
+   ```bash
+   git checkout -b feature/AmazingFeature
+   ```
+3. **Commit your changes**
+   ```bash
+   git commit -m 'Add some AmazingFeature'
+   ```
+4. **Push to the branch**
+   ```bash
+   git push origin feature/AmazingFeature
+   ```
+5. **Open a Pull Request**
+
+### Code Standards
+- Follow existing code style (ESLint + Prettier)
+- Write meaningful commit messages
+- Test changes locally before submitting
+- Update documentation if needed
+
+---
+
+## 📄 License
+
+Distributed under the MIT License. See `LICENSE` file for more information.
+
+---
+
+## 🙏 Acknowledgements
+
+### Libraries & Tools
+- [React](https://reactjs.org/) — UI library
+- [Supabase](https://supabase.com/) — Backend-as-a-Service
+- [shadcn/ui](https://ui.shadcn.com/) — Component library
+- [Tailwind CSS](https://tailwindcss.com/) — CSS framework
+- [Midtrans](https://midtrans.com/) — Payment gateway
+- [Lucide Icons](https://lucide.dev/) — Icon set
+- [date-fns](https://date-fns.org/) — Date utilities
+- [Vercel](https://vercel.com/) — Hosting platform
+
+### Inspirations
+- Modern SaaS booking systems
+- Photography studio operational workflows
+- Indonesian payment ecosystem (Midtrans, e-wallets, bank transfers)
+
+---
+
+<div align="center">
+
+Made with ❤️ by [Gusweda](https://github.com/idabagusweda)
+
+**[⬆ back to top](#-morain-studio-rental)**
+
+</div>
