@@ -5,16 +5,21 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { HelmetProvider } from "react-helmet-async";
 import { AuthProvider } from "@/hooks/useAuth";
+import { lazy, Suspense } from "react";
+
+// Eager load landing page and dashboard (critical routes)
 import Index from "./pages/Index";
 import Dashboard from "./pages/Dashboard";
-import AdminLayout from "./layouts/AdminLayout";
-import Overview from "./pages/admin/Overview";
-import Bookings from "./pages/admin/Bookings";
-import Calendar from "./pages/admin/Calendar";
-import Users from "./pages/admin/Users";
-import Settings from "./pages/admin/Settings";
 import NotFound from "./pages/NotFound";
 import PaymentReturn from "./pages/PaymentReturn";
+
+// Lazy load admin routes (non-critical, reduce main bundle)
+const AdminLayout = lazy(() => import("./layouts/AdminLayout"));
+const Overview = lazy(() => import("./pages/admin/Overview"));
+const Bookings = lazy(() => import("./pages/admin/Bookings"));
+const Calendar = lazy(() => import("./pages/admin/Calendar"));
+const Users = lazy(() => import("./pages/admin/Users"));
+const Settings = lazy(() => import("./pages/admin/Settings"));
 
 const queryClient = new QueryClient();
 
@@ -34,13 +39,37 @@ const App = () => (
                 <Route path="profil" element={null} />
               </Route>
 
-              {/* Admin Routes */}
-              <Route path="/admin" element={<AdminLayout />}>
-                <Route index element={<Overview />} />
-                <Route path="bookings" element={<Bookings />} />
-                <Route path="calendar" element={<Calendar />} />
-                <Route path="users" element={<Users />} />
-                <Route path="settings" element={<Settings />} />
+              {/* Admin Routes (lazy loaded) */}
+              <Route path="/admin" element={
+                <Suspense fallback={<div className="flex items-center justify-center min-h-screen">Loading...</div>}>
+                  <AdminLayout />
+                </Suspense>
+              }>
+                <Route index element={
+                  <Suspense fallback={<div>Loading...</div>}>
+                    <Overview />
+                  </Suspense>
+                } />
+                <Route path="bookings" element={
+                  <Suspense fallback={<div>Loading...</div>}>
+                    <Bookings />
+                  </Suspense>
+                } />
+                <Route path="calendar" element={
+                  <Suspense fallback={<div>Loading...</div>}>
+                    <Calendar />
+                  </Suspense>
+                } />
+                <Route path="users" element={
+                  <Suspense fallback={<div>Loading...</div>}>
+                    <Users />
+                  </Suspense>
+                } />
+                <Route path="settings" element={
+                  <Suspense fallback={<div>Loading...</div>}>
+                    <Settings />
+                  </Suspense>
+                } />
               </Route>
 
               {/* Payment Return Route */}
