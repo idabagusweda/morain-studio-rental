@@ -102,7 +102,7 @@ const AdminLayout = () => {
                     <div className="flex items-center gap-3">
                         <Link to="/" className="flex items-center gap-3 group">
                             <img
-                                src="/images/logoMorain.png"
+                                src="/images/logoMorain.webp"
                                 alt="Morain Studio Logo"
                                 className="h-10 w-auto object-contain transition-transform duration-300 group-hover:scale-105 brightness-[0.8]"
                             />

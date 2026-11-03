@@ -379,9 +379,11 @@ export default function Dashboard() {
                     <div className="flex items-center gap-3">
                         <button onClick={() => navigate('/')} className="flex items-center gap-3 group text-left">
                             <img
-                                src="/images/logoMorain.png"
+                                src="/images/logoMorain.webp"
                                 alt="Morain Studio Logo"
                                 className="h-10 w-auto object-contain transition-transform duration-300 group-hover:scale-105 brightness-[0.8]"
+                                loading="eager"
+                                fetchPriority="high"
                             />
                             <span className="font-display text-2xl font-bold tracking-tight text-black leading-none">
                                 Morain

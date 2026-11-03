@@ -6,22 +6,22 @@ import { ChevronLeft, ChevronRight, Image, ArrowRight } from 'lucide-react';
 const slides = [
   {
     id: 1,
-    image: '/images/fotoStudio-1.jpeg',
+    image: '/images/fotoStudio-1.webp',
     alt: 'Professional photography studio with softbox lighting',
   },
   {
     id: 2,
-    image: '/images/fotoStudio-2.jpeg',
+    image: '/images/fotoStudio-2.webp',
     alt: 'Clean minimal photo studio setup',
   },
   {
     id: 3,
-    image: '/images/cowboy-3.jpg',
+    image: '/images/cowboy-3.webp',
     alt: 'Cowboy Photobox',
   },
   {
     id: 4,
-    image: '/images/photoBox-2.jpeg',
+    image: '/images/photoBox-2.webp',
     alt: 'Retro Film Vibes',
   },
 ];
@@ -61,6 +61,8 @@ export const HeroSection = () => {
               src={slide.image}
               alt={slide.alt}
               className="w-full h-full object-cover"
+              loading={index === 0 ? "eager" : "lazy"}
+              fetchPriority={index === 0 ? "high" : "low"}
             />
             <div className="absolute inset-0 bg-gradient-to-r from-background/95 via-background/70 to-background/40" />
           </div>
