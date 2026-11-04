@@ -1,353 +1,242 @@
-<div align="center">
+<p align="center">
+  <img src="./public/images/logoMorain.png" alt="Morain Studio Rental" width="180" />
+</p>
 
-# 📸 Morain Studio Rental
+<h1 align="center">Morain Studio Rental</h1>
 
-### Professional Photography Studio Booking System
+<p align="center">
+  A web-based booking and studio management system for photography studio rentals.
+</p>
 
-*Streamline your photography studio bookings with automated scheduling, secure payments, and real-time availability tracking*
+<p align="center">
+  <a href="https://morain-studio.vercel.app">Live Demo</a>
+  &nbsp;·&nbsp;
+  <a href="https://github.com/idabagusweda/morain-studio-rental/issues">Report an Issue</a>
+</p>
 
-[![React](https://img.shields.io/badge/React-18.3.1-61DAFB?logo=react)](https://reactjs.org/)
-[![TypeScript](https://img.shields.io/badge/TypeScript-5.8-3178C6?logo=typescript)](https://www.typescriptlang.org/)
-[![Vite](https://img.shields.io/badge/Vite-5.4-646CFF?logo=vite)](https://vitejs.dev/)
-[![Supabase](https://img.shields.io/badge/Supabase-PostgreSQL-3ECF8E?logo=supabase)](https://supabase.com/)
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](./LICENSE)
-
-[Live Demo](https://morain-studio.vercel.app) • [Report Bug](https://github.com/idabagusweda/morain-studio-rental/issues) • [Request Feature](https://github.com/idabagusweda/morain-studio-rental/issues)
-
-</div>
-
----
-
-## 📋 About The Project
-
-**Morain Studio Rental** is a modern, full-stack web application designed for photography studios to manage bookings, payments, and customer interactions seamlessly. Built with React and Supabase, it provides a complete solution for studio owners and their clients.
-
-### Why This Project?
-
-- **Real-time Availability:** Prevents double bookings with database-level constraints and live slot checking
-- **Secure Authentication:** Multi-provider auth (Email/Password + Google OAuth) with row-level security
-- **Payment Integration:** Midtrans payment gateway with webhook notifications and automatic status updates
-- **Admin Dashboard:** Comprehensive management tools for bookings, users, and operational settings
-- **Mobile-First:** Responsive design optimized for desktop, tablet, and mobile devices
+<p align="center">
+  <img alt="React" src="https://img.shields.io/badge/React-18.3-61DAFB?logo=react&logoColor=20232A" />
+  <img alt="TypeScript" src="https://img.shields.io/badge/TypeScript-5.8-3178C6?logo=typescript&logoColor=white" />
+  <img alt="Vite" src="https://img.shields.io/badge/Vite-5.4-646CFF?logo=vite&logoColor=white" />
+  <img alt="Supabase" src="https://img.shields.io/badge/Supabase-PostgreSQL-3ECF8E?logo=supabase&logoColor=white" />
+  <a href="./LICENSE"><img alt="License: MIT" src="https://img.shields.io/badge/License-MIT-yellow.svg" /></a>
+</p>
 
 ---
 
-## ✨ Key Features
+## Overview
 
-### For Customers
-- 🔐 **Secure Authentication** — Email/password or Google sign-in
-- 📅 **Smart Booking System** — Multi-step wizard with real-time slot availability
-- 💳 **Flexible Payments** — Full payment or 50% down payment options via Midtrans
-- 📱 **User Dashboard** — Track booking history, view invoices, manage profile
-- ⏱️ **Payment Timer** — 15-minute countdown to secure your booking slot
-- 📧 **Auto-fill Forms** — Profile data automatically populated for returning customers
+Morain Studio Rental is a web application for managing photography studio bookings. Customers can check studio availability, create reservations, make payments, and review their booking history. Studio administrators can manage bookings, users, and operational settings through an administration dashboard.
 
-### For Studio Owners
-- 👥 **User Management** — View all users, promote admins, search by name/email
-- 📊 **Booking Overview** — Real-time statistics and revenue tracking
-- 🗓️ **Calendar View** — Visual representation of all bookings
-- ✏️ **Status Management** — Update booking and payment statuses
-- ⚙️ **Operational Settings** — Configure studio hours and slot durations
-- 🔒 **Role-Based Access** — Secure admin-only routes and data protection
+The application uses React and TypeScript on the frontend, with Supabase providing authentication, database, and storage services. Midtrans is used to process payments.
 
-### Technical Highlights
-- 🚀 **Optimized Performance** — Code-split bundles, lazy loading, <600KB chunks
-- 🔒 **Security Headers** — CSP, X-Frame-Options, HSTS, Referrer-Policy
-- 🛡️ **RLS Policies** — Database-level security with Supabase Row Level Security
-- 🎯 **Type Safety** — Full TypeScript coverage with strict mode
-- 🧪 **Production Ready** — Environment-based configs, error boundaries, graceful fallbacks
+## Features
 
----
+### Customer
 
-## 🛠️ Tech Stack
+- **Account access:** Register and sign in using email and password or Google OAuth.
+- **Studio booking:** Follow a multi-step booking process and check available date and time slots.
+- **Payment options:** Pay in full or choose a 50% down payment through Midtrans.
+- **Booking dashboard:** Review booking history, access invoices, and manage profile information.
+- **Payment countdown:** A 15-minute countdown is provided during the payment process.
 
-### Frontend
-| Technology | Purpose |
-|-----------|---------|
-| **React 18.3** | UI library with hooks and context |
-| **TypeScript 5.8** | Type-safe JavaScript |
-| **Vite 5.4** | Lightning-fast build tool |
-| **Tailwind CSS 3.4** | Utility-first styling |
-| **shadcn/ui** | Accessible component library (Radix UI) |
-| **React Router 7** | Client-side routing |
-| **React Hook Form + Zod** | Form validation and schema validation |
-| **TanStack Query 5** | Server state management |
+### Administration
 
-### Backend
-| Technology | Purpose |
-|-----------|---------|
-| **Supabase** | Backend-as-a-Service (PostgreSQL, Auth, Storage) |
-| **PostgreSQL** | Relational database with RLS |
-| **Deno Edge Functions** | Serverless functions (payment, webhooks) |
-| **Midtrans API** | Payment gateway (Indonesia) |
+- **Booking management:** View bookings and update booking or payment statuses.
+- **Dashboard overview:** Review booking statistics and revenue information.
+- **Calendar:** View scheduled studio bookings in a calendar layout.
+- **User management:** Search users and manage administrative roles.
+- **Studio settings:** Configure operating hours and booking slot duration.
 
-### DevOps & Tools
-| Tool | Purpose |
-|------|---------|
-| **Vercel** | Frontend hosting and deployment |
-| **Git** | Version control |
-| **ESLint + Prettier** | Code quality and formatting |
+## Technology Stack
 
----
+| Area                 | Technology                               |
+| -------------------- | ---------------------------------------- |
+| Frontend             | React 18, TypeScript, Vite               |
+| Styling and UI       | Tailwind CSS, shadcn/ui, Radix UI        |
+| Routing              | React Router                             |
+| Forms and validation | React Hook Form, Zod                     |
+| Server state         | TanStack Query                           |
+| Backend services     | Supabase                                 |
+| Database             | PostgreSQL with Row Level Security (RLS) |
+| Serverless functions | Supabase Edge Functions (Deno)           |
+| Payment gateway      | Midtrans                                 |
+| Hosting              | Vercel                                   |
+| Code quality         | ESLint, Prettier                         |
 
-## 🖼️ Screenshots
-
-<details>
-<summary>View Application Screenshots</summary>
-
-### Landing Page
-Modern hero section with studio packages, photobox styles, gallery, testimonials, and FAQ sections.
-
-### Booking Flow
-5-step wizard: Date & Time → Duration → Customer Info → Payment Type → Confirmation
-
-### Admin Dashboard
-Comprehensive overview with booking statistics, revenue tracking, and user management.
-
-### User Dashboard
-Personal booking history with invoice generation and profile management.
-
-</details>
-
----
-
-## 🚀 Getting Started
+## Getting Started
 
 ### Prerequisites
 
-- Node.js 18+ or Bun 1.0+
-- npm, yarn, or bun package manager
-- Supabase account (free tier available)
-- Midtrans sandbox account for testing payments
+- Node.js 18 or later, or Bun 1.0 or later
+- npm or Bun
+- A Supabase project
+- A Midtrans account for payment testing
 
-### Installation
+### 1. Clone the repository
 
-1. **Clone the repository**
-   ```bash
-   git clone https://github.com/idabagusweda/morain-studio-rental.git
-   cd morain-studio-rental
-   ```
-
-2. **Install dependencies**
-   ```bash
-   npm install
-   # or
-   bun install
-   ```
-
-3. **Set up environment variables**
-
-   Copy `.env.example` to `.env` and configure:
-   ```bash
-   cp .env.example .env
-   ```
-
-   Update `.env` with your credentials:
-   ```env
-   VITE_SUPABASE_PROJECT_ID=your_project_id
-   VITE_SUPABASE_PUBLISHABLE_KEY=your_anon_key
-   VITE_SUPABASE_URL=https://your-project.supabase.co
-   ```
-
-4. **Set up Supabase database**
-
-   Run migrations in Supabase SQL Editor:
-   ```bash
-   # Navigate to supabase/migrations/ and execute SQL files in order
-   # Or use Supabase CLI:
-   supabase db push
-   ```
-
-5. **Configure Edge Functions secrets**
-
-   In Supabase Dashboard → Edge Functions → Secrets:
-   ```env
-   MIDTRANS_SERVER_KEY=your_midtrans_server_key
-   MIDTRANS_IS_PRODUCTION=false
-   FRONTEND_BASE_URL=http://localhost:8080
-   ```
-
-6. **Start development server**
-   ```bash
-   npm run dev
-   # or
-   bun run dev
-   ```
-
-   App will be available at `http://localhost:8080`
-
----
-
-## 📦 Environment Variables
-
-### Frontend (.env in root)
-
-| Variable | Description | Example |
-|----------|-------------|---------|
-| `VITE_SUPABASE_PROJECT_ID` | Supabase project identifier | `tjkwiztehdcxrsdqdoaz` |
-| `VITE_SUPABASE_PUBLISHABLE_KEY` | Supabase anon/public key (JWT) | `eyJ***` |
-| `VITE_SUPABASE_URL` | Supabase project URL | `https://***.supabase.co` |
-
-### Edge Functions (Supabase Dashboard)
-
-| Variable | Description | Example |
-|----------|-------------|---------|
-| `MIDTRANS_SERVER_KEY` | Midtrans server key (sandbox or production) | `SB-Mid-***` |
-| `MIDTRANS_IS_PRODUCTION` | Production mode flag | `false` |
-| `FRONTEND_BASE_URL` | Frontend URL for CORS | `https://morain-studio.vercel.app` |
-
-**Important:** Never commit real credentials. Use `.env.example` as a template without sensitive values.
-
----
-
-## 🗂️ Project Structure
-
+```bash
+git clone https://github.com/idabagusweda/morain-studio-rental.git
+cd morain-studio-rental
 ```
+
+### 2. Install dependencies
+
+Using npm:
+
+```bash
+npm install
+```
+
+Or using Bun:
+
+```bash
+bun install
+```
+
+### 3. Configure environment variables
+
+Create a local environment file from the example:
+
+```bash
+cp .env.example .env
+```
+
+Set the following frontend variables in `.env`:
+
+```env
+VITE_SUPABASE_PROJECT_ID=your_project_id
+VITE_SUPABASE_PUBLISHABLE_KEY=your_supabase_publishable_key
+VITE_SUPABASE_URL=https://your-project-ref.supabase.co
+```
+
+Do not commit `.env` or place private credentials in variables prefixed with `VITE_`. Values exposed through `VITE_` variables are included in the client-side application bundle.
+
+### 4. Configure Supabase
+
+Apply the SQL migrations in `supabase/migrations/` to your Supabase project. You can use the Supabase SQL Editor or the Supabase CLI after configuring it for the project:
+
+```bash
+supabase db push
+```
+
+Configure the following secrets for the Supabase Edge Functions in the Supabase Dashboard:
+
+```env
+MIDTRANS_SERVER_KEY=your_midtrans_server_key
+MIDTRANS_IS_PRODUCTION=false
+FRONTEND_BASE_URL=http://localhost:8080
+```
+
+Use your production frontend URL for `FRONTEND_BASE_URL` when deploying. Keep the Midtrans server key in the server-side environment; it must not be exposed to the frontend.
+
+### 5. Run the development server
+
+```bash
+npm run dev
+```
+
+Or with Bun:
+
+```bash
+bun run dev
+```
+
+The development server is configured to run at `http://localhost:8080`.
+
+## Environment Variables
+
+### Frontend (`.env`)
+
+| Variable                        | Description                                |
+| ------------------------------- | ------------------------------------------ |
+| `VITE_SUPABASE_PROJECT_ID`      | Supabase project identifier.               |
+| `VITE_SUPABASE_PUBLISHABLE_KEY` | Supabase publishable/anonymous client key. |
+| `VITE_SUPABASE_URL`             | Supabase project URL.                      |
+
+### Supabase Edge Functions
+
+| Secret                   | Description                                   |
+| ------------------------ | --------------------------------------------- |
+| `MIDTRANS_SERVER_KEY`    | Server-side Midtrans API key.                 |
+| `MIDTRANS_IS_PRODUCTION` | Enables or disables Midtrans production mode. |
+| `FRONTEND_BASE_URL`      | Frontend origin used by the Edge Functions.   |
+
+Use test credentials for local development. Never commit real keys, tokens, passwords, or other secrets to the repository.
+
+## Project Structure
+
+```text
 morain-studio-rental/
-├── public/                    # Static assets
-│   └── images/               # Gallery images, photobox themes
+├── public/
+│   └── images/                 # Public images and static assets
 ├── src/
-│   ├── components/           # React components
-│   │   ├── ui/              # shadcn/ui components
-│   │   ├── AuthModal.tsx    # Login/register modal
-│   │   ├── BookingModal.tsx # Studio booking wizard
-│   │   └── ...
-│   ├── pages/               # Route pages
-│   │   ├── Index.tsx        # Landing page
-│   │   ├── Dashboard.tsx    # User dashboard
-│   │   ├── PaymentReturn.tsx# Midtrans return handler
-│   │   └── admin/           # Admin-only pages
-│   ├── hooks/               # Custom React hooks
-│   │   ├── useAuth.tsx      # Authentication context
-│   │   ├── useBookingSlots.ts
-│   │   └── usePaymentLogic.ts
-│   ├── integrations/supabase/
-│   │   ├── client.ts        # Supabase client
-│   │   └── types.ts         # Generated DB types
-│   └── layouts/             # Layout components
+│   ├── components/             # Shared and feature-specific components
+│   │   └── ui/                 # UI components
+│   ├── pages/                  # Application pages and route views
+│   │   └── admin/              # Administration pages
+│   ├── hooks/                  # Custom React hooks
+│   ├── integrations/
+│   │   └── supabase/           # Supabase client and generated types
+│   └── layouts/                # Shared page layouts
 ├── supabase/
-│   ├── functions/           # Deno Edge Functions
-│   │   ├── create-midtrans-transaction/
-│   │   ├── midtrans-webhook/
-│   │   └── cancel-booking/
-│   └── migrations/          # SQL migration files
-├── .env.example             # Environment template
-├── vite.config.ts           # Vite configuration
-└── vercel.json              # Vercel deployment config
+│   ├── functions/              # Supabase Edge Functions
+│   └── migrations/             # Database migrations
+├── .env.example                # Environment variable template
+├── vite.config.ts              # Vite configuration
+└── vercel.json                 # Vercel deployment configuration
 ```
 
----
+## Testing
 
-## 🧪 Testing
+The project does not currently include an automated test suite. The following core flows should be checked manually when validating a local or deployed instance:
 
-Currently, the project does not have automated tests. Manual testing procedures:
+- Register a user and verify that the user profile is created.
+- Sign in and sign out using the supported authentication methods.
+- Create a booking and verify date and time-slot availability.
+- Complete a payment using Midtrans sandbox credentials and verify the resulting booking status.
+- Check that administrative pages and data are restricted to authorized users.
+- Review the layout on desktop and mobile screen sizes.
 
-### Manual Testing Checklist
-- [ ] Register new user → verify profile creation
-- [ ] Login with email/password → verify session
-- [ ] Create booking → verify slot availability
-- [ ] Complete payment (sandbox) → verify webhook updates
-- [ ] Admin: view all bookings → verify RLS policies
-- [ ] Mobile responsiveness → test on Chrome DevTools
+## Build and Deployment
 
-**Future improvement:** Add Playwright for E2E testing and Vitest for unit tests.
-
----
-
-## 📦 Build & Deployment
-
-### Production Build
+Create a production build with:
 
 ```bash
 npm run build
-# Output: dist/
 ```
 
-Build creates optimized, code-split bundles:
-- Main bundle: ~364KB (gzipped: ~93KB)
-- Vendor chunks: React, Supabase, UI components separated
-- CSS: ~95KB (gzipped: ~16KB)
+The generated frontend files are placed in the `dist/` directory.
 
-### Deploy to Vercel
+For deployment on Vercel:
 
-1. **Push to GitHub**
-   ```bash
-   git push origin main
-   ```
+1. Import the GitHub repository into Vercel.
+2. Configure the frontend environment variables in the Vercel project settings.
+3. Deploy the application.
+4. Set `FRONTEND_BASE_URL` in Supabase Edge Function secrets to the deployed application URL.
+5. Configure the required Midtrans credentials for the selected environment.
 
-2. **Connect Vercel**
-   - Import repository on [vercel.com](https://vercel.com)
-   - Configure environment variables in Vercel dashboard
-   - Deploy automatically on every push
+## Contributing
 
-3. **Set Environment Variables in Vercel**
-   ```
-   VITE_SUPABASE_PROJECT_ID=***
-   VITE_SUPABASE_PUBLISHABLE_KEY=***
-   VITE_SUPABASE_URL=***
-   ```
+Contributions and suggestions are welcome. To propose a change:
 
-4. **Update Edge Function Environment**
-   In Supabase Dashboard, update `FRONTEND_BASE_URL` to your Vercel URL
+1. Fork the repository.
+2. Create a branch for your change.
+3. Make and test your updates.
+4. Open a pull request with a clear description of the changes.
 
----
+Please follow the existing code style and update the documentation when behavior or configuration changes.
 
-## 🤝 Contributing
+## License
 
-Contributions are welcome! Please follow these guidelines:
+This project is distributed under the MIT License. See the [`LICENSE`](./LICENSE) file for details.
 
-1. **Fork the repository**
-2. **Create a feature branch**
-   ```bash
-   git checkout -b feature/AmazingFeature
-   ```
-3. **Commit your changes**
-   ```bash
-   git commit -m 'Add some AmazingFeature'
-   ```
-4. **Push to the branch**
-   ```bash
-   git push origin feature/AmazingFeature
-   ```
-5. **Open a Pull Request**
+## Acknowledgements
 
-### Code Standards
-- Follow existing code style (ESLint + Prettier)
-- Write meaningful commit messages
-- Test changes locally before submitting
-- Update documentation if needed
+This project uses open-source tools and services including [React](https://react.dev/), [Supabase](https://supabase.com/), [shadcn/ui](https://ui.shadcn.com/), [Tailwind CSS](https://tailwindcss.com/), [Midtrans](https://midtrans.com/), [Lucide](https://lucide.dev/), and [Vercel](https://vercel.com/).
 
 ---
 
-## 📄 License
-
-Distributed under the MIT License. See `LICENSE` file for more information.
-
----
-
-## 🙏 Acknowledgements
-
-### Libraries & Tools
-- [React](https://reactjs.org/) — UI library
-- [Supabase](https://supabase.com/) — Backend-as-a-Service
-- [shadcn/ui](https://ui.shadcn.com/) — Component library
-- [Tailwind CSS](https://tailwindcss.com/) — CSS framework
-- [Midtrans](https://midtrans.com/) — Payment gateway
-- [Lucide Icons](https://lucide.dev/) — Icon set
-- [date-fns](https://date-fns.org/) — Date utilities
-- [Vercel](https://vercel.com/) — Hosting platform
-
-### Inspirations
-- Modern SaaS booking systems
-- Photography studio operational workflows
-- Indonesian payment ecosystem (Midtrans, e-wallets, bank transfers)
-
----
-
-<div align="center">
-
-Made with ❤️ by [Gusweda](https://github.com/idabagusweda)
-
-**[⬆ back to top](#-morain-studio-rental)**
-
-</div>
+<p align="center">
+  <a href="https://github.com/idabagusweda">GitHub: idabagusweda</a>
+</p>

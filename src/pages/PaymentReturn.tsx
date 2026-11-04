@@ -35,11 +35,19 @@ const PaymentReturn = () => {
             await new Promise(resolve => setTimeout(resolve, 2000));
 
             // Fetch booking by midtrans_order_id
+            // Note: This query may fail if user is not authenticated after redirect from Midtrans.
+            // We rely on RLS policy that allows users to view their own bookings.
+            // Alternative: pass booking_code in URL params instead of midtrans_order_id
             const { data, error } = await supabase
                 .from('bookings')
                 .select('booking_code, service_type, package_name, style_name, total_amount, paid_amount, payment_status')
                 .eq('midtrans_order_id', orderId)
                 .single();
+
+            // If query fails due to auth, show error with helpful message
+            if (error) {
+                console.error('Error fetching booking:', error);
+            }
 
             if (error || !data) {
                 setStatus('error');
