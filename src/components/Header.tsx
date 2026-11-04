@@ -4,6 +4,8 @@ import { Menu, X, User, ChevronDown, LogOut, LayoutDashboard, History } from 'lu
 import { useAuth } from '@/hooks/useAuth';
 import { AuthModal } from '@/components/AuthModal';
 import { useNavigate } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
+import { LanguageSwitcher } from '@/components/LanguageSwitcher';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -12,18 +14,19 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 
-const navItems = [
-  { label: 'Home', href: '#home' },
-  { label: 'Studio', href: '#packages' },
-  { label: 'Photobox', href: '#photobox' },
-  { label: 'Gallery', href: '#gallery' },
-  { label: 'Testimonials', href: '#testimonials' },
-  { label: 'FAQ', href: '#faq' },
-  { label: 'Contact', href: '#contact' },
-];
-
 export const Header = () => {
   const navigate = useNavigate();
+  const { t } = useTranslation(['common', 'landing']);
+
+  const navItems = [
+    { label: t('common:navigation.home'), href: '#home' },
+    { label: t('common:navigation.studio'), href: '#packages' },
+    { label: t('common:navigation.photobox'), href: '#photobox' },
+    { label: t('common:navigation.gallery'), href: '#gallery' },
+    { label: t('common:navigation.testimonials'), href: '#testimonials' },
+    { label: t('common:navigation.faq'), href: '#faq' },
+    { label: t('common:navigation.contact'), href: '#contact' },
+  ];
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [showAuthModal, setShowAuthModal] = useState(false);
@@ -67,7 +70,7 @@ export const Header = () => {
       const firstName = profile.full_name.split(' ')[0];
       return firstName.length > 10 ? firstName.substring(0, 10) + '...' : firstName;
     }
-    return 'User';
+    return t('common:user.user');
   };
 
   const goToDashboard = () => {
@@ -135,7 +138,7 @@ export const Header = () => {
                     <div className="w-8 h-8 rounded-full bg-[#5F6F52]/20 flex items-center justify-center transition-colors duration-200 group-hover:bg-[#5F6F52]/20">
                       <User className="w-4 h-4 text-black/60 transition-colors duration-200 group-hover:text-black/80" />
                     </div>
-                    <span className="text-sm text-black/60 transition-colors duration-200 group-hover:text-black/80">Hi, {getDisplayName()}</span>
+                    <span className="text-sm text-black/60 transition-colors duration-200 group-hover:text-black/80">{t('common:user.hi')}, {getDisplayName()}</span>
                     <ChevronDown className="w-4 h-4 text-black/60 transition-colors duration-200 group-hover:text-black/80" />
                   </Button>
                 </DropdownMenuTrigger>
@@ -143,21 +146,21 @@ export const Header = () => {
                   {profile?.role === 'admin' ? (
                     <DropdownMenuItem onClick={() => navigate('/admin')} className="text-primary focus:text-white cursor-pointer">
                       <LayoutDashboard className="w-4 h-4 mr-2" />
-                      <span className="font-semibold">Admin Dashboard</span>
+                      <span className="font-semibold">{t('common:user.adminDashboard')}</span>
                     </DropdownMenuItem>
                   ) : (
                     <>
                       <DropdownMenuItem onClick={() => navigate('/dashboard')}>
                         <LayoutDashboard className="w-4 h-4 mr-2" />
-                        Dashboard
+                        {t('common:user.dashboard')}
                       </DropdownMenuItem>
                       <DropdownMenuItem onClick={() => navigate('/dashboard/riwayat')}>
                         <History className="w-4 h-4 mr-2" />
-                        Riwayat Booking
+                        {t('dashboard:sidebar.bookingHistory')}
                       </DropdownMenuItem>
                       <DropdownMenuItem onClick={() => navigate('/dashboard/profil')}>
                         <User className="w-4 h-4 mr-2" />
-                        Akun Saya
+                        {t('common:user.account')}
                       </DropdownMenuItem>
                     </>
                   )}
@@ -167,7 +170,7 @@ export const Header = () => {
                     className="text-destructive hover:bg-destructive/10 focus:bg-destructive/10 transition-colors duration-200"
                   >
                     <LogOut className="w-4 h-4 mr-2 text-destructive" />
-                    <span className="text-destructive">Keluar</span>
+                    <span className="text-destructive">{t('common:buttons.logout')}</span>
                   </DropdownMenuItem>
                 </DropdownMenuContent>
               </DropdownMenu>
@@ -176,25 +179,29 @@ export const Header = () => {
                 variant="ghost"
                 onClick={() => setShowAuthModal(true)}
               >
-                Login / Daftar
+                {t('common:buttons.loginRegister')}
               </Button>
             )}
+            <LanguageSwitcher />
             <Button
               variant="sage"
               onClick={() => scrollToSection('#packages')}
             >
-              Book Now
+              {t('common:buttons.bookNow')}
             </Button>
           </div>
 
-          {/* Mobile Menu Button */}
-          <button
-            className="lg:hidden p-2 text-foreground"
-            onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-            aria-label="Toggle menu"
-          >
-            {isMobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
-          </button>
+          {/* Mobile Actions */}
+          <div className="lg:hidden flex items-center gap-2">
+            <LanguageSwitcher />
+            <button
+              className="p-2 text-foreground rounded-lg hover:bg-muted transition-colors"
+              onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+              aria-label="Toggle menu"
+            >
+              {isMobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
+            </button>
+          </div>
         </div>
 
         {/* Mobile Menu */}
@@ -227,7 +234,7 @@ export const Header = () => {
                     className="px-4 py-3 text-foreground hover:bg-muted rounded-lg transition-colors text-left flex items-center gap-2"
                   >
                     <LayoutDashboard className="w-4 h-4" />
-                    Dashboard
+                    {t('common:user.dashboard')}
                   </button>
                 )}
                 {profile?.role === 'admin' && (
@@ -239,7 +246,7 @@ export const Header = () => {
                     className="px-4 py-3 text-foreground hover:bg-muted rounded-lg transition-colors text-left flex items-center gap-2"
                   >
                     <LayoutDashboard className="w-4 h-4" />
-                    Admin Dashboard
+                    {t('common:user.adminDashboard')}
                   </button>
                 )}
                 {profile?.role !== 'admin' && (
@@ -248,7 +255,7 @@ export const Header = () => {
                     className="px-4 py-3 text-foreground hover:bg-muted rounded-lg transition-colors text-left flex items-center gap-2"
                   >
                     <User className="w-4 h-4" />
-                    Akun Saya
+                    {t('common:user.account')}
                   </button>
                 )}
                 <button
@@ -259,7 +266,7 @@ export const Header = () => {
                   className="px-4 py-3 text-destructive hover:bg-muted rounded-lg transition-colors text-left flex items-center gap-2"
                 >
                   <LogOut className="w-4 h-4" />
-                  Keluar
+                  {t('common:buttons.logout')}
                 </button>
               </>
             ) : (
@@ -270,7 +277,7 @@ export const Header = () => {
                 }}
                 className="px-4 py-3 text-foreground hover:bg-muted rounded-lg transition-colors text-left"
               >
-                Login / Daftar
+                {t('common:buttons.loginRegister')}
               </button>
             )}
             <Button
@@ -278,7 +285,7 @@ export const Header = () => {
               className="mt-4"
               onClick={() => scrollToSection('#packages')}
             >
-              Book Now
+              {t('common:buttons.bookNow')}
             </Button>
           </nav>
         </div>

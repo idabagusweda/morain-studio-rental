@@ -3,6 +3,8 @@ import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
 import { Calendar as CalendarComponent } from '@/components/ui/calendar';
 import { Clock, User } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
+import { formatDate } from '@/lib/i18nUtils';
 
 interface Booking {
     id: string;
@@ -16,6 +18,7 @@ interface Booking {
 }
 
 const Calendar = () => {
+    const { t, i18n } = useTranslation(['admin', 'common', 'dashboard']);
     const { toast } = useToast();
     const [selectedDate, setSelectedDate] = useState<Date | undefined>(new Date());
     const [bookings, setBookings] = useState<Booking[]>([]);
@@ -35,11 +38,11 @@ const Calendar = () => {
 
             if (error) throw error;
             setBookings(data || []);
-        } catch (error: any) {
+        } catch (error: unknown) {
             console.error('Error fetching bookings:', error);
             toast({
-                title: 'Error',
-                description: 'Gagal memuat data kalender',
+                title: t('common:messages.error', 'Error'),
+                description: t('admin:calendar.errorFetch', 'Gagal memuat data kalender'),
                 variant: 'destructive'
             });
         } finally {
@@ -61,8 +64,8 @@ const Calendar = () => {
     return (
         <div className="space-y-6 animate-in fade-in duration-500">
             <div>
-                <h2 className="text-2xl font-display font-bold mb-1 text-[#849283]">Kalender</h2>
-                <p className="text-muted-foreground">Lihat jadwal booking harian.</p>
+                <h2 className="text-2xl font-display font-bold mb-1 text-[#849283]">{t('admin:calendar.title', 'Kalender')}</h2>
+                <p className="text-muted-foreground">{t('admin:calendar.description', 'Lihat jadwal booking harian.')}</p>
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
@@ -81,11 +84,11 @@ const Calendar = () => {
                     <div className="mt-6 flex items-center gap-4 text-sm px-4 pt-4 border-t border-dashed">
                         <div className="flex items-center gap-2">
                             <div className="w-3 h-3 rounded-full bg-[#849283]" />
-                            <span>Selected</span>
+                            <span>{t('admin:calendar.selected', 'Selected')}</span>
                         </div>
                         <div className="flex items-center gap-2">
                             <div className="w-3 h-3 rounded-full bg-slate-100" />
-                            <span>Today</span>
+                            <span>{t('admin:calendar.today', 'Today')}</span>
                         </div>
                     </div>
                 </div>
@@ -95,15 +98,10 @@ const Calendar = () => {
                     <div className="p-4 border-b bg-slate-50">
                         <h3 className="font-semibold text-lg flex items-center gap-2">
                             <Clock className="w-5 h-5 text-[#849283]" />
-                            {selectedDate?.toLocaleDateString('id-ID', {
-                                weekday: 'long',
-                                day: 'numeric',
-                                month: 'long',
-                                year: 'numeric'
-                            })}
+                            {selectedDate ? formatDate(selectedDate, 'EEEE, d MMMM yyyy', i18n.language) : ''}
                         </h3>
                         <p className="text-sm text-muted-foreground mt-1">
-                            {selectedDateBookings.length} Sesi Terjadwal
+                            {t('admin:calendar.scheduledSessions', { count: selectedDateBookings.length, defaultValue: `${selectedDateBookings.length} Sesi Terjadwal` })}
                         </p>
                     </div>
 
@@ -111,8 +109,8 @@ const Calendar = () => {
                         {selectedDateBookings.length === 0 ? (
                             <div className="h-full flex flex-col items-center justify-center text-muted-foreground text-center p-6">
                                 <CalendarComponent className="w-12 h-12 mb-3 opacity-20" />
-                                <p>Tidak ada booking untuk tanggal ini</p>
-                                <p className="text-xs mt-1 text-slate-400">Pilih tanggal lain untuk melihat jadwal.</p>
+                                <p>{t('admin:calendar.noEvents', 'Tidak ada booking untuk tanggal ini')}</p>
+                                <p className="text-xs mt-1 text-slate-400">{t('admin:calendar.pickOtherDate', 'Pilih tanggal lain untuk melihat jadwal.')}</p>
                             </div>
                         ) : (
                             selectedDateBookings.map((booking) => (
@@ -127,7 +125,7 @@ const Calendar = () => {
                                         <span className="font-mono text-sm font-semibold bg-white px-2 py-1 rounded border shadow-sm text-foreground/80">
                                             {booking.start_time.substring(0, 5)} - {booking.end_time.substring(0, 5)}
                                         </span>
-                                        <span className={`text-[10px] px-2 py-1 rounded-full font-medium border capitalize ${booking.payment_status === 'LUNAS'
+                                        <span className={`text-[10px] px-2 py-1 rounded-full font-medium border uppercase ${booking.payment_status === 'LUNAS'
                                             ? 'bg-green-50 text-green-700 border-green-200'
                                             : booking.payment_status === 'DP'
                                                 ? 'bg-blue-50 text-blue-700 border-blue-200'
@@ -145,7 +143,7 @@ const Calendar = () => {
                                         <div>
                                             <p className="font-medium text-sm text-foreground">{booking.client_name}</p>
                                             <p className="text-xs text-muted-foreground capitalize flex items-center gap-1.5 mt-0.5">
-                                                {booking.service_type === 'studio' ? '📸 Studio Session' : '🎞️ Photobox Session'}
+                                                {booking.service_type === 'studio' ? `📸 ${t('dashboard:overview.studioSession', 'Studio Session')}` : `🎞️ ${t('dashboard:overview.photoboxSession', 'Photobox Session')}`}
                                             </p>
                                         </div>
                                     </div>

@@ -1,4 +1,5 @@
 import { Calendar, Clock, Camera, MapPin, CreditCard, Sparkles } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 
 const features = [
   {
@@ -34,18 +35,20 @@ const features = [
 ];
 
 export const WhyChooseSection = () => {
+  const { t } = useTranslation(['landing']);
+  
   return (
     <section className="section-padding bg-secondary/50">
       <div className="container-wide">
         <div className="text-center max-w-2xl mx-auto mb-16">
           <span className="text-primary font-medium text-sm uppercase tracking-wider">
-            Why Choose Us
+            {t('whyChoose.sectionTag')}
           </span>
           <h2 className="font-display text-3xl sm:text-4xl lg:text-5xl font-semibold mt-3 mb-4">
-            The Morain Experience
+            {t('whyChoose.title')}
           </h2>
           <p className="text-muted-foreground text-lg">
-            Semua kebutuhan untuk sesi foto yang maksimal, cukup di satu tempat.
+            {t('whyChoose.description')}
           </p>
         </div>
 

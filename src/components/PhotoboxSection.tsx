@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Sparkles, Users, Clock, Zap, Download, Printer, QrCode, Smile, Calendar, CreditCard, Camera, Check } from 'lucide-react';
 import { PhotoboxBookingModal } from './PhotoboxBookingModal';
+import { useTranslation } from 'react-i18next';
 
 const photoboxStyles = [
   {
@@ -46,6 +47,7 @@ const outputs = [
 ];
 
 export const PhotoboxSection = () => {
+  const { t } = useTranslation(['landing', 'common']);
   const [isBookingOpen, setIsBookingOpen] = useState(false);
   const [selectedStyle, setSelectedStyle] = useState<string>('');
 
@@ -62,13 +64,13 @@ export const PhotoboxSection = () => {
           {/* 1. Intro (Left Top) */}
           <div className="fade-in-section space-y-4">
             <span className="text-primary font-medium text-sm uppercase tracking-wider">
-              Fast Booking
+              {t('photobox.sectionTag')}
             </span>
             <h2 className="font-display text-3xl sm:text-4xl lg:text-5xl font-semibold">
-              Photobox Experience
+              {t('photobox.title')}
             </h2>
             <p className="text-muted-foreground text-lg leading-relaxed">
-              Foto seru, cepat, dan terjangkau. Cocok untuk teman, pasangan, atau foto sendiri dengan hasil instan.
+              {t('photobox.description')}
             </p>
           </div>
 
@@ -81,18 +83,18 @@ export const PhotoboxSection = () => {
               </span>
 
               <h3 className="font-display text-xl font-semibold mb-2 mt-4 text-left w-full pl-2">
-                Paket Photobox
+                {t('photobox.package.name')}
               </h3>
 
               <div className="flex items-baseline justify-start gap-1 mb-4 pl-2">
                 <span className="font-display text-4xl font-bold text-primary">
                   Rp 30.000
                 </span>
-                <span className="text-muted-foreground">/ sesi</span>
+                <span className="text-muted-foreground">/{t('photobox.package.unit')}</span>
               </div>
 
               <p className="text-muted-foreground mb-6 text-sm text-left pl-2">
-                Pengalaman foto studio mandiri dengan hasil instan dan properti menarik.
+                {t('photobox.package.description')}
               </p>
 
               <div className="w-full h-px bg-border/50 mb-6"></div>

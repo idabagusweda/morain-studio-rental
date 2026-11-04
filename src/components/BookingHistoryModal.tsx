@@ -5,8 +5,8 @@ import { Badge } from '@/components/ui/badge';
 import { useAuth } from '@/hooks/useAuth';
 import { supabase } from '@/integrations/supabase/client';
 import { History, FileText, ChevronLeft, Download, Printer, Calendar, Clock, CreditCard } from 'lucide-react';
-import { format } from 'date-fns';
-import { id } from 'date-fns/locale';
+import { useTranslation } from 'react-i18next';
+import { formatCurrency, formatDate } from '@/lib/i18nUtils';
 
 interface Booking {
   id: string;
@@ -37,6 +37,7 @@ interface BookingHistoryModalProps {
 }
 
 export const BookingHistoryModal = ({ isOpen, onClose }: BookingHistoryModalProps) => {
+  const { t, i18n } = useTranslation(['dashboard', 'booking', 'common']);
   const { user } = useAuth();
   const [bookings, setBookings] = useState<Booking[]>([]);
   const [loading, setLoading] = useState(true);
@@ -69,18 +70,10 @@ export const BookingHistoryModal = ({ isOpen, onClose }: BookingHistoryModalProp
       case 'dp':
         return <Badge variant="secondary" className="bg-amber-100 text-amber-800">DP</Badge>;
       case 'paid':
-        return <Badge variant="secondary" className="bg-green-100 text-green-800">Lunas</Badge>;
+        return <Badge variant="secondary" className="bg-green-100 text-green-800">{t('common:status.paid')}</Badge>;
       default:
-        return <Badge variant="secondary" className="bg-gray-100 text-gray-800">Pending</Badge>;
+        return <Badge variant="secondary" className="bg-gray-100 text-gray-800">{t('common:status.pending')}</Badge>;
     }
-  };
-
-  const formatCurrency = (amount: number) => {
-    return new Intl.NumberFormat('id-ID', {
-      style: 'currency',
-      currency: 'IDR',
-      minimumFractionDigits: 0
-    }).format(amount);
   };
 
   const handlePrint = () => {
@@ -96,11 +89,11 @@ export const BookingHistoryModal = ({ isOpen, onClose }: BookingHistoryModalProp
     <div className="space-y-3 py-4 max-h-[60vh] overflow-y-auto">
       {loading ? (
         <div className="text-center py-8 text-muted-foreground">
-          Memuat data...
+          {t('common:status.loading')}
         </div>
       ) : bookings.length === 0 ? (
         <div className="text-center py-8 text-muted-foreground">
-          Belum ada riwayat booking
+          {t('dashboard:history.noHistory')}
         </div>
       ) : (
         bookings.map((booking) => (
@@ -113,11 +106,11 @@ export const BookingHistoryModal = ({ isOpen, onClose }: BookingHistoryModalProp
               <div className="space-y-1">
                 <p className="font-semibold text-foreground">{booking.booking_code}</p>
                 <p className="text-sm text-muted-foreground">
-                  {booking.service_type === 'photobox' ? 'Photobox' : booking.package_name || 'Studio Rental'}
+                  {booking.service_type === 'photobox' ? t('common:services.photobox', 'Photobox') : booking.package_name || t('common:services.studio', 'Studio Rental')}
                 </p>
                 <div className="flex items-center gap-2 text-sm text-muted-foreground">
                   <Calendar className="w-3 h-3" />
-                  {format(new Date(booking.booking_date), 'dd MMMM yyyy', { locale: id })}
+                  {formatDate(new Date(booking.booking_date), 'dd MMMM yyyy', i18n.language)}
                 </div>
                 <div className="flex items-center gap-2 text-sm text-muted-foreground">
                   <Clock className="w-3 h-3" />
@@ -128,7 +121,7 @@ export const BookingHistoryModal = ({ isOpen, onClose }: BookingHistoryModalProp
                 {getStatusBadge(booking.payment_status)}
                 <Button variant="ghost" size="sm" className="text-primary">
                   <FileText className="w-4 h-4 mr-1" />
-                  Lihat Invoice
+                  {t('dashboard:history.actions.invoice')}
                 </Button>
               </div>
             </div>
@@ -150,33 +143,33 @@ export const BookingHistoryModal = ({ isOpen, onClose }: BookingHistoryModalProp
           className="print:hidden"
         >
           <ChevronLeft className="w-4 h-4 mr-1" />
-          Kembali
+          {t('common:buttons.back')}
         </Button>
 
         {/* Invoice Header */}
         <div className="text-center border-b border-border pb-4">
           <h2 className="font-display text-2xl font-semibold">Morain Studio</h2>
-          <p className="text-sm text-muted-foreground">Invoice Booking</p>
+          <p className="text-sm text-muted-foreground">{t('dashboard:history.actions.invoice')} Booking</p>
         </div>
 
         {/* Invoice Details */}
         <div className="space-y-4">
           <div className="grid grid-cols-2 gap-4 text-sm">
             <div>
-              <p className="text-muted-foreground">Kode Booking</p>
+              <p className="text-muted-foreground">{t('booking:paymentReturn.bookingCode')}</p>
               <p className="font-semibold">{selectedBooking.booking_code}</p>
             </div>
             <div>
-              <p className="text-muted-foreground">Status Pembayaran</p>
+              <p className="text-muted-foreground">{t('dashboard:history.table.payment')}</p>
               {getStatusBadge(selectedBooking.payment_status)}
             </div>
           </div>
 
           <div className="border-t border-border pt-4 space-y-3">
-            <h3 className="font-semibold">Data Klien</h3>
+            <h3 className="font-semibold">{t('booking:form.title')}</h3>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-sm">
               <div>
-                <p className="text-muted-foreground">Nama</p>
+                <p className="text-muted-foreground">{t('common:labels.name')}</p>
                 <p>{selectedBooking.client_name}</p>
               </div>
               <div>
@@ -193,42 +186,42 @@ export const BookingHistoryModal = ({ isOpen, onClose }: BookingHistoryModalProp
           </div>
 
           <div className="border-t border-border pt-4 space-y-3">
-            <h3 className="font-semibold">Detail Layanan</h3>
+            <h3 className="font-semibold">{t('dashboard:history.table.serviceDetail')}</h3>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-sm">
               <div>
-                <p className="text-muted-foreground">Jenis Layanan</p>
-                <p>{selectedBooking.service_type === 'photobox' ? 'Photobox' : 'Studio Rental'}</p>
+                <p className="text-muted-foreground">{t('common:labels.service')}</p>
+                <p>{selectedBooking.service_type === 'photobox' ? t('common:services.photobox', 'Photobox') : t('common:services.studio', 'Studio Rental')}</p>
               </div>
               {selectedBooking.package_name && (
                 <div>
-                  <p className="text-muted-foreground">Paket</p>
+                  <p className="text-muted-foreground">{t('common:labels.package')}</p>
                   <p>{selectedBooking.package_name}</p>
                 </div>
               )}
               {selectedBooking.style_name && (
                 <div>
-                  <p className="text-muted-foreground">Style</p>
+                  <p className="text-muted-foreground">{t('booking:steps.style')}</p>
                   <p>{selectedBooking.style_name}</p>
                 </div>
               )}
               <div>
-                <p className="text-muted-foreground">Tanggal</p>
-                <p>{format(new Date(selectedBooking.booking_date), 'dd MMMM yyyy', { locale: id })}</p>
+                <p className="text-muted-foreground">{t('common:labels.date')}</p>
+                <p>{formatDate(new Date(selectedBooking.booking_date), 'dd MMMM yyyy', i18n.language)}</p>
               </div>
               <div>
-                <p className="text-muted-foreground">Waktu</p>
+                <p className="text-muted-foreground">{t('common:labels.time')}</p>
                 <p>{selectedBooking.start_time} - {selectedBooking.end_time}</p>
               </div>
               {selectedBooking.duration_hours && (
                 <div>
-                  <p className="text-muted-foreground">Durasi</p>
-                  <p>{selectedBooking.duration_hours} jam</p>
+                  <p className="text-muted-foreground">{t('booking:summary.duration')}</p>
+                  <p>{selectedBooking.duration_hours} {t('common:time.hours')}</p>
                 </div>
               )}
               {selectedBooking.guest_count && (
                 <div>
-                  <p className="text-muted-foreground">Jumlah Orang</p>
-                  <p>{selectedBooking.guest_count} orang</p>
+                  <p className="text-muted-foreground">{t('booking:form.guestsCount')}</p>
+                  <p>{selectedBooking.guest_count} {t('common:labels.people', 'orang')}</p>
                 </div>
               )}
             </div>
@@ -237,31 +230,31 @@ export const BookingHistoryModal = ({ isOpen, onClose }: BookingHistoryModalProp
           <div className="border-t border-border pt-4 space-y-3">
             <h3 className="font-semibold flex items-center gap-2">
               <CreditCard className="w-4 h-4" />
-              Pembayaran
+              {t('common:labels.payment')}
             </h3>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-sm">
               {selectedBooking.payment_method && (
                 <div>
-                  <p className="text-muted-foreground">Metode Pembayaran</p>
+                  <p className="text-muted-foreground">{t('booking:summary.paymentType')}</p>
                   <p className="uppercase">{selectedBooking.payment_method}</p>
                 </div>
               )}
               {selectedBooking.dp_amount && (
                 <div>
-                  <p className="text-muted-foreground">Nominal DP</p>
-                  <p>{formatCurrency(selectedBooking.dp_amount)}</p>
+                  <p className="text-muted-foreground">{t('booking:summary.dpAmount')}</p>
+                  <p>{formatCurrency(selectedBooking.dp_amount, i18n.language)}</p>
                 </div>
               )}
               <div>
-                <p className="text-muted-foreground">Total Biaya</p>
-                <p className="font-semibold text-primary">{formatCurrency(selectedBooking.total_amount)}</p>
+                <p className="text-muted-foreground">{t('booking:summary.totalPrice')}</p>
+                <p className="font-semibold text-primary">{formatCurrency(selectedBooking.total_amount, i18n.language)}</p>
               </div>
             </div>
           </div>
 
           {selectedBooking.notes && (
             <div className="border-t border-border pt-4">
-              <p className="text-muted-foreground text-sm">Catatan</p>
+              <p className="text-muted-foreground text-sm">{t('booking:form.notes')}</p>
               <p className="text-sm">{selectedBooking.notes}</p>
             </div>
           )}
@@ -275,7 +268,7 @@ export const BookingHistoryModal = ({ isOpen, onClose }: BookingHistoryModalProp
             onClick={handleDownload}
           >
             <Download className="w-4 h-4 mr-2" />
-            Unduh Invoice (PDF)
+            {t('dashboard:history.downloadInvoice')}
           </Button>
           <Button
             variant="outline"
@@ -283,7 +276,7 @@ export const BookingHistoryModal = ({ isOpen, onClose }: BookingHistoryModalProp
             onClick={handlePrint}
           >
             <Printer className="w-4 h-4 mr-2" />
-            Cetak Invoice
+            {t('dashboard:history.printInvoice')}
           </Button>
         </div>
       </div>
@@ -296,7 +289,7 @@ export const BookingHistoryModal = ({ isOpen, onClose }: BookingHistoryModalProp
         <DialogHeader>
           <DialogTitle className="flex items-center gap-2 text-xl font-display">
             <History className="w-5 h-5" />
-            {selectedBooking ? 'Detail Invoice' : 'Riwayat Booking'}
+            {selectedBooking ? t('dashboard:history.invoiceDetail') : t('dashboard:history.title')}
           </DialogTitle>
         </DialogHeader>
 

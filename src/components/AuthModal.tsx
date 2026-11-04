@@ -6,6 +6,7 @@ import { Label } from '@/components/ui/label';
 import { useAuth } from '@/hooks/useAuth';
 import { useToast } from '@/hooks/use-toast';
 import { Mail, Eye, EyeOff, Check, X } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 
 interface AuthModalProps {
   isOpen: boolean;
@@ -22,6 +23,7 @@ interface PasswordStrength {
 }
 
 export const AuthModal = ({ isOpen, onClose, onSuccess }: AuthModalProps) => {
+  const { t } = useTranslation(['auth', 'common']);
   const [mode, setMode] = useState<'login' | 'register'>('login');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -52,7 +54,7 @@ export const AuthModal = ({ isOpen, onClose, onSuccess }: AuthModalProps) => {
       hasUppercase: /[A-Z]/.test(pwd),
       hasLowercase: /[a-z]/.test(pwd),
       hasNumber: /[0-9]/.test(pwd),
-      hasSymbol: /[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/.test(pwd),
+      hasSymbol: /[!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?]/.test(pwd),
     };
   };
 
@@ -86,8 +88,8 @@ export const AuthModal = ({ isOpen, onClose, onSuccess }: AuthModalProps) => {
     
     if (!email || !password) {
       toast({
-        title: 'Data tidak lengkap',
-        description: 'Mohon isi email dan password',
+        title: t('validation.incompleteData'),
+        description: t('validation.fillEmailPassword'),
         variant: 'destructive'
       });
       return;
@@ -95,8 +97,8 @@ export const AuthModal = ({ isOpen, onClose, onSuccess }: AuthModalProps) => {
 
     if (!isValidEmail(email)) {
       toast({
-        title: 'Email tidak valid',
-        description: 'Format email salah. Contoh: nama@domain.com',
+        title: t('validation.invalidEmail'),
+        description: t('validation.invalidEmailFormat'),
         variant: 'destructive'
       });
       return;
@@ -107,17 +109,17 @@ export const AuthModal = ({ isOpen, onClose, onSuccess }: AuthModalProps) => {
     if (error) {
       let message = error.message;
       if (error.message.includes('Invalid login credentials')) {
-        message = 'Email atau password salah';
+        message = t('messages.invalidCredentials');
       }
       toast({
-        title: 'Gagal masuk',
+        title: t('messages.loginFailed'),
         description: message,
         variant: 'destructive'
       });
     } else {
       toast({
-        title: 'Login berhasil',
-        description: 'Selamat datang kembali!'
+        title: t('messages.loginSuccess'),
+        description: t('messages.loginSuccessDescription')
       });
       handleClose();
       onSuccess?.();
@@ -130,8 +132,8 @@ export const AuthModal = ({ isOpen, onClose, onSuccess }: AuthModalProps) => {
     
     if (!email || !password || !fullName || !whatsapp) {
       toast({
-        title: 'Data tidak lengkap',
-        description: 'Mohon lengkapi semua field',
+        title: t('validation.incompleteData'),
+        description: t('validation.fillAllFields'),
         variant: 'destructive'
       });
       return;
@@ -139,8 +141,8 @@ export const AuthModal = ({ isOpen, onClose, onSuccess }: AuthModalProps) => {
 
     if (!isValidEmail(email)) {
       toast({
-        title: 'Email tidak valid',
-        description: 'Format email salah. Contoh: nama@domain.com',
+        title: t('validation.invalidEmail'),
+        description: t('validation.invalidEmailFormat'),
         variant: 'destructive'
       });
       return;
@@ -148,8 +150,8 @@ export const AuthModal = ({ isOpen, onClose, onSuccess }: AuthModalProps) => {
 
     if (!isValidPhone(whatsapp)) {
       toast({
-        title: 'Nomor WhatsApp tidak valid',
-        description: 'Nomor harus 10-13 digit angka (contoh: 08123456789)',
+        title: t('validation.invalidWhatsapp'),
+        description: t('validation.whatsappDigits'),
         variant: 'destructive'
       });
       return;
@@ -157,8 +159,8 @@ export const AuthModal = ({ isOpen, onClose, onSuccess }: AuthModalProps) => {
 
     if (!isPasswordStrong) {
       toast({
-        title: 'Password tidak memenuhi syarat',
-        description: 'Pastikan semua kriteria password terpenuhi',
+        title: t('validation.passwordNotStrong'),
+        description: t('validation.passwordCriteria'),
         variant: 'destructive'
       });
       return;
@@ -169,17 +171,17 @@ export const AuthModal = ({ isOpen, onClose, onSuccess }: AuthModalProps) => {
     if (error) {
       let message = error.message;
       if (error.message.includes('already registered')) {
-        message = 'Email sudah terdaftar. Silakan login.';
+        message = t('messages.emailAlreadyRegistered');
       }
       toast({
-        title: 'Gagal mendaftar',
+        title: t('messages.registerFailed'),
         description: message,
         variant: 'destructive'
       });
     } else {
       toast({
-        title: 'Pendaftaran berhasil',
-        description: 'Akun Anda telah dibuat!'
+        title: t('messages.registerSuccess'),
+        description: t('messages.registerSuccessDescription')
       });
       handleClose();
       onSuccess?.();
@@ -191,16 +193,16 @@ export const AuthModal = ({ isOpen, onClose, onSuccess }: AuthModalProps) => {
     if (mode !== 'register' || !password) return null;
 
     const indicators = [
-      { label: 'Minimal 8 karakter', met: passwordStrength.hasMinLength },
-      { label: 'Huruf besar (A-Z)', met: passwordStrength.hasUppercase },
-      { label: 'Huruf kecil (a-z)', met: passwordStrength.hasLowercase },
-      { label: 'Angka (0-9)', met: passwordStrength.hasNumber },
-      { label: 'Simbol (!@#$%...)', met: passwordStrength.hasSymbol },
+      { label: t('passwordStrength.minLength'), met: passwordStrength.hasMinLength },
+      { label: t('passwordStrength.uppercase'), met: passwordStrength.hasUppercase },
+      { label: t('passwordStrength.lowercase'), met: passwordStrength.hasLowercase },
+      { label: t('passwordStrength.number'), met: passwordStrength.hasNumber },
+      { label: t('passwordStrength.symbol'), met: passwordStrength.hasSymbol },
     ];
 
     return (
       <div className="mt-2 space-y-1 p-3 bg-muted/50 rounded-md border">
-        <p className="text-xs font-medium text-muted-foreground mb-1">Syarat Password:</p>
+        <p className="text-xs font-medium text-muted-foreground mb-1">{t('passwordStrength.title')}</p>
         {indicators.map((ind, idx) => (
           <div key={idx} className="flex items-center gap-2 text-xs">
             {ind.met ? (
@@ -222,7 +224,7 @@ export const AuthModal = ({ isOpen, onClose, onSuccess }: AuthModalProps) => {
       <DialogContent className="sm:max-w-md max-h-[90vh] overflow-y-auto">
         <DialogHeader>
           <DialogTitle className="text-center text-2xl font-display">
-            {mode === 'login' ? 'Masuk ke Akun' : 'Daftar Akun Baru'}
+            {mode === 'login' ? t('modal.loginTitle') : t('modal.registerTitle')}
           </DialogTitle>
         </DialogHeader>
 
@@ -232,29 +234,29 @@ export const AuthModal = ({ isOpen, onClose, onSuccess }: AuthModalProps) => {
               <>
                 <div className="space-y-2">
                   <Label htmlFor="fullName" className="flex items-center gap-1">
-                    Nama Lengkap <span className="text-red-500">*</span>
+                    {t('fields.fullName')} <span className="text-red-500">*</span>
                   </Label>
                   <Input
                     id="fullName"
                     type="text"
-                    placeholder="Masukkan nama lengkap"
+                    placeholder={t('fields.fullNamePlaceholder')}
                     value={fullName}
                     onChange={(e) => setFullName(e.target.value)}
                     disabled={isLoading}
                     className={!fullName && mode === 'register' ? "border-red-200 focus-visible:ring-red-200" : ""}
                   />
                   {!fullName && mode === 'register' && (
-                    <p className="text-xs text-red-500">Wajib diisi</p>
+                    <p className="text-xs text-red-500">{t('common:validation.required')}</p>
                   )}
                 </div>
                 <div className="space-y-2">
                   <Label htmlFor="whatsapp" className="flex items-center gap-1">
-                    Nomor WhatsApp <span className="text-red-500">*</span>
+                    {t('fields.whatsapp')} <span className="text-red-500">*</span>
                   </Label>
                   <Input
                     id="whatsapp"
                     type="tel"
-                    placeholder="08123456789 (10-13 digit)"
+                    placeholder={t('fields.whatsappPlaceholder')}
                     value={whatsapp}
                     onChange={(e) => handlePhoneChange(e.target.value)}
                     disabled={isLoading}
@@ -262,10 +264,10 @@ export const AuthModal = ({ isOpen, onClose, onSuccess }: AuthModalProps) => {
                     className={whatsapp && !isValidPhone(whatsapp) ? "border-red-200 focus-visible:ring-red-200" : ""}
                   />
                   {whatsapp && !isValidPhone(whatsapp) && (
-                    <p className="text-xs text-red-500">Nomor harus 10-13 digit angka</p>
+                    <p className="text-xs text-red-500">{t('validation.whatsappDigits')}</p>
                   )}
                   {!whatsapp && mode === 'register' && (
-                    <p className="text-xs text-red-500">Wajib diisi</p>
+                    <p className="text-xs text-red-500">{t('common:validation.required')}</p>
                   )}
                 </div>
               </>
@@ -273,34 +275,34 @@ export const AuthModal = ({ isOpen, onClose, onSuccess }: AuthModalProps) => {
 
             <div className="space-y-2">
               <Label htmlFor="email" className="flex items-center gap-1">
-                Email {mode === 'register' && <span className="text-red-500">*</span>}
+                {t('fields.email')} {mode === 'register' && <span className="text-red-500">*</span>}
               </Label>
               <Input
                 id="email"
                 type="email"
-                placeholder="nama@domain.com"
+                placeholder={t('fields.emailPlaceholder')}
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 disabled={isLoading}
                 className={email && !isValidEmail(email) ? "border-red-200 focus-visible:ring-red-200" : ""}
               />
               {email && !isValidEmail(email) && (
-                <p className="text-xs text-red-500">Format email tidak valid (contoh: nama@domain.com)</p>
+                <p className="text-xs text-red-500">{t('validation.invalidEmailFormat')}</p>
               )}
               {!email && (
-                <p className="text-xs text-red-500">Wajib diisi</p>
+                <p className="text-xs text-red-500">{t('common:validation.required')}</p>
               )}
             </div>
 
             <div className="space-y-2">
               <Label htmlFor="password" className="flex items-center gap-1">
-                Password {mode === 'register' && <span className="text-red-500">*</span>}
+                {t('fields.password')} {mode === 'register' && <span className="text-red-500">*</span>}
               </Label>
               <div className="relative">
                 <Input
                   id="password"
                   type={showPassword ? 'text' : 'password'}
-                  placeholder={mode === 'register' ? "Min. 8 karakter, besar, kecil, angka, simbol" : "Masukkan password"}
+                  placeholder={mode === 'register' ? t('fields.passwordRegisterPlaceholder') : t('fields.passwordPlaceholder')}
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   disabled={isLoading}
@@ -315,7 +317,7 @@ export const AuthModal = ({ isOpen, onClose, onSuccess }: AuthModalProps) => {
                 </button>
               </div>
               {!password && (
-                <p className="text-xs text-red-500">Wajib diisi</p>
+                <p className="text-xs text-red-500">{t('common:validation.required')}</p>
               )}
               <PasswordStrengthIndicator />
             </div>
@@ -327,31 +329,31 @@ export const AuthModal = ({ isOpen, onClose, onSuccess }: AuthModalProps) => {
               disabled={isLoading || (mode === 'register' ? (!email || !password || !fullName || !whatsapp || !isPasswordStrong || !isValidEmail(email) || !isValidPhone(whatsapp)) : (!email || !password || !isValidEmail(email)))}
             >
               <Mail className="w-4 h-4 mr-2" />
-              {mode === 'login' ? 'Masuk' : 'Daftar Akun'}
+              {mode === 'login' ? t('buttons.login') : t('buttons.register')}
             </Button>
           </form>
 
           <div className="text-center text-sm">
             {mode === 'login' ? (
               <p className="text-muted-foreground">
-                Belum punya akun?{' '}
+                {t('switch.noAccount')}{' '}
                 <button
                   type="button"
                   onClick={() => setMode('register')}
                   className="text-primary font-medium hover:underline"
                 >
-                  Daftar Sekarang
+                  {t('switch.registerNow')}
                 </button>
               </p>
             ) : (
               <p className="text-muted-foreground">
-                Sudah punya akun?{' '}
+                {t('switch.haveAccount')}{' '}
                 <button
                   type="button"
                   onClick={() => setMode('login')}
                   className="text-primary font-medium hover:underline"
                 >
-                  Masuk
+                  {t('switch.loginNow')}
                 </button>
               </p>
             )}

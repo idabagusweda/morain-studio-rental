@@ -1,0 +1,122 @@
+{
+  "layout": {
+    "title": "Admin Dashboard",
+    "administratorAccess": "Administrator Access",
+    "accessDeniedTitle": "Access Denied",
+    "accessDeniedDesc": "You do not have access to the admin page.",
+    "nav": {
+      "overview": "Overview",
+      "bookings": "Bookings",
+      "calendar": "Calendar",
+      "users": "Users",
+      "settings": "Settings"
+    }
+  },
+  "overview": {
+    "title": "Overview",
+    "description": "Studio performance summary this month.",
+    "revenue": "Revenue (This Month)",
+    "revenueFrom": "From {{count}} bookings",
+    "bookingsToday": "Bookings Today",
+    "bookingsTodayDescription": "Today's schedule",
+    "totalBookings": "Total Bookings",
+    "totalBookingsDescription": "+ {{count}} this month",
+    "paymentStatus": "Payment Status",
+    "pending": "Pending",
+    "dp": "DP",
+    "paid": "Paid",
+    "errorFetch": "Failed to load dashboard statistics"
+  },
+  "bookings": {
+    "title": "Bookings",
+    "description": "Manage all studio and photobox bookings.",
+    "refresh": "Refresh",
+    "searchPlaceholder": "Search code, name, or WhatsApp...",
+    "paymentStatusPlaceholder": "Payment Status",
+    "serviceTypePlaceholder": "Service Type",
+    "allStatus": "All Status",
+    "allServices": "All Services",
+    "table": {
+      "clientAndService": "Client & Service",
+      "schedule": "Schedule",
+      "package": "Package",
+      "total": "Total",
+      "status": "Status",
+      "action": "Action"
+    },
+    "remaining": "Remaining: {{amount}}",
+    "loading": "Loading data...",
+    "noFiltered": "No bookings found matching the filters.",
+    "errorFetch": "Failed to load booking data"
+  },
+  "calendar": {
+    "title": "Calendar",
+    "description": "View daily booking schedules.",
+    "today": "Today",
+    "selected": "Selected",
+    "scheduledSessions": "{{count}} Scheduled Sessions",
+    "noEvents": "No bookings for this date",
+    "pickOtherDate": "Select another date to view schedules.",
+    "errorFetch": "Failed to load calendar data"
+  },
+  "users": {
+    "title": "Users",
+    "description": "Manage users and admin access.",
+    "listTitle": "Users List ({{count}})",
+    "searchPlaceholder": "Search user (name/email)...",
+    "table": {
+      "name": "Name",
+      "email": "Email",
+      "whatsapp": "WhatsApp",
+      "role": "Role",
+      "registered": "Registered",
+      "action": "Action"
+    },
+    "roles": {
+      "admin": "Admin",
+      "user": "User"
+    },
+    "promoteAdmin": "Make Admin",
+    "demoteAdmin": "Remove Admin",
+    "noUsers": "No users yet",
+    "noFilteredUsers": "No users matching the search.",
+    "confirmChangeRole": "Are you sure you want to change this user's role to {{role}}?",
+    "roleSuccess": "User successfully {{action}}d",
+    "errorFetch": "Failed to load users data",
+    "errorUpdateRole": "Failed to update role"
+  },
+  "settings": {
+    "title": "Settings",
+    "description": "Configure studio operations.",
+    "operationalHours": "Operational Hours",
+    "operationalHoursDesc": "Set studio opening and closing hours for slot availability.",
+    "openTime": "Opening Time",
+    "closeTime": "Closing Time",
+    "save": "Save Settings",
+    "saving": "Saving...",
+    "saveSuccess": "Settings saved successfully.",
+    "saveError": "Please ensure database migrations have been run."
+  },
+  "detailModal": {
+    "title": "Booking Detail",
+    "clientInfo": "Client Information",
+    "name": "Name:",
+    "whatsapp": "WA:",
+    "email": "Email:",
+    "contactWhatsApp": "Contact WhatsApp",
+    "whatsappMessage": "Hello {{name}}, this is Morain Studio regarding your booking {{code}}.",
+    "serviceDetail": "Service Detail",
+    "type": "Type:",
+    "package": "Package:",
+    "note": "Note",
+    "sessionTime": "Session Time",
+    "statusAndPayment": "Status & Payment",
+    "paymentStatus": "Payment Status",
+    "bookingStatus": "Booking Status",
+    "total": "Total:",
+    "paidAmount": "Paid Amount:",
+    "remaining": "Remaining:",
+    "updateSuccess": "Booking status updated successfully",
+    "updateError": "Failed to update status"
+  }
+}

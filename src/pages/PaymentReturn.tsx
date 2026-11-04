@@ -3,6 +3,8 @@ import { useSearchParams, Link } from 'react-router-dom';
 import { Check, Clock, XCircle, Home, FileText } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { supabase } from '@/integrations/supabase/client';
+import { useTranslation } from 'react-i18next';
+import { formatCurrency } from '@/lib/i18nUtils';
 
 type PaymentStatus = 'success' | 'pending' | 'error' | 'loading';
 
@@ -17,6 +19,7 @@ interface BookingDetails {
 }
 
 const PaymentReturn = () => {
+    const { t, i18n } = useTranslation(['booking', 'common']);
     const [searchParams] = useSearchParams();
     const [status, setStatus] = useState<PaymentStatus>('loading');
     const [booking, setBooking] = useState<BookingDetails | null>(null);
@@ -75,29 +78,29 @@ const PaymentReturn = () => {
                 return {
                     icon: <Check className="w-16 h-16 text-white" />,
                     bgColor: 'bg-green-500',
-                    title: 'Pembayaran Berhasil!',
-                    description: 'Terima kasih, pembayaran Anda telah diterima.',
+                    title: t('booking:paymentReturn.successTitle'),
+                    description: t('booking:paymentReturn.successDesc'),
                 };
             case 'pending':
                 return {
                     icon: <Clock className="w-16 h-16 text-white" />,
                     bgColor: 'bg-yellow-500',
-                    title: 'Menunggu Pembayaran',
-                    description: 'Silakan selesaikan pembayaran Anda sesuai instruksi.',
+                    title: t('booking:paymentReturn.pendingTitle'),
+                    description: t('booking:paymentReturn.pendingDesc'),
                 };
             case 'error':
                 return {
                     icon: <XCircle className="w-16 h-16 text-white" />,
                     bgColor: 'bg-red-500',
-                    title: 'Pembayaran Gagal',
-                    description: 'Terjadi kesalahan pada pembayaran Anda.',
+                    title: t('booking:paymentReturn.errorTitle'),
+                    description: t('booking:paymentReturn.errorDesc'),
                 };
             default:
                 return {
                     icon: <Clock className="w-16 h-16 text-white animate-pulse" />,
                     bgColor: 'bg-gray-400',
-                    title: 'Memproses...',
-                    description: 'Mohon tunggu sebentar.',
+                    title: t('booking:paymentReturn.processingTitle'),
+                    description: t('booking:paymentReturn.processingDesc'),
                 };
         }
     };
@@ -126,41 +129,41 @@ const PaymentReturn = () => {
                 {booking && status !== 'loading' && (
                     <div className="bg-secondary/30 rounded-xl p-4 text-left space-y-3">
                         <div className="flex justify-between text-sm">
-                            <span className="text-muted-foreground">Kode Booking</span>
+                            <span className="text-muted-foreground">{t('booking:paymentReturn.bookingCode')}</span>
                             <span className="font-mono font-medium">{booking.booking_code}</span>
                         </div>
                         <div className="flex justify-between text-sm">
-                            <span className="text-muted-foreground">Layanan</span>
-                            <span className="font-medium capitalize">{booking.service_type}</span>
+                            <span className="text-muted-foreground">{t('booking:paymentReturn.service')}</span>
+                            <span className="font-medium capitalize">{booking.service_type === 'photobox' ? t('common:services.photobox', 'Photobox') : t('common:services.studio', 'Studio')}</span>
                         </div>
                         <div className="flex justify-between text-sm">
-                            <span className="text-muted-foreground">Paket/Style</span>
+                            <span className="text-muted-foreground">{t('booking:paymentReturn.packageOrStyle')}</span>
                             <span className="font-medium">{booking.package_name || booking.style_name || '-'}</span>
                         </div>
                         <div className="border-t border-dashed pt-3 mt-3">
                             <div className="flex justify-between">
-                                <span className="text-muted-foreground">Total</span>
+                                <span className="text-muted-foreground">{t('booking:paymentReturn.total')}</span>
                                 <span className="font-bold text-lg">
-                                    Rp {booking.total_amount.toLocaleString('id-ID')}
+                                    {formatCurrency(booking.total_amount, i18n.language)}
                                 </span>
                             </div>
                             <div className="flex justify-between text-sm">
-                                <span className="text-muted-foreground">Dibayar</span>
+                                <span className="text-muted-foreground">{t('booking:paymentReturn.paid')}</span>
                                 <span className="font-medium text-green-600">
-                                    Rp {booking.paid_amount.toLocaleString('id-ID')}
+                                    {formatCurrency(booking.paid_amount, i18n.language)}
                                 </span>
                             </div>
                             {booking.total_amount - booking.paid_amount > 0 && (
                                 <div className="flex justify-between text-sm">
-                                    <span className="text-muted-foreground">Sisa</span>
+                                    <span className="text-muted-foreground">{t('booking:paymentReturn.remaining')}</span>
                                     <span className="font-medium text-amber-600">
-                                        Rp {(booking.total_amount - booking.paid_amount).toLocaleString('id-ID')}
+                                        {formatCurrency(booking.total_amount - booking.paid_amount, i18n.language)}
                                     </span>
                                 </div>
                             )}
                         </div>
                         <div className="flex justify-between text-sm pt-2">
-                            <span className="text-muted-foreground">Status</span>
+                            <span className="text-muted-foreground">{t('booking:paymentReturn.status')}</span>
                             <span className={`font-medium px-2 py-0.5 rounded-full text-xs ${booking.payment_status === 'LUNAS' ? 'bg-green-100 text-green-700' :
                                     booking.payment_status === 'DP' ? 'bg-amber-100 text-amber-700' :
                                         'bg-gray-100 text-gray-700'
@@ -176,13 +179,13 @@ const PaymentReturn = () => {
                     <Link to="/dashboard">
                         <Button className="w-full gap-2 bg-[#849283] hover:bg-[#6b7a6a]">
                             <FileText className="w-4 h-4" />
-                            Lihat Riwayat Booking
+                            {t('booking:paymentReturn.viewHistory')}
                         </Button>
                     </Link>
                     <Link to="/">
                         <Button variant="outline" className="w-full gap-2">
                             <Home className="w-4 h-4" />
-                            Kembali ke Beranda
+                            {t('booking:paymentReturn.backHome')}
                         </Button>
                     </Link>
                 </div>

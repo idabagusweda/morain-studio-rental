@@ -1,0 +1,125 @@
+{
+  "header": {
+    "title": "User Dashboard",
+    "home": "Home",
+    "logout": "Logout"
+  },
+  "sidebar": {
+    "overview": "Overview",
+    "bookingHistory": "Booking History",
+    "profile": "Account Profile",
+    "bookNow": "Book Now",
+    "bookNowDescription": "Ready for your next photo session?",
+    "studio": "Studio",
+    "photobox": "Photobox"
+  },
+  "overview": {
+    "greeting": "Hi, {{name}} 👋",
+    "welcome": "Welcome to Morain Studio dashboard.",
+    "stats": {
+      "totalBookings": "Total Bookings",
+      "activeBookings": "Active Bookings",
+      "completed": "Completed"
+    },
+    "recentBookings": "Recent Bookings",
+    "viewAll": "View All",
+    "noBookings": "No bookings yet.",
+    "startBooking": "Start Booking",
+    "studioSession": "Studio Session",
+    "photoboxSession": "Photobox Session"
+  },
+  "history": {
+    "title": "Booking History",
+    "description": "All your booking activities.",
+    "table": {
+      "code": "Code",
+      "serviceDetail": "Service Detail",
+      "status": "Status",
+      "total": "Total",
+      "payment": "Payment",
+      "action": "Action"
+    },
+    "actions": {
+      "detail": "Booking Detail",
+      "invoice": "Invoice",
+      "pay": "Pay",
+      "cancel": "Cancel"
+    },
+    "invoiceDetail": "Invoice Detail",
+    "downloadInvoice": "Download Invoice (PDF)",
+    "printInvoice": "Print Invoice",
+    "paymentStatus": {
+      "timeLeft": "Payment Time Left",
+      "dpPaid": "DP Paid",
+      "dpPaidNote": "Down Payment Paid",
+      "settlementAtStudio": "Settlement at studio",
+      "settlementAtStudioNote": "Settlement will be done directly at the studio.",
+      "paid": "Paid",
+      "expired": "Time's up"
+    },
+    "noHistory": "No booking history yet",
+    "noHistoryDescription": "Book a studio or photobox now to create memories!",
+    "bookStudio": "Book Studio",
+    "bookPhotobox": "Book Photobox"
+  },
+  "profile": {
+    "title": "Account Profile",
+    "myAccount": "My Account",
+    "description": "Manage your personal information.",
+    "fields": {
+      "fullName": "Full Name",
+      "fullNamePlaceholder": "Your Full Name",
+      "enterFullName": "Enter full name",
+      "whatsapp": "WhatsApp Number",
+      "whatsappPlaceholder": "08xxxxxxxxxx",
+      "whatsappNote": "This number will be used as the main contact for bookings.",
+      "email": "Email",
+      "emailNote": "Email cannot be changed as it is registered as a login account.",
+      "cannotChange": "cannot be changed"
+    },
+    "saveChanges": "Save Changes",
+    "saving": "Saving...",
+    "success": "Profile updated successfully",
+    "successDescription": "Changes have been saved.",
+    "failed": "Failed to update profile",
+    "saveFailed": "Failed to save"
+  },
+  "booking": {
+    "cancelDialog": {
+      "title": "Cancel Booking?",
+      "description": "This action cannot be undone. Your booking will be removed from the active schedule.",
+      "back": "Back",
+      "confirm": "Yes, Cancel",
+      "processing": "Processing...",
+      "success": "Booking Cancelled",
+      "successDescription": "Booking successfully cancelled.",
+      "failed": "Failed to Cancel"
+    },
+    "paymentModal": {
+      "title": "Choose Payment Method",
+      "description": "Do you want to pay in full or 50% down payment first?",
+      "full": {
+        "title": "Full Payment",
+        "description": "Pay in full now",
+        "amount": "100%"
+      },
+      "dp": {
+        "title": "Down Payment (DP)",
+        "description": "Pay 50% to book",
+        "amount": "50%"
+      }
+    },
+    "payment": {
+      "resuming": "Resuming Payment",
+      "resumingDescription": "Using the same payment session.",
+      "expired": "Payment Expired",
+      "expiredDescription": "Payment time has expired. Please create a new booking.",
+      "failed": "Failed to Process"
+    }
+  },
+  "mobile": {
+    "overview": "Overview",
+    "history": "History",
+    "profile": "Profile"
+  }
+}

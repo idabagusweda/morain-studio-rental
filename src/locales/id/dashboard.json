@@ -1,0 +1,125 @@
+{
+  "header": {
+    "title": "User Dashboard",
+    "home": "Home",
+    "logout": "Keluar"
+  },
+  "sidebar": {
+    "overview": "Overview",
+    "bookingHistory": "Riwayat Booking",
+    "profile": "Profil Akun",
+    "bookNow": "Book Now",
+    "bookNowDescription": "Siap untuk sesi foto berikutnya?",
+    "studio": "Studio",
+    "photobox": "Photobox"
+  },
+  "overview": {
+    "greeting": "Hi, {{name}} 👋",
+    "welcome": "Selamat datang di dashboard Morain Studio.",
+    "stats": {
+      "totalBookings": "Total Booking",
+      "activeBookings": "Booking Aktif",
+      "completed": "Selesai"
+    },
+    "recentBookings": "Booking Terakhir",
+    "viewAll": "Lihat Semua",
+    "noBookings": "Belum ada booking.",
+    "startBooking": "Mulai Booking",
+    "studioSession": "Studio Session",
+    "photoboxSession": "Photobox Session"
+  },
+  "history": {
+    "title": "Riwayat Booking",
+    "description": "Semua aktivitas booking Anda.",
+    "table": {
+      "code": "Kode",
+      "serviceDetail": "Detail Layanan",
+      "status": "Status",
+      "total": "Total",
+      "payment": "Pembayaran",
+      "action": "Aksi"
+    },
+    "actions": {
+      "detail": "Detail Booking",
+      "invoice": "Invoice",
+      "pay": "Bayar",
+      "cancel": "Batal"
+    },
+    "invoiceDetail": "Detail Invoice",
+    "downloadInvoice": "Unduh Invoice (PDF)",
+    "printInvoice": "Cetak Invoice",
+    "paymentStatus": {
+      "timeLeft": "Sisa Waktu Pembayaran",
+      "dpPaid": "DP Terbayar",
+      "dpPaidNote": "DP Sudah Dibayar",
+      "settlementAtStudio": "Pelunasan di studio",
+      "settlementAtStudioNote": "Pelunasan dilakukan langsung di studio.",
+      "paid": "Lunas",
+      "expired": "Waktu habis"
+    },
+    "noHistory": "Belum ada riwayat booking",
+    "noHistoryDescription": "Booking studio atau photobox sekarang untuk membuat kenangan!",
+    "bookStudio": "Book Studio",
+    "bookPhotobox": "Book Photobox"
+  },
+  "profile": {
+    "title": "Profil Akun",
+    "myAccount": "Akun Saya",
+    "description": "Kelola informasi pribadi Anda.",
+    "fields": {
+      "fullName": "Nama Lengkap",
+      "fullNamePlaceholder": "Nama Lengkap Anda",
+      "enterFullName": "Masukkan nama lengkap",
+      "whatsapp": "Nomor WhatsApp",
+      "whatsappPlaceholder": "08xxxxxxxxxx",
+      "whatsappNote": "Nomor ini akan digunakan sebagai kontak utama untuk booking.",
+      "email": "Email",
+      "emailNote": "Email tidak dapat diubah karena terdaftar sebagai akun login.",
+      "cannotChange": "tidak dapat diubah"
+    },
+    "saveChanges": "Simpan Perubahan",
+    "saving": "Menyimpan...",
+    "success": "Profil berhasil diperbarui",
+    "successDescription": "Perubahan telah disimpan.",
+    "failed": "Gagal memperbarui profil",
+    "saveFailed": "Gagal menyimpan"
+  },
+  "booking": {
+    "cancelDialog": {
+      "title": "Batalkan Booking?",
+      "description": "Tindakan ini tidak dapat dibatalkan. Booking Anda akan dihapus dari jadwal aktif.",
+      "back": "Kembali",
+      "confirm": "Ya, Batalkan",
+      "processing": "Memproses...",
+      "success": "Booking Dibatalkan",
+      "successDescription": "Booking berhasil dibatalkan.",
+      "failed": "Gagal Membatalkan"
+    },
+    "paymentModal": {
+      "title": "Pilih Metode Pembayaran",
+      "description": "Anda ingin membayar lunas atau DP 50% dulu?",
+      "full": {
+        "title": "Full Payment",
+        "description": "Bayar lunas sekarang",
+        "amount": "100%"
+      },
+      "dp": {
+        "title": "Down Payment (DP)",
+        "description": "Bayar 50% untuk booking",
+        "amount": "50%"
+      }
+    },
+    "payment": {
+      "resuming": "Melanjutkan Pembayaran",
+      "resumingDescription": "Menggunakan sesi pembayaran yang sama.",
+      "expired": "Pembayaran Expired",
+      "expiredDescription": "Waktu pembayaran habis. Silakan buat booking baru.",
+      "failed": "Gagal Memproses"
+    }
+  },
+  "mobile": {
+    "overview": "Overview",
+    "history": "Riwayat",
+    "profile": "Profil"
+  }
+}

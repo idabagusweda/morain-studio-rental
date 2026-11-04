@@ -6,6 +6,7 @@ import { Label } from '@/components/ui/label';
 import { useAuth } from '@/hooks/useAuth';
 import { useToast } from '@/hooks/use-toast';
 import { User, Save } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 
 interface ProfileModalProps {
   isOpen: boolean;
@@ -13,6 +14,7 @@ interface ProfileModalProps {
 }
 
 export const ProfileModal = ({ isOpen, onClose }: ProfileModalProps) => {
+  const { t } = useTranslation(['dashboard', 'common']);
   const { user, profile, updateProfile } = useAuth();
   const { toast } = useToast();
   const [fullName, setFullName] = useState('');
@@ -35,7 +37,7 @@ export const ProfileModal = ({ isOpen, onClose }: ProfileModalProps) => {
     e.preventDefault();
     setIsLoading(true);
 
-    const updateData: any = {
+    const updateData: { full_name: string; whatsapp: string; email?: string } = {
       full_name: fullName,
       whatsapp
     };
@@ -49,14 +51,14 @@ export const ProfileModal = ({ isOpen, onClose }: ProfileModalProps) => {
 
     if (error) {
       toast({
-        title: 'Gagal menyimpan',
+        title: t('dashboard:profile.saveFailed', 'Gagal menyimpan'),
         description: error.message,
         variant: 'destructive'
       });
     } else {
       toast({
-        title: 'Profil berhasil diperbarui',
-        description: 'Perubahan telah disimpan'
+        title: t('dashboard:profile.success', 'Profil berhasil diperbarui'),
+        description: t('dashboard:profile.successDescription', 'Perubahan telah disimpan')
       });
       onClose();
     }
@@ -69,17 +71,17 @@ export const ProfileModal = ({ isOpen, onClose }: ProfileModalProps) => {
         <DialogHeader>
           <DialogTitle className="flex items-center gap-2 text-xl font-display">
             <User className="w-5 h-5" />
-            Akun Saya
+            {t('dashboard:profile.myAccount', 'Akun Saya')}
           </DialogTitle>
         </DialogHeader>
 
         <form onSubmit={handleSubmit} className="space-y-4 py-4">
           <div className="space-y-2">
-            <Label htmlFor="profileName">Nama Lengkap</Label>
+            <Label htmlFor="profileName">{t('dashboard:profile.fields.fullName')}</Label>
             <Input
               id="profileName"
               type="text"
-              placeholder="Masukkan nama lengkap"
+              placeholder={t('dashboard:profile.fields.enterFullName', 'Masukkan nama lengkap')}
               value={fullName}
               onChange={(e) => setFullName(e.target.value)}
               disabled={isLoading}
@@ -87,11 +89,11 @@ export const ProfileModal = ({ isOpen, onClose }: ProfileModalProps) => {
           </div>
 
           <div className="space-y-2">
-            <Label htmlFor="profileWhatsapp">Nomor WhatsApp</Label>
+            <Label htmlFor="profileWhatsapp">{t('dashboard:profile.fields.whatsapp')}</Label>
             <Input
               id="profileWhatsapp"
               type="tel"
-              placeholder="08xxxxxxxxxx"
+              placeholder={t('dashboard:profile.fields.whatsappPlaceholder', '08xxxxxxxxxx')}
               value={whatsapp}
               onChange={(e) => setWhatsapp(e.target.value)}
               disabled={isLoading}
@@ -100,9 +102,9 @@ export const ProfileModal = ({ isOpen, onClose }: ProfileModalProps) => {
 
           <div className="space-y-2">
             <Label htmlFor="profileEmail">
-              Email
+              {t('dashboard:profile.fields.email')}
               {isGoogleUser && (
-                <span className="ml-2 text-xs text-muted-foreground">(tidak dapat diubah)</span>
+                <span className="ml-2 text-xs text-muted-foreground">({t('dashboard:profile.fields.cannotChange', 'tidak dapat diubah')})</span>
               )}
             </Label>
             <Input
@@ -123,7 +125,7 @@ export const ProfileModal = ({ isOpen, onClose }: ProfileModalProps) => {
             disabled={isLoading}
           >
             <Save className="w-4 h-4 mr-2" />
-            Simpan Perubahan
+            {isLoading ? t('dashboard:profile.saving', 'Menyimpan...') : t('dashboard:profile.saveChanges', 'Simpan Perubahan')}
           </Button>
         </form>
       </DialogContent>

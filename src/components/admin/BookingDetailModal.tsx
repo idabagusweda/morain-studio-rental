@@ -5,11 +5,8 @@ import { Button } from '@/components/ui/button';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from '@/components/ui/dialog';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Label } from '@/components/ui/label';
-import { Textarea } from '@/components/ui/textarea';
 import { Badge } from '@/components/ui/badge';
 import {
-    Check,
-    X,
     MessageCircle,
     FileText,
     Calendar,
@@ -17,6 +14,8 @@ import {
     User,
     CreditCard
 } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
+import { formatCurrency, formatDate } from '@/lib/i18nUtils';
 
 interface Booking {
     id: string;
@@ -47,6 +46,7 @@ interface BookingDetailModalProps {
 }
 
 export const BookingDetailModal = ({ booking, isOpen, onClose, onUpdate }: BookingDetailModalProps) => {
+    const { t, i18n } = useTranslation(['admin', 'common', 'booking']);
     const { toast } = useToast();
     const [loading, setLoading] = useState(false);
     const [status, setStatus] = useState(booking?.payment_status || 'PENDING');
@@ -57,7 +57,7 @@ export const BookingDetailModal = ({ booking, isOpen, onClose, onUpdate }: Booki
     const handleUpdateStatus = async () => {
         setLoading(true);
         try {
-            const updateData: any = {
+            const updateData: Record<string, unknown> = {
                 payment_status: status,
                 booking_status: bookingStatus,
                 updated_at: new Date().toISOString()
@@ -77,16 +77,17 @@ export const BookingDetailModal = ({ booking, isOpen, onClose, onUpdate }: Booki
             if (error) throw error;
 
             toast({
-                title: 'Berhasil',
-                description: 'Status booking berhasil diperbarui',
+                title: t('common:messages.success', 'Berhasil'),
+                description: t('admin:detailModal.updateSuccess', 'Status booking berhasil diperbarui'),
             });
             onUpdate();
             onClose();
-        } catch (error: any) {
+        } catch (error: unknown) {
             console.error('Error updating booking:', error);
+            const message = error instanceof Error ? error.message : '';
             toast({
-                title: 'Gagal update status',
-                description: error.message,
+                title: t('admin:detailModal.updateError', 'Gagal update status'),
+                description: message,
                 variant: 'destructive'
             });
         } finally {
@@ -95,13 +96,13 @@ export const BookingDetailModal = ({ booking, isOpen, onClose, onUpdate }: Booki
     };
 
     const handleWhatsApp = () => {
-        const phoneNumber = booking.client_whatsapp.replace(/\D/g, ''); // standardizes number
-        const message = `Halo Kak ${booking.client_name}, ini dari Morain Studio mengenai booking ${booking.booking_code}.`;
+        const phoneNumber = booking.client_whatsapp.replace(/\D/g, '');
+        const message = t('admin:detailModal.whatsappMessage', {
+            name: booking.client_name,
+            code: booking.booking_code,
+            defaultValue: `Halo Kak ${booking.client_name}, ini dari Morain Studio mengenai booking ${booking.booking_code}.`
+        });
         window.open(`https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`, '_blank');
-    };
-
-    const formatCurrency = (amount: number) => {
-        return new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR' }).format(amount);
     };
 
     return (
@@ -109,7 +110,7 @@ export const BookingDetailModal = ({ booking, isOpen, onClose, onUpdate }: Booki
             <DialogContent className="max-w-2xl">
                 <DialogHeader>
                     <DialogTitle className="flex items-center gap-2">
-                        Booking Detail
+                        {t('admin:detailModal.title', 'Booking Detail')}
                         <Badge variant="outline" className="font-mono text-xs">
                             {booking.booking_code}
                         </Badge>
@@ -121,15 +122,15 @@ export const BookingDetailModal = ({ booking, isOpen, onClose, onUpdate }: Booki
                     <div className="space-y-6">
                         <div className="space-y-1">
                             <h4 className="text-sm font-medium text-muted-foreground flex items-center gap-2">
-                                <User className="w-4 h-4" /> Informasi Klien
+                                <User className="w-4 h-4" /> {t('admin:detailModal.clientInfo', 'Informasi Klien')}
                             </h4>
                             <div className="bg-secondary/20 p-3 rounded-lg space-y-2">
                                 <div className="grid grid-cols-3 gap-1 text-sm">
-                                    <span className="text-muted-foreground">Nama:</span>
+                                    <span className="text-muted-foreground">{t('admin:detailModal.name', 'Nama:')}</span>
                                     <span className="col-span-2 font-medium">{booking.client_name}</span>
-                                    <span className="text-muted-foreground">WA:</span>
+                                    <span className="text-muted-foreground">{t('admin:detailModal.whatsapp', 'WA:')}</span>
                                     <span className="col-span-2">{booking.client_whatsapp}</span>
-                                    <span className="text-muted-foreground">Email:</span>
+                                    <span className="text-muted-foreground">{t('admin:detailModal.email', 'Email:')}</span>
                                     <span className="col-span-2">{booking.client_email || '-'}</span>
                                 </div>
                                 <Button
@@ -139,29 +140,29 @@ export const BookingDetailModal = ({ booking, isOpen, onClose, onUpdate }: Booki
                                     onClick={handleWhatsApp}
                                 >
                                     <MessageCircle className="w-3 h-3 mr-2 text-green-600" />
-                                    Hubungi WhatsApp
+                                    {t('admin:detailModal.contactWhatsApp', 'Hubungi WhatsApp')}
                                 </Button>
                             </div>
                         </div>
 
                         <div className="space-y-1">
                             <h4 className="text-sm font-medium text-muted-foreground flex items-center gap-2">
-                                <FileText className="w-4 h-4" /> Detail Layanan
+                                <FileText className="w-4 h-4" /> {t('admin:detailModal.serviceDetail', 'Detail Layanan')}
                             </h4>
                             <div className="bg-secondary/20 p-3 rounded-lg text-sm space-y-1">
                                 <div className="flex justify-between">
-                                    <span className="text-muted-foreground">Tipe:</span>
+                                    <span className="text-muted-foreground">{t('admin:detailModal.type', 'Tipe:')}</span>
                                     <span className="font-medium capitalize">{booking.service_type}</span>
                                 </div>
                                 <div className="flex justify-between">
-                                    <span className="text-muted-foreground">Paket:</span>
+                                    <span className="text-muted-foreground">{t('admin:detailModal.package', 'Paket:')}</span>
                                     <span className="font-medium">
                                         {booking.service_type === 'studio' ? booking.package_name : booking.style_name}
                                     </span>
                                 </div>
                                 {booking.notes && (
                                     <div className="mt-2 text-xs italic text-muted-foreground border-t border-border pt-2">
-                                        Note: "{booking.notes}"
+                                        {t('admin:detailModal.note', 'Catatan')}: "{booking.notes}"
                                     </div>
                                 )}
                             </div>
@@ -172,17 +173,12 @@ export const BookingDetailModal = ({ booking, isOpen, onClose, onUpdate }: Booki
                     <div className="space-y-6">
                         <div className="space-y-1">
                             <h4 className="text-sm font-medium text-muted-foreground flex items-center gap-2">
-                                <Calendar className="w-4 h-4" /> Waktu Sesi
+                                <Calendar className="w-4 h-4" /> {t('admin:detailModal.sessionTime', 'Waktu Sesi')}
                             </h4>
                             <div className="bg-secondary/20 p-3 rounded-lg text-sm flex items-center justify-between">
                                 <div>
                                     <div className="font-medium">
-                                        {new Date(booking.booking_date).toLocaleDateString('id-ID', {
-                                            weekday: 'long',
-                                            year: 'numeric',
-                                            month: 'long',
-                                            day: 'numeric'
-                                        })}
+                                        {formatDate(new Date(booking.booking_date), 'EEEE, d MMMM yyyy', i18n.language)}
                                     </div>
                                     <div className="text-muted-foreground flex items-center gap-1 mt-1">
                                         <Clock className="w-3 h-3" />
@@ -194,12 +190,12 @@ export const BookingDetailModal = ({ booking, isOpen, onClose, onUpdate }: Booki
 
                         <div className="space-y-1">
                             <h4 className="text-sm font-medium text-muted-foreground flex items-center gap-2">
-                                <CreditCard className="w-4 h-4" /> Status & Pembayaran
+                                <CreditCard className="w-4 h-4" /> {t('admin:detailModal.statusAndPayment', 'Status & Pembayaran')}
                             </h4>
                             <div className="bg-secondary/20 p-3 rounded-lg space-y-4">
                                 <div className="grid grid-cols-2 gap-4">
                                     <div className="space-y-1.5">
-                                        <Label className="text-xs">Status Pembayaran</Label>
+                                        <Label className="text-xs">{t('admin:detailModal.paymentStatus', 'Status Pembayaran')}</Label>
                                         <Select
                                             value={status}
                                             onValueChange={(val) => setStatus(val)}
@@ -217,7 +213,7 @@ export const BookingDetailModal = ({ booking, isOpen, onClose, onUpdate }: Booki
                                         </Select>
                                     </div>
                                     <div className="space-y-1.5">
-                                        <Label className="text-xs">Status Booking</Label>
+                                        <Label className="text-xs">{t('admin:detailModal.bookingStatus', 'Status Booking')}</Label>
                                         <Select
                                             value={bookingStatus}
                                             onValueChange={(val) => setBookingStatus(val)}
@@ -236,16 +232,16 @@ export const BookingDetailModal = ({ booking, isOpen, onClose, onUpdate }: Booki
 
                                 <div className="space-y-1 pt-2 border-t border-border">
                                     <div className="flex justify-between text-sm">
-                                        <span className="text-muted-foreground">Total:</span>
-                                        <span className="font-medium">{formatCurrency(booking.total_amount)}</span>
+                                        <span className="text-muted-foreground">{t('admin:detailModal.total', 'Total:')}</span>
+                                        <span className="font-medium">{formatCurrency(booking.total_amount, i18n.language)}</span>
                                     </div>
                                     <div className="flex justify-between text-sm text-green-600">
-                                        <span>Sudah Bayar:</span>
-                                        <span>{formatCurrency(booking.paid_amount)}</span>
+                                        <span>{t('admin:detailModal.paidAmount', 'Sudah Bayar:')}</span>
+                                        <span>{formatCurrency(booking.paid_amount, i18n.language)}</span>
                                     </div>
                                     <div className="flex justify-between text-sm text-red-500 font-medium">
-                                        <span>Sisa:</span>
-                                        <span>{formatCurrency(booking.remaining_amount > 0 ? booking.remaining_amount : Math.max(0, booking.total_amount - booking.paid_amount))}</span>
+                                        <span>{t('admin:detailModal.remaining', 'Sisa:')}</span>
+                                        <span>{formatCurrency(booking.remaining_amount > 0 ? booking.remaining_amount : Math.max(0, booking.total_amount - booking.paid_amount), i18n.language)}</span>
                                     </div>
                                 </div>
                             </div>
@@ -255,10 +251,10 @@ export const BookingDetailModal = ({ booking, isOpen, onClose, onUpdate }: Booki
 
                 <DialogFooter className="gap-2 sm:gap-0">
                     <Button variant="outline" onClick={onClose} disabled={loading}>
-                        Batal
+                        {t('common:buttons.cancel', 'Batal')}
                     </Button>
                     <Button onClick={handleUpdateStatus} disabled={loading} className="bg-[#849283] hover:bg-[#6b7a6b]">
-                        {loading ? 'Menyimpan...' : 'Simpan Perubahan'}
+                        {loading ? t('common:buttons.saving', 'Menyimpan...') : t('common:buttons.saveChanges', 'Simpan Perubahan')}
                     </Button>
                 </DialogFooter>
             </DialogContent>

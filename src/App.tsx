@@ -6,6 +6,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { HelmetProvider } from "react-helmet-async";
 import { AuthProvider } from "@/hooks/useAuth";
 import { lazy, Suspense } from "react";
+import "@/i18n";
 
 // Eager load landing page and dashboard (critical routes)
 import Index from "./pages/Index";

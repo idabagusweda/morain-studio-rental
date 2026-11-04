@@ -1,7 +1,10 @@
 import { Button } from '@/components/ui/button';
 import { MessageCircle, Mail, Instagram, MapPin, Clock } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 
 export const ContactSection = () => {
+  const { t } = useTranslation(['landing', 'common']);
+  
   const handleWhatsApp = () => {
     const message = encodeURIComponent('Halo Morain Studio! Saya ingin bertanya tentang layanan studio rental. 📸');
     window.open(`https://wa.me/6289531511894?text=${message}`, '_blank');
@@ -14,16 +17,15 @@ export const ContactSection = () => {
           {/* Contact Info */}
           <div>
             <span className="text-primary font-medium text-sm uppercase tracking-wider">
-              Get in Touch
+              {t('contact.sectionTag')}
             </span>
             <h2 className="font-display text-3xl sm:text-4xl lg:text-5xl font-semibold mt-3 mb-6">
-              Ready to Frame
+              {t('contact.title')}
               <br />
-              Your Story?
+              {t('contact.titleHighlight')}
             </h2>
             <p className="text-muted-foreground text-lg mb-8">
-              Ada pertanyaan atau mau booking langsung? Kami siap bikin momen indahmu 
-              di studio kami jadi lebih berkesan.
+              {t('contact.description')}
             </p>
 
             <div className="space-y-6 mb-10">
@@ -95,7 +97,7 @@ export const ContactSection = () => {
 
             <Button variant="hero" size="xl" onClick={handleWhatsApp}>
               <MessageCircle className="mr-2" />
-              Chat Us on WhatsApp
+              {t('contact.whatsappButton')}
             </Button>
           </div>
 

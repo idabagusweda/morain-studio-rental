@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Camera, Sparkles } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 
 type GalleryItem = {
   src: string;
@@ -41,6 +42,7 @@ const PHOTOBOX_IMAGES: GalleryItem[] = [
 ];
 
 export const PortfolioSection = () => {
+  const { t } = useTranslation(['landing', 'common']);
   const [activeMainTab, setActiveMainTab] = useState<'studio' | 'photobox'>('studio');
 
   const currentImages = activeMainTab === 'studio' ? STUDIO_IMAGES : PHOTOBOX_IMAGES;
@@ -50,13 +52,13 @@ export const PortfolioSection = () => {
       <div className="container-wide">
         <div className="text-center max-w-2xl mx-auto mb-10 animate-in fade-in slide-in-from-bottom-4 duration-700">
           <span className="text-primary font-medium text-sm uppercase tracking-wider">
-            Our Gallery
+            {t('gallery.sectionTag')}
           </span>
           <h2 className="font-display text-3xl sm:text-4xl lg:text-5xl font-semibold mt-3 mb-4">
-            Framed Moments
+            {t('gallery.title')}
           </h2>
           <p className="text-muted-foreground text-lg">
-            Koleksi karya terbaik kami. Bersih, sinematik, dan penuh cerita.
+            {t('gallery.description')}
           </p>
         </div>
 
@@ -72,7 +74,7 @@ export const PortfolioSection = () => {
                 }`}
             >
               <Camera className="w-4 h-4" />
-              Foto Studio
+              {t('common:navigation.studio')}
             </button>
             <button
               onClick={() => setActiveMainTab('photobox')}
@@ -83,7 +85,7 @@ export const PortfolioSection = () => {
                 }`}
             >
               <Sparkles className="w-4 h-4" />
-              Photobox
+              {t('common:navigation.photobox')}
             </button>
           </div>
         </div>

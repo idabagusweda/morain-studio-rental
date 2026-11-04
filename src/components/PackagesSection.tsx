@@ -2,16 +2,9 @@ import { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Users, Square, Check, Sparkles } from 'lucide-react';
 import { BookingModal } from './BookingModal';
+import { useTranslation } from 'react-i18next';
 
-const facilities = [
-  '2-3 lighting softbox',
-  'Pilihan background beragam',
-  'Stool / kursi estetik',
-  'Cermin standing full body',
-  'Ruangan ber-AC dingin',
-  'Stop kontak tersedia',
-  'Termasuk fotografer profesional',
-];
+
 
 const packages = [
   {
@@ -50,6 +43,7 @@ const packages = [
 ];
 
 export const PackagesSection = () => {
+  const { t, i18n } = useTranslation(['landing', 'common']);
   const [selectedPackage, setSelectedPackage] = useState<typeof packages[0] | null>(null);
   const [isBookingOpen, setIsBookingOpen] = useState(false);
 
@@ -58,18 +52,28 @@ export const PackagesSection = () => {
     setIsBookingOpen(true);
   };
 
+  const facilities = [
+    t('packages.facilities.softbox'),
+    t('packages.facilities.backgrounds'),
+    t('packages.facilities.stool'),
+    t('packages.facilities.mirror'),
+    t('packages.facilities.ac'),
+    t('packages.facilities.power'),
+    t('packages.facilities.photographer'),
+  ];
+
   return (
     <section id="packages" className="section-padding">
       <div className="container-wide">
         <div className="text-center max-w-2xl mx-auto mb-16">
           <span className="text-primary font-medium text-sm uppercase tracking-wider">
-            Our Packages
+            {t('packages.sectionTag')}
           </span>
           <h2 className="font-display text-3xl sm:text-4xl lg:text-5xl font-semibold mt-3 mb-4">
-            Studio Photo Package
+            {t('packages.title')}
           </h2>
           <p className="text-muted-foreground text-lg">
-            Pilih paket studio sesuai kebutuhan Anda. Semua paket sudah termasuk fotografer profesional.
+            {t('packages.description')}
           </p>
         </div>
 
@@ -85,33 +89,33 @@ export const PackagesSection = () => {
               {pkg.popular && (
                 <span className="absolute -top-3 left-1/2 -translate-x-1/2 px-4 py-1 bg-primary text-primary-foreground text-xs font-medium rounded-full flex items-center gap-1">
                   <Sparkles className="w-3 h-3" />
-                  Paling Laris
+                  {t(`packages.${pkg.id}.popular`)}
                 </span>
               )}
 
               <h3 className="font-display text-xl font-semibold mb-2 min-h-[56px] flex items-center">
-                {pkg.name}
+                {t(`packages.${pkg.id}.name`)}
               </h3>
 
               <div className="flex items-baseline gap-1 mb-4">
                 <span className="font-display text-4xl font-bold text-primary">
-                  {pkg.priceDisplay}
+                  {t(`packages.${pkg.id}.price`)}
                 </span>
-                <span className="text-muted-foreground">{pkg.unit}</span>
+                <span className="text-muted-foreground">{t(`packages.${pkg.id}.unit`)}</span>
               </div>
 
               <p className="text-muted-foreground mb-6 text-sm">
-                {pkg.description}
+                {t(`packages.${pkg.id}.description`)}
               </p>
 
               <div className="flex items-center gap-4 mb-6 py-4 border-y border-border">
                 <div className="flex items-center gap-2 text-sm">
                   <Users className="w-4 h-4 text-primary" />
-                  <span>Max {pkg.capacity} org</span>
+                  <span>{t(`packages.${pkg.id}.capacity`)}</span>
                 </div>
                 <div className="flex items-center gap-2 text-sm">
                   <Square className="w-4 h-4 text-primary" />
-                  <span>{pkg.size}</span>
+                  <span>{t(`packages.${pkg.id}.size`)}</span>
                 </div>
               </div>
 
@@ -129,7 +133,7 @@ export const PackagesSection = () => {
                 className="w-full"
                 onClick={() => handleBookNow(pkg)}
               >
-                Pesan {pkg.name.split(' – ')[1]}
+                {t('packages.bookButton', { name: pkg.id.charAt(0).toUpperCase() + pkg.id.slice(1) })}
               </Button>
             </div>
           ))}
@@ -137,7 +141,7 @@ export const PackagesSection = () => {
 
         {/* Facilities note */}
         <p className="text-center text-sm text-muted-foreground">
-          Semua fasilitas sudah termasuk dalam setiap paket. Properti tambahan dapat dibawa sendiri.
+          {t('packages.note')}
         </p>
       </div>
 

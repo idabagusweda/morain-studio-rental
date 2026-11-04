@@ -2,6 +2,7 @@ import { useState, useEffect, useRef } from 'react';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
 import { FileText, Clock, CreditCard, AlertTriangle, ShieldCheck, ChevronDown, Check } from 'lucide-react';
+import { useTranslation, Trans } from 'react-i18next';
 
 interface TermsModalProps {
     isOpen: boolean;
@@ -9,6 +10,7 @@ interface TermsModalProps {
 }
 
 export const TermsModal = ({ isOpen, onClose }: TermsModalProps) => {
+    const { t } = useTranslation(['booking']);
     const [hasRead, setHasRead] = useState(false);
     const scrollRef = useRef<HTMLDivElement>(null);
 
@@ -37,7 +39,7 @@ export const TermsModal = ({ isOpen, onClose }: TermsModalProps) => {
                 <DialogHeader className="p-6 pb-4 border-b bg-white z-10 shrink-0">
                     <DialogTitle className="font-display text-2xl flex items-center gap-2 text-foreground">
                         <FileText className="w-6 h-6 text-[#849283]" />
-                        Terms & Conditions
+                        {t('booking:termsModal.title')}
                     </DialogTitle>
                 </DialogHeader>
 
@@ -53,7 +55,7 @@ export const TermsModal = ({ isOpen, onClose }: TermsModalProps) => {
                 >
                     <div className="space-y-6 text-sm text-foreground/80 leading-relaxed pb-4">
                         <p className="text-muted-foreground border-l-4 border-[#849283]/20 pl-4 py-1 italic bg-[#849283]/5 rounded-r">
-                            Mohon scroll ke bawah untuk membaca seluruh syarat dan ketentuan sebelum melanjutkan.
+                            {t('booking:termsModal.notice')}
                         </p>
 
                         <div className="space-y-3">
@@ -61,12 +63,12 @@ export const TermsModal = ({ isOpen, onClose }: TermsModalProps) => {
                                 <div className="p-1.5 bg-[#849283]/10 rounded-lg text-[#849283]">
                                     <Clock className="w-4 h-4" />
                                 </div>
-                                1. Booking & Jadwal
+                                {t('booking:termsModal.section1Title')}
                             </h3>
                             <ul className="list-disc pl-11 space-y-2 text-muted-foreground marker:text-[#849283]">
-                                <li>Booking wajib dilakukan minimal <strong>H-1</strong> sebelum sesi pemotretan.</li>
-                                <li>Reschedule jadwal diperbolehkan maksimal <strong>1 (satu) kali</strong> dengan pemberitahuan minimal 24 jam sebelum sesi dimulai.</li>
-                                <li>Diharapkan hadir <strong>15 menit sebelum</strong> jadwal sesi dimulai untuk persiapan makeup dan fitting.</li>
+                                <li><Trans i18nKey="booking:termsModal.sec1Item1">Booking wajib dilakukan minimal <strong>H-1</strong> sebelum sesi pemotretan.</Trans></li>
+                                <li><Trans i18nKey="booking:termsModal.sec1Item2">Reschedule jadwal diperbolehkan maksimal <strong>1 (satu) kali</strong> dengan pemberitahuan minimal 24 jam sebelum sesi dimulai.</Trans></li>
+                                <li><Trans i18nKey="booking:termsModal.sec1Item3">Diharapkan hadir <strong>15 menit sebelum</strong> jadwal sesi dimulai untuk persiapan makeup dan fitting.</Trans></li>
                             </ul>
                         </div>
 
@@ -75,12 +77,12 @@ export const TermsModal = ({ isOpen, onClose }: TermsModalProps) => {
                                 <div className="p-1.5 bg-[#849283]/10 rounded-lg text-[#849283]">
                                     <CreditCard className="w-4 h-4" />
                                 </div>
-                                2. Kebijakan DP & Pembayaran
+                                {t('booking:termsModal.section2Title')}
                             </h3>
                             <ul className="list-disc pl-11 space-y-2 text-muted-foreground marker:text-[#849283]">
-                                <li>Wajib melakukan <strong>DP (Down Payment) sebesar 50%</strong> untuk mengamankan slot jadwal.</li>
-                                <li>Pelunasan sisa pembayaran wajib dilakukan di studio <strong>setelah sesi foto selesai</strong>.</li>
-                                <li>Kami menerima pembayaran via Transfer Bank (BCA/BNI), E-Wallet (Dana/GoPay), dan QRIS.</li>
+                                <li><Trans i18nKey="booking:termsModal.sec2Item1">Wajib melakukan <strong>DP (Down Payment) sebesar 50%</strong> untuk mengamankan slot jadwal.</Trans></li>
+                                <li><Trans i18nKey="booking:termsModal.sec2Item2">Pelunasan sisa pembayaran wajib dilakukan di studio <strong>setelah sesi foto selesai</strong>.</Trans></li>
+                                <li>{t('booking:termsModal.sec2Item3')}</li>
                             </ul>
                         </div>
 
@@ -89,12 +91,12 @@ export const TermsModal = ({ isOpen, onClose }: TermsModalProps) => {
                                 <div className="p-1.5 bg-[#849283]/10 rounded-lg text-[#849283]">
                                     <AlertTriangle className="w-4 h-4" />
                                 </div>
-                                3. Pembatalan & Keterlambatan
+                                {t('booking:termsModal.section3Title')}
                             </h3>
                             <ul className="list-disc pl-11 space-y-2 text-muted-foreground marker:text-[#849283]">
-                                <li>DP (Down Payment) <span className="text-red-500 font-medium bg-red-50 px-1 rounded">tidak dapat dikembalikan (non-refundable)</span> jika terjadi pembatalan sepihak dari klien.</li>
-                                <li>Toleransi keterlambatan maksimal <strong>15 menit</strong>. Jika lebih dari itu, durasi sesi foto akan dipotong sesuai sisa waktu agar tidak mengganggu jadwal klien berikutnya.</li>
-                                <li>Jika tidak ada kabar (No-Show) melebihi 30 menit, booking dianggap hangus.</li>
+                                <li><Trans i18nKey="booking:termsModal.sec3Item1">DP (Down Payment) <span className="text-red-500 font-medium bg-red-50 px-1 rounded">tidak dapat dikembalikan (non-refundable)</span> jika terjadi pembatalan sepihak dari klien.</Trans></li>
+                                <li><Trans i18nKey="booking:termsModal.sec3Item2">Toleransi keterlambatan maksimal <strong>15 menit</strong>. Jika lebih dari itu, durasi sesi foto akan dipotong sesuai sisa waktu agar tidak mengganggu jadwal klien berikutnya.</Trans></li>
+                                <li>{t('booking:termsModal.sec3Item3')}</li>
                             </ul>
                         </div>
 
@@ -103,19 +105,19 @@ export const TermsModal = ({ isOpen, onClose }: TermsModalProps) => {
                                 <div className="p-1.5 bg-[#849283]/10 rounded-lg text-[#849283]">
                                     <ShieldCheck className="w-4 h-4" />
                                 </div>
-                                4. Tanggung Jawab & Properti
+                                {t('booking:termsModal.section4Title')}
                             </h3>
                             <ul className="list-disc pl-11 space-y-2 text-muted-foreground marker:text-[#849283]">
-                                <li>Klien bertanggung jawab penuh atas kerusakan atau kehilangan properti studio yang disebabkan oleh kelalaian klien.</li>
-                                <li>Morain Studio tidak bertanggung jawab atas kehilangan barang pribadi klien di area studio.</li>
-                                <li>File foto original (softcopy) akan disimpan di database kami selama maksimal <strong>1 bulan</strong>. Harap segera diunduh karena kami tidak bertanggung jawab setelah periode tersebut.</li>
+                                <li>{t('booking:termsModal.sec4Item1')}</li>
+                                <li>{t('booking:termsModal.sec4Item2')}</li>
+                                <li><Trans i18nKey="booking:termsModal.sec4Item3">File foto original (softcopy) akan disimpan di database kami selama maksimal <strong>1 bulan</strong>. Harap segera diunduh karena kami tidak bertanggung jawab setelah periode tersebut.</Trans></li>
                             </ul>
                         </div>
 
                         {/* Spacing at bottom to ensure scroll triggers */}
                         <div className="h-4"></div>
                         <p className="text-center text-xs text-muted-foreground pt-4 border-t">
-                            -- Akhir dari Syarat & Ketentuan --
+                            {t('booking:termsModal.endOfTerms')}
                         </p>
                     </div>
                 </div>
@@ -125,11 +127,11 @@ export const TermsModal = ({ isOpen, onClose }: TermsModalProps) => {
                     <div className="text-xs text-muted-foreground order-2 sm:order-1">
                         {hasRead ? (
                             <span className="text-[#849283] flex items-center gap-1 font-medium">
-                                <Check className="w-3 h-3" /> Sudah dibaca seluruhnya
+                                <Check className="w-3 h-3" /> {t('booking:termsModal.readAll')}
                             </span>
                         ) : (
                             <span className="flex items-center gap-1 opacity-70">
-                                <ChevronDown className="w-3 h-3 animate-bounce" /> Scroll ke bawah
+                                <ChevronDown className="w-3 h-3 animate-bounce" /> {t('booking:termsModal.scrollDown')}
                             </span>
                         )}
                     </div>
@@ -141,7 +143,7 @@ export const TermsModal = ({ isOpen, onClose }: TermsModalProps) => {
                                 ? 'bg-[#849283] hover:bg-[#6b7a6a] text-white shadow-md'
                                 : 'bg-muted text-muted-foreground cursor-not-allowed opacity-50'}`}
                     >
-                        Saya Mengerti
+                        {t('booking:termsModal.iUnderstand')}
                     </Button>
                 </DialogFooter>
             </DialogContent>

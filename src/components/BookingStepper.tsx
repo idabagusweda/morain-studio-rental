@@ -1,5 +1,6 @@
 import React from 'react';
 import { Check, ChevronRight } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 
 interface BookingStepperProps {
     currentStep: number;
@@ -7,6 +8,7 @@ interface BookingStepperProps {
 }
 
 export const BookingStepper = ({ currentStep, steps }: BookingStepperProps) => {
+    const { t } = useTranslation(['booking']);
     return (
         <div className="w-full px-4 mb-8">
             <div className="flex items-start w-full">

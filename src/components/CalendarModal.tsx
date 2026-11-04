@@ -1,6 +1,8 @@
 import { useState } from 'react';
-import { format, addDays, isBefore } from 'date-fns';
+import { addDays, isBefore } from 'date-fns';
 import { id } from 'date-fns/locale';
+import { useTranslation } from 'react-i18next';
+import { formatDate } from '@/lib/i18nUtils';
 import { Button } from '@/components/ui/button';
 import { Calendar } from '@/components/ui/calendar';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
@@ -53,6 +55,7 @@ interface CalendarModalProps {
 }
 
 export const CalendarModal = ({ isOpen, onClose, onContinueBooking }: CalendarModalProps) => {
+  const { t, i18n } = useTranslation(['booking', 'common']);
   const [selectedDate, setSelectedDate] = useState<Date>(new Date());
   const [selectedSlot, setSelectedSlot] = useState<string | null>(null);
   const timeSlots = generateTimeSlots(selectedDate);
@@ -74,8 +77,8 @@ export const CalendarModal = ({ isOpen, onClose, onContinueBooking }: CalendarMo
     setSelectedSlot(time);
   };
 
-  const formatDateID = (date: Date) => {
-    return format(date, 'EEEE, d MMMM yyyy', { locale: id });
+  const formatSelectedDate = (date: Date) => {
+    return formatDate(date, 'EEEE, d MMMM yyyy', i18n.language);
   };
 
   const handleContinue = () => {
@@ -93,21 +96,21 @@ export const CalendarModal = ({ isOpen, onClose, onContinueBooking }: CalendarMo
       <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto">
         <DialogHeader>
           <DialogTitle className="text-2xl font-bold text-center">
-            Kalender Ketersediaan Studio
+            {t('booking:calendar.title')}
           </DialogTitle>
         </DialogHeader>
 
         <div className="grid md:grid-cols-2 gap-8 mt-6">
           {/* Calendar Section */}
           <div className="bg-card p-6 rounded-xl border">
-            <h3 className="text-lg font-semibold mb-4">Pilih Tanggal</h3>
+            <h3 className="text-lg font-semibold mb-4">{t('booking:calendar.selectDate')}</h3>
             <Calendar
               mode="single"
               selected={selectedDate}
               onSelect={handleDateSelect}
               className="rounded-xl p-4 mx-auto [&_.rdp-button]:rounded-full [&_.rdp-button]:w-10 [&_.rdp-button]:h-10 [&_.rdp-button]:flex [&_.rdp-button]:items-center [&_.rdp-button]:justify-center [&_.rdp-button:hover:not([disabled])]:bg-primary [&_.rdp-button:hover:not([disabled])]:text-white [&_.rdp-button_selected]:bg-primary [&_.rdp-button_selected]:text-white [&_.rdp-button_selected:hover]:bg-primary/90"
               disabled={isDateDisabled}
-              locale={id}
+              locale={i18n.language === 'en' ? undefined : id}
               fromDate={new Date()}
               toDate={addDays(new Date(), 30)}
               modifiers={{
@@ -125,7 +128,7 @@ export const CalendarModal = ({ isOpen, onClose, onContinueBooking }: CalendarMo
 
           {/* Time Slots Section */}
           <div className="p-1">
-            <h3 className="text-lg font-semibold mb-4">{formatDateID(selectedDate)}</h3>
+            <h3 className="text-lg font-semibold mb-4">{formatSelectedDate(selectedDate)}</h3>
 
             <TimeSlotGrid
               slots={timeSlots}
@@ -141,10 +144,10 @@ export const CalendarModal = ({ isOpen, onClose, onContinueBooking }: CalendarMo
                 disabled={!selectedSlot}
                 onClick={handleContinue}
               >
-                Lanjut ke Booking
+                {t('booking:calendar.continue')}
               </Button>
               <p className="text-sm text-muted-foreground mt-3 text-center">
-                Pilih tanggal dan waktu untuk melanjutkan ke pemesanan
+                {t('booking:calendar.hint')}
               </p>
             </div>
           </div>

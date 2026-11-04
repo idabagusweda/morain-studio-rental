@@ -1,6 +1,8 @@
 import { Instagram, Mail, Phone } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 
 export const Footer = () => {
+  const { t } = useTranslation(['landing', 'common']);
   const currentYear = new Date().getFullYear();
 
   return (
@@ -16,8 +18,7 @@ export const Footer = () => {
               </p>
             </div>
             <p className="text-background/70 max-w-md mb-6">
-              Your trusted studio rental & photobox in Denpasar, Bali. 
-              Professional photography with clean, bright, and cinematic results.
+              {t('footer.about.description')}
             </p>
             <div className="flex gap-4">
               <a
@@ -50,7 +51,7 @@ export const Footer = () => {
 
           {/* Quick Links */}
           <div>
-            <h4 className="font-semibold mb-4">Quick Links</h4>
+            <h4 className="font-semibold mb-4">{t('footer.quickLinks')}</h4>
             <ul className="space-y-3">
               {['Services', 'Studio', 'Photobox', 'Gallery', 'FAQ'].map((link) => (
                 <li key={link}>
@@ -58,7 +59,7 @@ export const Footer = () => {
                     href={`#${link.toLowerCase()}`}
                     className="text-background/70 hover:text-background transition-colors"
                   >
-                    {link}
+                    {t(`common:navigation.${link.toLowerCase()}`) || link}
                   </a>
                 </li>
               ))}
@@ -67,7 +68,7 @@ export const Footer = () => {
 
           {/* Contact */}
           <div>
-            <h4 className="font-semibold mb-4">Contact</h4>
+            <h4 className="font-semibold mb-4">{t('contact.info.phone')}</h4>
             <ul className="space-y-3 text-background/70">
               <li>Jl. Teuku Umar, Denpasar</li>
               <li>0895-3151-1894</li>
@@ -80,10 +81,10 @@ export const Footer = () => {
         {/* Bottom */}
         <div className="pt-8 border-t border-background/10 flex flex-col sm:flex-row justify-between items-center gap-4">
           <p className="text-sm text-background/60">
-            © {currentYear} Morain Studio. All rights reserved.
+            {t('footer.copyright')}
           </p>
           <p className="text-sm text-background/60">
-            Made with ♡ in Bali
+            {t('footer.madeWith')}
           </p>
         </div>
       </div>

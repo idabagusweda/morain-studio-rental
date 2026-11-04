@@ -11,12 +11,14 @@ import {
     LogOut,
     Settings,
     Menu,
-    X,
     Home
 } from 'lucide-react';
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
+import { useTranslation } from 'react-i18next';
+import { LanguageSwitcher } from '@/components/LanguageSwitcher';
 
 const AdminLayout = () => {
+    const { t } = useTranslation(['admin', 'common']);
     const { user, profile, isAdmin, loading, signOut } = useAuth();
     const navigate = useNavigate();
     const location = useLocation();
@@ -27,23 +29,23 @@ const AdminLayout = () => {
     useEffect(() => {
         if (!loading && (!user || !isAdmin)) {
             toast({
-                title: 'Akses Ditolak',
-                description: 'Anda tidak memiliki akses ke halaman admin.',
+                title: t('admin:layout.accessDeniedTitle', 'Akses Ditolak'),
+                description: t('admin:layout.accessDeniedDesc', 'Anda tidak memiliki akses ke halaman admin.'),
                 variant: 'destructive'
             });
             navigate('/');
         }
-    }, [user, isAdmin, loading, navigate, toast]);
+    }, [user, isAdmin, loading, navigate, toast, t]);
 
     if (loading) return null;
     if (!isAdmin) return null;
 
     const navItems = [
-        { href: '/admin', label: 'Overview', icon: LayoutDashboard },
-        { href: '/admin/bookings', label: 'Bookings', icon: FileText },
-        { href: '/admin/calendar', label: 'Calendar', icon: CalendarDays },
-        { href: '/admin/users', label: 'Users', icon: Users },
-        { href: '/admin/settings', label: 'Settings', icon: Settings },
+        { href: '/admin', label: t('admin:layout.nav.overview', 'Overview'), icon: LayoutDashboard },
+        { href: '/admin/bookings', label: t('admin:layout.nav.bookings', 'Bookings'), icon: FileText },
+        { href: '/admin/calendar', label: t('admin:layout.nav.calendar', 'Calendar'), icon: CalendarDays },
+        { href: '/admin/users', label: t('admin:layout.nav.users', 'Users'), icon: Users },
+        { href: '/admin/settings', label: t('admin:layout.nav.settings', 'Settings'), icon: Settings },
     ];
 
     const SidebarContent = () => (
@@ -54,7 +56,7 @@ const AdminLayout = () => {
                 </div>
                 <div className="overflow-hidden">
                     <p className="font-medium truncate">{profile?.full_name || 'Admin'}</p>
-                    <p className="text-xs text-muted-foreground truncate">Administrator Access</p>
+                    <p className="text-xs text-muted-foreground truncate">{t('admin:layout.administratorAccess', 'Administrator Access')}</p>
                 </div>
             </div>
 
@@ -88,7 +90,7 @@ const AdminLayout = () => {
                     className="w-full justify-start text-red-600 hover:text-red-700 hover:bg-red-50 px-4"
                 >
                     <LogOut className="w-4 h-4 mr-2" />
-                    Keluar
+                    {t('common:buttons.logout', 'Keluar')}
                 </Button>
             </div>
         </div>
@@ -111,10 +113,12 @@ const AdminLayout = () => {
                             </span>
                         </Link>
                         <div className="h-6 w-px bg-gray-200 mx-2 hidden sm:block"></div>
-                        <h1 className="text-sm font-medium text-muted-foreground hidden sm:block">Admin Dashboard</h1>
+                        <h1 className="text-sm font-medium text-muted-foreground hidden sm:block">{t('admin:layout.title', 'Admin Dashboard')}</h1>
                     </div>
 
                     <div className="flex items-center gap-4">
+                        <LanguageSwitcher />
+
                         {/* Mobile Menu Trigger */}
                         <Sheet open={isMobileOpen} onOpenChange={setIsMobileOpen}>
                             <SheetTrigger asChild>
@@ -132,7 +136,7 @@ const AdminLayout = () => {
                         <div className="h-6 w-px bg-gray-200 hidden md:block"></div>
                         <Button variant="ghost" size="sm" className="text-muted-foreground hover:text-foreground" onClick={() => navigate('/')}>
                             <Home className="w-4 h-4 md:mr-2" />
-                            <span className="hidden md:inline">Home</span>
+                            <span className="hidden md:inline">{t('common:navigation.home', 'Home')}</span>
                         </Button>
                     </div>
                 </div>

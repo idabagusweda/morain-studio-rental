@@ -4,6 +4,7 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from '@/components/ui/accordion';
+import { useTranslation } from 'react-i18next';
 
 const faqs = [
   {
@@ -49,18 +50,20 @@ const faqs = [
 ];
 
 export const FAQSection = () => {
+  const { t } = useTranslation(['landing']);
+  
   return (
     <section id="faq" className="section-padding">
       <div className="container-wide">
         <div className="text-center max-w-2xl mx-auto mb-16">
           <span className="text-primary font-medium text-sm uppercase tracking-wider">
-            FAQ
+            {t('faq.sectionTag')}
           </span>
           <h2 className="font-display text-3xl sm:text-4xl lg:text-5xl font-semibold mt-3 mb-4">
-            Frequently Asked Questions
+            {t('faq.title')}
           </h2>
           <p className="text-muted-foreground text-lg">
-            Semua yang perlu kamu ketahui tentang layanan studio kami
+            {t('faq.description')}
           </p>
         </div>
 

@@ -8,6 +8,8 @@ import {
     TrendingUp,
 } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
+import { useTranslation } from 'react-i18next';
+import { formatCurrency } from '@/lib/i18nUtils';
 
 interface DashboardStats {
     totalBookings: number;
@@ -20,6 +22,7 @@ interface DashboardStats {
 }
 
 const Overview = () => {
+    const { t, i18n } = useTranslation(['admin', 'common']);
     const { toast } = useToast();
     const [stats, setStats] = useState<DashboardStats>({
         totalBookings: 0,
@@ -64,20 +67,16 @@ const Overview = () => {
                     lunasCount: bookings.filter(b => b.payment_status === 'LUNAS').length,
                 });
             }
-        } catch (error: any) {
+        } catch (error: unknown) {
             console.error('Error fetching stats:', error);
             toast({
-                title: 'Error',
-                description: 'Failed to load dashboard statistics',
+                title: t('common:messages.error', 'Error'),
+                description: t('admin:overview.errorFetch', 'Failed to load dashboard statistics'),
                 variant: 'destructive'
             });
         } finally {
             setLoading(false);
         }
-    };
-
-    const formatCurrency = (amount: number) => {
-        return new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR' }).format(amount);
     };
 
     if (loading) {
@@ -93,27 +92,26 @@ const Overview = () => {
     return (
         <div className="space-y-6 animate-in fade-in duration-500">
             <div>
-                <h2 className="text-2xl font-display font-bold mb-1 text-[#849283]">Overview</h2>
-                <p className="text-muted-foreground">Ringkasan performa studio bulan ini.</p>
+                <h2 className="text-2xl font-display font-bold mb-1 text-[#849283]">{t('admin:overview.title', 'Overview')}</h2>
+                <p className="text-muted-foreground">{t('admin:overview.description', 'Ringkasan performa studio bulan ini.')}</p>
             </div>
 
-            {/* Primary KPI Cards - Matching User Dashboard Style */}
-            {/* Primary KPI Cards - Matching User Dashboard Style */}
+            {/* Primary KPI Cards */}
             <div className="space-y-6">
                 {/* Revenue Card - Full Width Primary */}
                 <Card className="rounded-xl border shadow-soft overflow-hidden">
                     <CardHeader className="pb-2">
                         <CardDescription className="flex items-center gap-2">
                             <Wallet className="h-4 w-4" />
-                            Revenue (Bulan Ini)
+                            {t('admin:overview.revenue', 'Revenue (Bulan Ini)')}
                         </CardDescription>
-                        <CardTitle className="text-[clamp(2rem,5vw,3.5rem)] font-body font-bold whitespace-nowrap leading-none" title={formatCurrency(stats.revenueThisMonth)}>
-                            {formatCurrency(stats.revenueThisMonth)}
+                        <CardTitle className="text-[clamp(2rem,5vw,3.5rem)] font-body font-bold whitespace-nowrap leading-none" title={formatCurrency(stats.revenueThisMonth, i18n.language)}>
+                            {formatCurrency(stats.revenueThisMonth, i18n.language)}
                         </CardTitle>
                     </CardHeader>
                     <CardContent>
                         <p className="text-sm text-muted-foreground">
-                            Dari {stats.bookingsThisMonth} booking
+                            {t('admin:overview.revenueFrom', { count: stats.bookingsThisMonth, defaultValue: `Dari ${stats.bookingsThisMonth} booking` })}
                         </p>
                     </CardContent>
                 </Card>
@@ -124,13 +122,13 @@ const Overview = () => {
                         <CardHeader className="pb-2">
                             <CardDescription className="flex items-center gap-2">
                                 <Calendar className="h-4 w-4" />
-                                Booking Hari Ini
+                                {t('admin:overview.bookingsToday', 'Booking Hari Ini')}
                             </CardDescription>
                             <CardTitle className="text-2xl sm:text-3xl font-body font-bold text-blue-600">{stats.bookingsToday}</CardTitle>
                         </CardHeader>
                         <CardContent>
                             <p className="text-xs text-muted-foreground">
-                                Jadwal hari ini
+                                {t('admin:overview.bookingsTodayDescription', 'Jadwal hari ini')}
                             </p>
                         </CardContent>
                     </Card>
@@ -139,13 +137,13 @@ const Overview = () => {
                         <CardHeader className="pb-2">
                             <CardDescription className="flex items-center gap-2">
                                 <Users className="h-4 w-4" />
-                                Total Booking
+                                {t('admin:overview.totalBookings', 'Total Booking')}
                             </CardDescription>
                             <CardTitle className="text-2xl sm:text-3xl font-body font-bold">{stats.totalBookings}</CardTitle>
                         </CardHeader>
                         <CardContent>
                             <p className="text-xs text-muted-foreground">
-                                + {stats.bookingsThisMonth} bulan ini
+                                {t('admin:overview.totalBookingsDescription', { count: stats.bookingsThisMonth, defaultValue: `+ ${stats.bookingsThisMonth} bulan ini` })}
                             </p>
                         </CardContent>
                     </Card>
@@ -154,20 +152,20 @@ const Overview = () => {
                         <CardHeader className="pb-2">
                             <CardDescription className="flex items-center gap-2">
                                 <TrendingUp className="h-4 w-4" />
-                                Status Bayar
+                                {t('admin:overview.paymentStatus', 'Status Bayar')}
                             </CardDescription>
                             <div className="pt-2 flex justify-between gap-1 text-xs">
                                 <div className="flex flex-col items-center">
                                     <span className="font-bold text-lg text-yellow-600">{stats.pendingCount}</span>
-                                    <span className="text-muted-foreground">Pending</span>
+                                    <span className="text-muted-foreground">{t('admin:overview.pending', 'Pending')}</span>
                                 </div>
                                 <div className="flex flex-col items-center">
                                     <span className="font-bold text-lg text-blue-600">{stats.dpCount}</span>
-                                    <span className="text-muted-foreground">DP</span>
+                                    <span className="text-muted-foreground">{t('admin:overview.dp', 'DP')}</span>
                                 </div>
                                 <div className="flex flex-col items-center">
                                     <span className="font-bold text-lg text-green-600">{stats.lunasCount}</span>
-                                    <span className="text-muted-foreground">Lunas</span>
+                                    <span className="text-muted-foreground">{t('admin:overview.paid', 'Lunas')}</span>
                                 </div>
                             </div>
                         </CardHeader>

@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { ChevronLeft, ChevronRight, Image, ArrowRight } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 // import { CalendarModal } from './CalendarModal'; // Remove import
 
 const slides = [
@@ -27,6 +28,7 @@ const slides = [
 ];
 
 export const HeroSection = () => {
+  const { t } = useTranslation(['landing']);
   const [currentSlide, setCurrentSlide] = useState(0);
   // const [isCalendarOpen, setIsCalendarOpen] = useState(false); // Remove state
 
@@ -73,20 +75,19 @@ export const HeroSection = () => {
       <div className="container-wide relative z-10 pt-24 pb-16">
         <div className="max-w-2xl">
           <span className="inline-block px-4 py-1.5 bg-primary/10 text-primary rounded-full text-sm font-medium mb-6 animate-fade-up">
-            ⚲ Teuku Umar, Denpasar
+            ⚲ {t('hero.location')}
           </span>
 
           <h1 className="font-display text-4xl sm:text-5xl lg:text-6xl font-semibold leading-tight mb-6 animate-fade-up" style={{ animationDelay: '0.1s' }}>
-            Your Trusted
+            {t('hero.title')}
             <br />
-            <span className="text-primary">Studio Rental</span>
+            <span className="text-primary">{t('hero.titleHighlight')}</span>
             <br />
-            & Photobox in Denpasar
+            {t('hero.titleEnd')}
           </h1>
 
           <p className="text-lg sm:text-xl text-muted-foreground mb-8 animate-fade-up" style={{ animationDelay: '0.2s' }}>
-            Abadikan momen terbaik kamu di studio yang bersih, terang, dan sinematik.
-            Booking praktis, jadwal real-time, hasil profesional.
+            {t('hero.description')}
           </p>
 
           <div className="flex flex-col sm:flex-row gap-4 animate-fade-up" style={{ animationDelay: '0.3s' }}>
@@ -95,7 +96,7 @@ export const HeroSection = () => {
               size="xl"
               onClick={() => scrollToSection('#packages')}
             >
-              View Packages & Book
+              {t('hero.viewPackages')}
               <ArrowRight className="ml-2" />
             </Button>
             <Button
@@ -104,7 +105,7 @@ export const HeroSection = () => {
               onClick={() => scrollToSection('#gallery')}
             >
               <Image className="mr-2" />
-              Our Gallery
+              {t('hero.ourGallery')}
             </Button>
           </div>
         </div>

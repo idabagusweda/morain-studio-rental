@@ -6,6 +6,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Clock, Save } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 
 interface OperationalHours {
     open: string;
@@ -13,6 +14,7 @@ interface OperationalHours {
 }
 
 const Settings = () => {
+    const { t } = useTranslation(['admin', 'common']);
     const { toast } = useToast();
     const [loading, setLoading] = useState(false);
     const [hours, setHours] = useState<OperationalHours>({ open: '09:00', close: '20:00' });
@@ -31,7 +33,6 @@ const Settings = () => {
                 .select('*');
 
             if (error) {
-                // If table doesn't exist yet (SQL not run), fail silently or use defaults
                 console.warn('Settings table not ready:', error.message);
                 return;
             }
@@ -60,8 +61,6 @@ const Settings = () => {
             ];
 
             for (const update of updates) {
-                // Check if ID exists to update, or upsert.
-                // Simplified upsert logic:
                 const { error } = await supabase
                     .from('app_settings')
                     .upsert({
@@ -74,14 +73,14 @@ const Settings = () => {
             }
 
             toast({
-                title: 'Berhasil',
-                description: 'Pengaturan berhasil disimpan.',
+                title: t('common:messages.success', 'Berhasil'),
+                description: t('admin:settings.saveSuccess', 'Pengaturan berhasil disimpan.'),
             });
-        } catch (error: any) {
+        } catch (error: unknown) {
             console.error('Error saving settings:', error);
             toast({
-                title: 'Gagal',
-                description: 'Pastikan Anda telah menjalankan migrasi database.',
+                title: t('common:messages.failed', 'Gagal'),
+                description: t('admin:settings.saveError', 'Pastikan Anda telah menjalankan migrasi database.'),
                 variant: 'destructive'
             });
         } finally {
@@ -92,24 +91,24 @@ const Settings = () => {
     return (
         <div className="space-y-6">
             <div>
-                <h2 className="text-3xl font-display font-bold text-[#849283]">Settings</h2>
-                <p className="text-muted-foreground">Konfigurasi operasional studio.</p>
+                <h2 className="text-3xl font-display font-bold text-[#849283]">{t('admin:settings.title', 'Settings')}</h2>
+                <p className="text-muted-foreground">{t('admin:settings.description', 'Konfigurasi operasional studio.')}</p>
             </div>
 
             <div className="grid gap-6 max-w-2xl">
                 <Card>
                     <CardHeader>
                         <CardTitle className="flex items-center gap-2">
-                            <Clock className="w-5 h-5" /> Jam Operasional
+                            <Clock className="w-5 h-5" /> {t('admin:settings.operationalHours', 'Jam Operasional')}
                         </CardTitle>
                         <CardDescription>
-                            Atur jam buka dan tutup studio untuk ketersediaan slot.
+                            {t('admin:settings.operationalHoursDesc', 'Atur jam buka dan tutup studio untuk ketersediaan slot.')}
                         </CardDescription>
                     </CardHeader>
                     <CardContent className="space-y-4">
                         <div className="grid grid-cols-2 gap-4">
                             <div className="space-y-2">
-                                <Label>Jam Buka</Label>
+                                <Label>{t('admin:settings.openTime', 'Jam Buka')}</Label>
                                 <Input
                                     type="time"
                                     value={hours.open}
@@ -117,7 +116,7 @@ const Settings = () => {
                                 />
                             </div>
                             <div className="space-y-2">
-                                <Label>Jam Tutup</Label>
+                                <Label>{t('admin:settings.closeTime', 'Jam Tutup')}</Label>
                                 <Input
                                     type="time"
                                     value={hours.close}
@@ -128,39 +127,10 @@ const Settings = () => {
                     </CardContent>
                 </Card>
 
-                {/* <Card>
-          <CardHeader>
-            <CardTitle>Durasi Slot</CardTitle>
-            <CardDescription>
-              Atur durasi per sesi booking.
-            </CardDescription>
-          </CardHeader>
-          <CardContent className="space-y-4">
-            <div className="grid grid-cols-2 gap-4">
-              <div className="space-y-2">
-                <Label>Studio (menit)</Label>
-                <Input 
-                  type="number" 
-                  value={studioDuration}
-                  onChange={(e) => setStudioDuration(e.target.value)}
-                />
-              </div>
-              <div className="space-y-2">
-                <Label>Photobox (menit)</Label>
-                <Input 
-                  type="number" 
-                  value={photoboxDuration}
-                  onChange={(e) => setPhotoboxDuration(e.target.value)}
-                />
-              </div>
-            </div>
-          </CardContent>
-        </Card> */}
-
                 <div className="flex justify-end">
                     <Button onClick={handleSave} disabled={loading} className="bg-[#849283] hover:bg-[#6b7a6b]">
                         <Save className="w-4 h-4 mr-2" />
-                        {loading ? 'Menyimpan...' : 'Simpan Pengaturan'}
+                        {loading ? t('admin:settings.saving', 'Menyimpan...') : t('admin:settings.save', 'Simpan Pengaturan')}
                     </Button>
                 </div>
             </div>

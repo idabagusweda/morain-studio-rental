@@ -1,0 +1,176 @@
+{
+  "calendar": {
+    "title": "Studio Availability Calendar",
+    "selectDate": "Select Date",
+    "continue": "Continue to Booking",
+    "hint": "Select date and time to continue booking"
+  },
+  "modal": {
+    "title": "Book Studio",
+    "selectPackage": "Select Package",
+    "selectDate": "Select Date",
+    "selectTime": "Select Time (WITA)",
+    "confirmBooking": "Confirm Booking"
+  },
+  "steps": {
+    "schedule": "Schedule",
+    "style": "Style",
+    "package": "Package",
+    "data": "Details",
+    "payment": "Payment",
+    "confirm": "Confirmation",
+    "date": "Date",
+    "time": "Time"
+  },
+  "package": {
+    "select": "Choose your package",
+    "details": "Package Details",
+    "selectDuration": "Select Session Duration",
+    "perHour": "/ hour",
+    "capacity": "Max {{count}} people",
+    "continue": "Continue"
+  },
+  "date": {
+    "select": "Choose booking date",
+    "availability": "Check availability",
+    "legend": "Legend:",
+    "continue": "Continue"
+  },
+  "time": {
+    "select": "Choose time slot",
+    "available": "Available",
+    "booked": "Booked",
+    "noSlots": "No slots available for this date",
+    "infoTitle": "Time Information",
+    "infoDescription": "Times shown are in WITA (Central Indonesia Time, UTC+8). Please arrive 15 minutes before your schedule.",
+    "selectDateFirst": "Please select a date first",
+    "continue": "Continue"
+  },
+  "data": {
+    "title": "Booking Details",
+    "guestCount": "Number of People",
+    "purpose": "Photo Purpose",
+    "selectCategory": "Select category"
+  },
+  "payment": {
+    "options": "Payment Options",
+    "full": "Full Payment (100%)",
+    "fullDesc": "Pay the entire amount now.",
+    "dp": "Down Payment (50%)",
+    "dpDesc": "Secure your slot with a 50% deposit.",
+    "breakdown": "Payment Breakdown",
+    "totalBooking": "Total Booking",
+    "fullPaid": "Total Paid (100%)",
+    "dpPaid": "Deposit Paid (50%)",
+    "fullPaidDesc": "Paid in full upfront",
+    "dpPaidDesc": "Partial payment to reserve",
+    "remainingPayment": "Remaining Balance",
+    "dpStudioNote": "The remaining balance can be settled at the studio during your session.",
+    "methodNotice": "Payment methods (Bank Transfer, E-Wallet, QRIS, etc.) will be selected on the next payment page.",
+    "termsAgree": "I agree with",
+    "termsLink": "Morain Studio Terms & Conditions",
+    "termsNote": "By checking this box, you agree to all applicable terms and conditions.",
+    "payNow": "Pay Now"
+  },
+  "summary": {
+    "title": "Booking Summary",
+    "package": "Package",
+    "date": "Date",
+    "time": "Time",
+    "duration": "Duration",
+    "price": "Price",
+    "total": "Total",
+    "estimatedTotal": "Estimated Total",
+    "notes": "Additional Notes (Optional)",
+    "notesPlaceholder": "Any special requests? Write here...",
+    "confirmBooking": "Confirm & Pay",
+    "processing": "Processing..."
+  },
+  "confirmation": {
+    "success": "Booking Created Successfully!",
+    "successSubtitle": "Please proceed with payment to confirm your slot.",
+    "bookingCode": "BOOKING CODE",
+    "packageAndDuration": "Package & Duration",
+    "sessionTime": "Session Time",
+    "confirmWhatsapp": "Confirm & Pay via WhatsApp",
+    "backHome": "Back to Home"
+  },
+  "photobox": {
+    "title": "Book Photobox",
+    "selectTheme": "Choose Theme",
+    "themes": {
+      "cowboy": "Cowboy",
+      "retroFilm": "Retro Film",
+      "cyberpunk": "Cyberpunk",
+      "cutePastel": "Cute Pastel",
+      "minimalClean": "Minimal Clean"
+    }
+  },
+  "validation": {
+    "selectPackage": "Please select a package",
+    "selectDate": "Please select a date",
+    "selectTime": "Please select a time slot",
+    "loginRequired": "Please login to continue booking"
+  },
+  "messages": {
+    "bookingSuccess": "Booking Successful",
+    "bookingSuccessDescription": "Your booking has been confirmed. Check your email for details.",
+    "bookingFailed": "Booking Failed",
+    "slotUnavailable": "Time slot is no longer available. Please select another time.",
+    "paymentPending": "Payment Pending",
+    "redirectingToPayment": "Redirecting to payment page...",
+    "paymentLinkNotFound": "Payment link not found.",
+    "bookingCancelled": "Booking Cancelled",
+    "bookingCancelledDesc": "Booking has been successfully cancelled.",
+    "cancelFailed": "Failed to Cancel"
+  },
+  "pendingModal": {
+    "title": "You have a pending booking",
+    "description": "You still have an unpaid booking. Please complete or cancel it before creating a new booking.",
+    "cancel": "Cancel This Booking",
+    "continuePay": "Continue Payment"
+  },
+  "termsModal": {
+    "title": "Terms & Conditions",
+    "notice": "Please scroll down to read the complete terms and conditions before proceeding.",
+    "section1Title": "1. Booking & Schedule",
+    "sec1Item1": "Bookings must be made at least <strong>1 day in advance</strong> prior to the photo session.",
+    "sec1Item2": "Schedule rescheduling is permitted a maximum of <strong>1 (one) time</strong> with at least 24 hours prior notice.",
+    "sec1Item3": "Please arrive <strong>15 minutes before</strong> the scheduled session begins for preparation and fitting.",
+    "section2Title": "2. Down Payment & Payment Policy",
+    "sec2Item1": "A <strong>50% Down Payment (DP)</strong> is required to secure your booking slot.",
+    "sec2Item2": "Settlement of remaining payment is due at the studio <strong>after the photo session</strong>.",
+    "sec2Item3": "We accept payments via Bank Transfer, E-Wallets, and QRIS.",
+    "section3Title": "3. Cancellation & Delays",
+    "sec3Item1": "Down Payment (DP) is <span class=\"text-red-500 font-medium bg-red-50 px-1 rounded\">non-refundable</span> in case of client cancellation.",
+    "sec3Item2": "Grace period for tardiness is maximum <strong>15 minutes</strong>. Beyond that, session duration will be reduced accordingly to avoid delaying subsequent clients.",
+    "sec3Item3": "If there is no contact (No-Show) after 30 minutes, the booking is forfeited.",
+    "section4Title": "4. Responsibility & Studio Property",
+    "sec4Item1": "Clients are fully responsible for any damage or loss of studio property caused by client negligence.",
+    "sec4Item2": "Morain Studio is not responsible for loss of personal belongings on studio premises.",
+    "sec4Item3": "Original photo softcopies are retained in our database for a maximum of <strong>1 month</strong>. Please download promptly as we cannot be held responsible after this period.",
+    "endOfTerms": "-- End of Terms & Conditions --",
+    "readAll": "Completed reading",
+    "scrollDown": "Scroll down",
+    "iUnderstand": "I Understand"
+  },
+  "paymentReturn": {
+    "successTitle": "Payment Successful!",
+    "successDesc": "Thank you, your payment has been received.",
+    "pendingTitle": "Awaiting Payment",
+    "pendingDesc": "Please complete your payment following the instructions.",
+    "errorTitle": "Payment Failed",
+    "errorDesc": "An error occurred with your payment.",
+    "processingTitle": "Processing...",
+    "processingDesc": "Please wait a moment.",
+    "bookingCode": "Booking Code",
+    "service": "Service",
+    "packageOrStyle": "Package/Style",
+    "total": "Total",
+    "paid": "Paid",
+    "remaining": "Remaining",
+    "status": "Status",
+    "viewHistory": "View Booking History",
+    "backHome": "Back to Home"
+  }
+}

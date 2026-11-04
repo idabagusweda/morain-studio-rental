@@ -1,0 +1,185 @@
+{
+  "hero": {
+    "location": "Teuku Umar, Denpasar",
+    "title": "Your Trusted",
+    "titleHighlight": "Studio Rental",
+    "titleEnd": "& Photobox in Denpasar",
+    "description": "Abadikan momen terbaik kamu di studio yang bersih, terang, dan sinematik. Booking praktis, jadwal real-time, hasil profesional.",
+    "viewPackages": "View Packages & Book",
+    "ourGallery": "Our Gallery"
+  },
+  "packages": {
+    "sectionTag": "Our Packages",
+    "title": "Studio Photo Package",
+    "description": "Pilih paket studio sesuai kebutuhan Anda. Semua paket sudah termasuk fotografer profesional.",
+    "basic": {
+      "name": "Paket Foto Studio – Basic",
+      "price": "Rp 150.000",
+      "unit": "/ jam",
+      "capacity": "Max 5 org",
+      "size": "3×4 m",
+      "description": "Cocok untuk foto personal, couple, atau produk kecil dengan hasil maksimal."
+    },
+    "standard": {
+      "name": "Paket Foto Studio – Standard",
+      "price": "Rp 250.000",
+      "unit": "/ jam",
+      "capacity": "Max 15 org",
+      "size": "4×6 m",
+      "description": "Pilihan tepat untuk keluarga kecil, potret grup, dan konten kreator.",
+      "popular": "Paling Laris"
+    },
+    "premium": {
+      "name": "Paket Foto Studio – Premium",
+      "price": "Rp 400.000",
+      "unit": "/ jam",
+      "capacity": "Max 30 org",
+      "size": "6×8 m",
+      "description": "Solusi terbaik untuk grup besar, event kantor, dan sesi foto profesional."
+    },
+    "facilities": {
+      "softbox": "2-3 lighting softbox",
+      "backgrounds": "Pilihan background beragam",
+      "stool": "Stool / kursi estetik",
+      "mirror": "Cermin standing full body",
+      "ac": "Ruangan ber-AC dingin",
+      "power": "Stop kontak tersedia",
+      "photographer": "Termasuk fotografer profesional"
+    },
+    "bookButton": "Pesan {{name}}",
+    "note": "Semua fasilitas sudah termasuk dalam setiap paket. Properti tambahan dapat dibawa sendiri."
+  },
+  "photobox": {
+    "sectionTag": "Photobox",
+    "title": "Photobox Self-Service",
+    "description": "Abadikan momen Anda dalam photobox dengan berbagai tema aesthetic. Cocok untuk hangout bareng teman, couple, atau konten sosmed.",
+    "perSession": "/ sesi",
+    "includes": "Sudah termasuk:",
+    "prints": "{{count}} foto cetak",
+    "digitalCopies": "Semua foto soft copy",
+    "props": "Properti foto bisa dibawa",
+    "bookNow": "Book Photobox",
+    "howItWorks": {
+      "title": "Cara Kerja Photobox",
+      "step1": {
+        "title": "Pilih Tema",
+        "description": "Pilih tema aesthetic favorit kamu"
+      },
+      "step2": {
+        "title": "Foto Sesuka Hati",
+        "description": "Ambil foto unlimited selama 10 menit"
+      },
+      "step3": {
+        "title": "Cetak & Download",
+        "description": "Pilih 6 foto terbaik untuk dicetak + semua foto digital"
+      }
+    },
+    "themes": {
+      "cowboy": "Cowboy",
+      "retroFilm": "Retro Film",
+      "cyberpunk": "Cyberpunk",
+      "cutePastel": "Cute Pastel",
+      "minimalClean": "Minimal Clean"
+    }
+  },
+  "whyChoose": {
+    "sectionTag": "Why Choose Us",
+    "title": "Kenapa Pilih Morain Studio?",
+    "description": "Kami menyediakan layanan studio rental dan photobox terbaik di Denpasar dengan berbagai keunggulan.",
+    "features": {
+      "professional": {
+        "title": "Fotografer Profesional",
+        "description": "Setiap paket studio sudah termasuk fotografer berpengalaman untuk hasil maksimal."
+      },
+      "equipment": {
+        "title": "Peralatan Lengkap",
+        "description": "Lighting softbox, background beragam, dan properti foto berkualitas."
+      },
+      "realtime": {
+        "title": "Booking Real-Time",
+        "description": "Lihat jadwal tersedia langsung dan booking dalam hitungan menit."
+      },
+      "flexible": {
+        "title": "Jadwal Fleksibel",
+        "description": "Buka setiap hari dengan slot waktu yang beragam sesuai kebutuhan Anda."
+      }
+    }
+  },
+  "gallery": {
+    "sectionTag": "Gallery",
+    "title": "Portfolio Kami",
+    "description": "Lihat hasil karya klien-klien kami yang sudah mempercayai Morain Studio.",
+    "viewAll": "Lihat Semua Foto"
+  },
+  "testimonials": {
+    "sectionTag": "Testimonials",
+    "title": "Apa Kata Mereka?",
+    "description": "Pengalaman nyata dari klien yang puas dengan layanan kami."
+  },
+  "faq": {
+    "sectionTag": "FAQ",
+    "title": "Pertanyaan Umum",
+    "description": "Jawaban untuk pertanyaan yang sering ditanyakan seputar layanan kami.",
+    "questions": {
+      "bookingProcess": {
+        "q": "Bagaimana cara booking studio atau photobox?",
+        "a": "Pilih paket yang Anda inginkan, pilih tanggal dan waktu yang tersedia, lalu lakukan pembayaran. Anda akan menerima konfirmasi booking melalui email dan WhatsApp."
+      },
+      "payment": {
+        "q": "Metode pembayaran apa saja yang tersedia?",
+        "a": "Kami menerima pembayaran melalui transfer bank, e-wallet (OVO, GoPay, Dana), dan kartu kredit/debit via payment gateway Midtrans."
+      },
+      "cancellation": {
+        "q": "Apakah bisa reschedule atau cancel booking?",
+        "a": "Reschedule dapat dilakukan maksimal 24 jam sebelum jadwal booking. Untuk pembatalan, silakan hubungi kami melalui WhatsApp."
+      },
+      "photographer": {
+        "q": "Apakah fotografer sudah termasuk dalam paket studio?",
+        "a": "Ya, semua paket studio sudah termasuk fotografer profesional yang siap membantu sesi foto Anda."
+      },
+      "duration": {
+        "q": "Berapa lama durasi sesi foto?",
+        "a": "Durasi sesi studio sesuai paket yang Anda pilih (per jam). Untuk photobox, durasi standar adalah 10 menit per sesi."
+      },
+      "props": {
+        "q": "Boleh bawa properti sendiri?",
+        "a": "Tentu! Anda bebas membawa properti foto sendiri untuk melengkapi sesi foto Anda."
+      }
+    }
+  },
+  "contact": {
+    "sectionTag": "Contact Us",
+    "title": "Hubungi Kami",
+    "description": "Ada pertanyaan atau butuh bantuan? Tim kami siap membantu Anda.",
+    "form": {
+      "name": "Nama Lengkap",
+      "namePlaceholder": "Masukkan nama Anda",
+      "email": "Email",
+      "emailPlaceholder": "nama@email.com",
+      "message": "Pesan",
+      "messagePlaceholder": "Tulis pesan Anda di sini...",
+      "send": "Kirim Pesan",
+      "sending": "Mengirim..."
+    },
+    "info": {
+      "address": "Alamat",
+      "addressValue": "Jl. Teuku Umar, Denpasar, Bali",
+      "phone": "Telepon",
+      "email": "Email",
+      "hours": "Jam Operasional",
+      "hoursValue": "Setiap hari, 09:00 - 21:00 WITA"
+    },
+    "success": "Pesan berhasil dikirim! Kami akan segera menghubungi Anda.",
+    "error": "Gagal mengirim pesan. Silakan coba lagi atau hubungi kami via WhatsApp."
+  },
+  "footer": {
+    "about": {
+      "title": "Tentang Morain Studio",
+      "description": "Studio foto profesional di Denpasar dengan layanan rental studio dan photobox self-service. Abadikan momen terbaik Anda bersama kami."
+    },
+    "quickLinks": "Link Cepat",
+    "followUs": "Ikuti Kami",
+    "copyright": "© 2024 Morain Studio. All rights reserved.",
+    "madeWith": "Made with ❤️ in Bali"
+  }
+}

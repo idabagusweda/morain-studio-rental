@@ -1,5 +1,6 @@
 import { Button } from '@/components/ui/button';
 import { X } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 
 interface TimeSlot {
     time: string;
@@ -14,6 +15,15 @@ interface TimeSlotGridProps {
 }
 
 export const TimeSlotGrid = ({ slots, selectedSlot, onSelect, formatLabel }: TimeSlotGridProps) => {
+    const { t } = useTranslation(['booking']);
+
+    if (slots.length === 0) {
+        return (
+            <div className="text-center py-8 text-muted-foreground">
+                <p>{t('booking:time.noSlots')}</p>
+            </div>
+        );
+    }
     return (
         <div className="grid grid-cols-2 gap-3 max-h-[300px] overflow-y-auto pr-2">
             {slots.map((slot, index) => (

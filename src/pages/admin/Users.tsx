@@ -1,18 +1,12 @@
 import { useState, useEffect } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
-import {
-    Table,
-    TableBody,
-    TableCell,
-    TableHead,
-    TableHeader,
-    TableRow
-} from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Shield, ShieldAlert, User, Search, UserCheck } from "lucide-react";
 import { Input } from "@/components/ui/input";
+import { useTranslation } from 'react-i18next';
+import { formatDate } from '@/lib/i18nUtils';
 
 interface Profile {
     id: string;
@@ -24,6 +18,7 @@ interface Profile {
 }
 
 const Users = () => {
+    const { t, i18n } = useTranslation(['admin', 'common']);
     const { toast } = useToast();
     const [users, setUsers] = useState<Profile[]>([]);
     const [loading, setLoading] = useState(true);
@@ -44,11 +39,11 @@ const Users = () => {
 
             if (error) throw error;
             setUsers(data || []);
-        } catch (error: any) {
+        } catch (error: unknown) {
             console.error('Error fetching users:', error);
             toast({
-                title: 'Error',
-                description: 'Gagal memuat data pengguna',
+                title: t('common:messages.error', 'Error'),
+                description: t('admin:users.errorFetch', 'Gagal memuat data pengguna'),
                 variant: 'destructive'
             });
         } finally {
@@ -60,7 +55,7 @@ const Users = () => {
         const newRole = currentRole === 'admin' ? 'user' : 'admin';
         const action = newRole === 'admin' ? 'promote' : 'demote';
 
-        if (!confirm(`Apakah Anda yakin ingin mengubah role user ini menjadi ${newRole}?`)) return;
+        if (!confirm(t('admin:users.confirmChangeRole', { role: newRole, defaultValue: `Apakah Anda yakin ingin mengubah role user ini menjadi ${newRole}?` }))) return;
 
         setUpdating(userId);
         try {
@@ -72,18 +67,19 @@ const Users = () => {
             if (error) throw error;
 
             toast({
-                title: 'Berhasil',
-                description: `User berhasil di-${action}`,
+                title: t('common:messages.success', 'Berhasil'),
+                description: t('admin:users.roleSuccess', { action, defaultValue: `User berhasil di-${action}` }),
             });
 
             setUsers(users.map(u =>
                 u.id === userId ? { ...u, role: newRole } : u
             ));
-        } catch (error: any) {
+        } catch (error: unknown) {
             console.error('Error updating role:', error);
+            const message = error instanceof Error ? error.message : '';
             toast({
-                title: 'Gagal',
-                description: error.message,
+                title: t('common:messages.failed', 'Gagal'),
+                description: message,
                 variant: 'destructive'
             });
         } finally {
@@ -100,8 +96,8 @@ const Users = () => {
         <div className="space-y-6 animate-in fade-in duration-500">
             <div className="flex justify-between items-center">
                 <div>
-                    <h2 className="text-2xl font-display font-bold mb-1 text-[#849283]">Users</h2>
-                    <p className="text-muted-foreground">Kelola pengguna dan akses admin.</p>
+                    <h2 className="text-2xl font-display font-bold mb-1 text-[#849283]">{t('admin:users.title', 'Users')}</h2>
+                    <p className="text-muted-foreground">{t('admin:users.description', 'Kelola pengguna dan akses admin.')}</p>
                 </div>
             </div>
 
@@ -109,12 +105,12 @@ const Users = () => {
                 <div className="p-4 border-b bg-slate-50 flex items-center justify-between">
                     <h3 className="font-medium flex items-center gap-2">
                         <UserCheck className="w-4 h-4 text-muted-foreground" />
-                        Daftar Pengguna ({filteredUsers.length})
+                        {t('admin:users.listTitle', { count: filteredUsers.length, defaultValue: `Daftar Pengguna (${filteredUsers.length})` })}
                     </h3>
                     <div className="relative max-w-xs w-full">
                         <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-muted-foreground" />
                         <Input
-                            placeholder="Cari user (nama/email)..."
+                            placeholder={t('admin:users.searchPlaceholder', 'Cari user (nama/email)...')}
                             value={searchQuery}
                             onChange={(e) => setSearchQuery(e.target.value)}
                             className="pl-10 h-9 bg-white"
@@ -126,18 +122,18 @@ const Users = () => {
                     <table className="w-full">
                         <thead className="bg-slate-50/50 border-b">
                             <tr>
-                                <th className="px-6 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">User</th>
-                                <th className="px-6 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">Kontak</th>
-                                <th className="px-6 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">Role</th>
-                                <th className="px-6 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">Bergabung</th>
-                                <th className="px-6 py-3 text-right text-xs font-medium text-muted-foreground uppercase tracking-wider">Aksi</th>
+                                <th className="px-6 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">{t('admin:users.table.name', 'User')}</th>
+                                <th className="px-6 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">{t('admin:users.table.whatsapp', 'Kontak')}</th>
+                                <th className="px-6 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">{t('admin:users.table.role', 'Role')}</th>
+                                <th className="px-6 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">{t('admin:users.table.registered', 'Bergabung')}</th>
+                                <th className="px-6 py-3 text-right text-xs font-medium text-muted-foreground uppercase tracking-wider">{t('admin:users.table.action', 'Aksi')}</th>
                             </tr>
                         </thead>
                         <tbody className="divide-y divide-gray-100">
                             {loading ? (
-                                <tr><td colSpan={5} className="px-6 py-8 text-center text-muted-foreground">Memuat data...</td></tr>
+                                <tr><td colSpan={5} className="px-6 py-8 text-center text-muted-foreground">{t('admin:bookings.loading', 'Memuat data...')}</td></tr>
                             ) : filteredUsers.length === 0 ? (
-                                <tr><td colSpan={5} className="px-6 py-8 text-center text-muted-foreground">Tidak ada user ditemukan</td></tr>
+                                <tr><td colSpan={5} className="px-6 py-8 text-center text-muted-foreground">{t('admin:users.noFilteredUsers', 'Tidak ada user ditemukan')}</td></tr>
                             ) : (
                                 filteredUsers.map((user) => (
                                     <tr key={user.id} className="hover:bg-slate-50 transition-colors">
@@ -162,11 +158,11 @@ const Users = () => {
                                             <Badge variant={user.role === 'admin' ? 'default' : 'secondary'} className={
                                                 user.role === 'admin' ? 'bg-[#849283] hover:bg-[#6b7a6b]' : 'bg-slate-100 text-slate-600 hover:bg-slate-200'
                                             }>
-                                                {user.role}
+                                                {user.role === 'admin' ? t('admin:users.roles.admin', 'Admin') : t('admin:users.roles.user', 'User')}
                                             </Badge>
                                         </td>
                                         <td className="px-6 py-4 whitespace-nowrap text-sm text-muted-foreground">
-                                            {new Date(user.created_at).toLocaleDateString('id-ID')}
+                                            {formatDate(new Date(user.created_at), 'd MMM yyyy', i18n.language)}
                                         </td>
                                         <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                                             <Button
@@ -179,12 +175,12 @@ const Users = () => {
                                                 {user.role === 'user' ? (
                                                     <>
                                                         <Shield className="w-4 h-4 mr-2" />
-                                                        Jadikan Admin
+                                                        {t('admin:users.promoteAdmin', 'Jadikan Admin')}
                                                     </>
                                                 ) : (
                                                     <>
                                                         <ShieldAlert className="w-4 h-4 mr-2" />
-                                                        Hapus Admin
+                                                        {t('admin:users.demoteAdmin', 'Hapus Admin')}
                                                     </>
                                                 )}
                                             </Button>

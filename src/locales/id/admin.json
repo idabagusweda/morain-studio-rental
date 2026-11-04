@@ -1,0 +1,122 @@
+{
+  "layout": {
+    "title": "Admin Dashboard",
+    "administratorAccess": "Administrator Access",
+    "accessDeniedTitle": "Akses Ditolak",
+    "accessDeniedDesc": "Anda tidak memiliki akses ke halaman admin.",
+    "nav": {
+      "overview": "Overview",
+      "bookings": "Bookings",
+      "calendar": "Calendar",
+      "users": "Users",
+      "settings": "Settings"
+    }
+  },
+  "overview": {
+    "title": "Overview",
+    "description": "Ringkasan performa studio bulan ini.",
+    "revenue": "Revenue (Bulan Ini)",
+    "revenueFrom": "Dari {{count}} booking",
+    "bookingsToday": "Booking Hari Ini",
+    "bookingsTodayDescription": "Jadwal hari ini",
+    "totalBookings": "Total Booking",
+    "totalBookingsDescription": "+ {{count}} bulan ini",
+    "paymentStatus": "Status Bayar",
+    "pending": "Pending",
+    "dp": "DP",
+    "paid": "Lunas",
+    "errorFetch": "Gagal memuat statistik dashboard"
+  },
+  "bookings": {
+    "title": "Bookings",
+    "description": "Kelola semua booking studio dan photobox.",
+    "refresh": "Refresh",
+    "searchPlaceholder": "Cari kode, nama, atau WhatsApp...",
+    "paymentStatusPlaceholder": "Status Pembayaran",
+    "serviceTypePlaceholder": "Tipe Layanan",
+    "allStatus": "Semua Status",
+    "allServices": "Semua Layanan",
+    "table": {
+      "clientAndService": "Klien & Layanan",
+      "schedule": "Jadwal",
+      "package": "Paket",
+      "total": "Total",
+      "status": "Status",
+      "action": "Aksi"
+    },
+    "remaining": "Sisa: {{amount}}",
+    "loading": "Memuat data...",
+    "noFiltered": "Tidak ada data booking yang sesuai filter.",
+    "errorFetch": "Gagal memuat data booking"
+  },
+  "calendar": {
+    "title": "Kalender",
+    "description": "Lihat jadwal booking harian.",
+    "today": "Hari Ini",
+    "selected": "Terpilih",
+    "scheduledSessions": "{{count}} Sesi Terjadwal",
+    "noEvents": "Tidak ada booking untuk tanggal ini",
+    "pickOtherDate": "Pilih tanggal lain untuk melihat jadwal.",
+    "errorFetch": "Gagal memuat data kalender"
+  },
+  "users": {
+    "title": "Users",
+    "description": "Kelola pengguna dan akses admin.",
+    "listTitle": "Daftar Pengguna ({{count}})",
+    "searchPlaceholder": "Cari user (nama/email)...",
+    "table": {
+      "name": "Nama",
+      "email": "Email",
+      "whatsapp": "WhatsApp",
+      "role": "Role",
+      "registered": "Terdaftar",
+      "action": "Aksi"
+    },
+    "roles": {
+      "admin": "Admin",
+      "user": "User"
+    },
+    "promoteAdmin": "Jadikan Admin",
+    "demoteAdmin": "Hapus Admin",
+    "noUsers": "Belum ada user",
+    "noFilteredUsers": "Tidak ada data user yang sesuai.",
+    "confirmChangeRole": "Apakah Anda yakin ingin mengubah role user ini menjadi {{role}}?",
+    "roleSuccess": "User berhasil di-{{action}}",
+    "errorFetch": "Gagal memuat data pengguna",
+    "errorUpdateRole": "Gagal mengubah role"
+  },
+  "settings": {
+    "title": "Settings",
+    "description": "Konfigurasi operasional studio.",
+    "operationalHours": "Jam Operasional",
+    "operationalHoursDesc": "Atur jam buka dan tutup studio untuk ketersediaan slot.",
+    "openTime": "Jam Buka",
+    "closeTime": "Jam Tutup",
+    "save": "Simpan Pengaturan",
+    "saving": "Menyimpan...",
+    "saveSuccess": "Pengaturan berhasil disimpan.",
+    "saveError": "Pastikan Anda telah menjalankan migrasi database."
+  },
+  "detailModal": {
+    "title": "Booking Detail",
+    "clientInfo": "Informasi Klien",
+    "name": "Nama:",
+    "whatsapp": "WA:",
+    "email": "Email:",
+    "contactWhatsApp": "Hubungi WhatsApp",
+    "whatsappMessage": "Halo Kak {{name}}, ini dari Morain Studio mengenai booking {{code}}.",
+    "serviceDetail": "Detail Layanan",
+    "type": "Tipe:",
+    "package": "Paket:",
+    "note": "Catatan",
+    "sessionTime": "Waktu Sesi",
+    "statusAndPayment": "Status & Pembayaran",
+    "paymentStatus": "Status Pembayaran",
+    "bookingStatus": "Status Booking",
+    "total": "Total:",
+    "paidAmount": "Sudah Bayar:",
+    "remaining": "Sisa:",
+    "updateSuccess": "Status booking berhasil diperbarui",
+    "updateError": "Gagal update status"
+  }
+}

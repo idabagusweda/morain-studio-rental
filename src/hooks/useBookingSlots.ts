@@ -71,7 +71,7 @@ export const useBookingSlots = (
                 const startDate = new Date(`2000-01-01T${start}:00`);
                 const endDate = new Date(`2000-01-01T${end}:00`);
 
-                let current = new Date(startDate);
+                const current = new Date(startDate);
 
                 // Add all slots from start to end (exclusive of end time)
                 while (current < endDate) {

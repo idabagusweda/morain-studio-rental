@@ -28,8 +28,7 @@ import {
     AlertCircle
 } from 'lucide-react';
 import { BookingDetailModal } from '@/components/dashboard/BookingDetailModal';
-import { format, addMinutes, isAfter } from 'date-fns';
-import { id } from 'date-fns/locale';
+import { addMinutes } from 'date-fns';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from '@/components/ui/dialog';
 import {
     AlertDialog,
@@ -48,6 +47,9 @@ import {
     DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { usePaymentLogic } from '@/hooks/usePaymentLogic';
+import { useTranslation } from 'react-i18next';
+import { formatCurrency, formatDate } from '@/lib/i18nUtils';
+import { LanguageSwitcher } from '@/components/LanguageSwitcher';
 
 const photoboxStyleMap: Record<string, string> = {
     'Cowboy': 'bg-gradient-to-r from-amber-700/20 via-orange-800/20 to-amber-700/20 animate-gradient-x text-amber-700',
@@ -58,12 +60,7 @@ const photoboxStyleMap: Record<string, string> = {
 };
 
 const getCountdown = (expiresAt: string | null, createdAt: string) => {
-    // If no expiresAt, fallback to createdAt + 15 mins (though DB should have it)
     const targetDate = expiresAt ? new Date(expiresAt) : addMinutes(new Date(createdAt), 15);
-    const now = new Date(); // This will be driven by parent re-renders if we pass it, but helper can just take diff
-    // Actually, to sync with the single interval, we should pass 'now' or just let it calculate. 
-    // Ideally we pass 'now' from state to ensure sync.
-    // But for simplicity in helper, let's take a 'currentDate' arg.
     return (currentDate: Date) => {
         const difference = targetDate.getTime() - currentDate.getTime();
 
@@ -82,6 +79,7 @@ const getCountdown = (expiresAt: string | null, createdAt: string) => {
 };
 
 export default function Dashboard() {
+    const { t, i18n } = useTranslation(['dashboard', 'common', 'booking']);
     const navigate = useNavigate();
     const location = useLocation();
 
@@ -107,28 +105,24 @@ export default function Dashboard() {
     }, [location.pathname]);
     const { user, profile, loading, signOut, updateProfile } = useAuth();
     const { syncExpiredPayments, resumePayment, isProcessing: isPaymentProcessing } = usePaymentLogic();
-    const { toast } = useToast(); // Keep local toast for other things if needed
+    const { toast } = useToast();
 
-    // Check expired on mount AND every minute to be safe (or rely on the countdown ending to trigger sync)
-    // The instructions say "if remaining <= 0... text 'Waktu pembayaran habis'". 
-    // We can also trigger a sync if we detect an active pending booking just expired.
     useEffect(() => {
         syncExpiredPayments();
     }, [syncExpiredPayments]);
 
-    // ... existing state ...
     const [activeTab, setActiveTab] = useState('overview');
     const [bookings, setBookings] = useState<any[]>([]);
     const [isLoadingBookings, setIsLoadingBookings] = useState(true);
     const [selectedBooking, setSelectedBooking] = useState<any | null>(null);
 
-    // ... Profile Form State ...
+    // Profile Form State
     const [fullName, setFullName] = useState('');
     const [whatsapp, setWhatsapp] = useState('');
     const [email, setEmail] = useState('');
     const [isUpdatingProfile, setIsUpdatingProfile] = useState(false);
 
-    // ... Stats ...
+    // Stats
     const [stats, setStats] = useState({
         total: 0,
         upcoming: 0,
@@ -140,7 +134,7 @@ export default function Dashboard() {
     const [showCancelDialog, setShowCancelDialog] = useState(false);
     const [bookingToPay, setBookingToPay] = useState<any | null>(null);
     const [bookingToCancel, setBookingToCancel] = useState<any | null>(null);
-    const [isInternalProcessing, setIsInternalProcessing] = useState(false); // Local processing for non-payment stuff
+    const [isInternalProcessing, setIsInternalProcessing] = useState(false);
 
     const isProcessing = isPaymentProcessing || isInternalProcessing;
 
@@ -165,7 +159,6 @@ export default function Dashboard() {
     }, [profile, user]);
 
     const fetchBookings = async () => {
-        // syncExpiredPayments(); // Optional: sync before fetch
         setIsLoadingBookings(true);
 
         const { data, error } = await supabase
@@ -194,19 +187,18 @@ export default function Dashboard() {
         const { error } = await updateProfile({
             full_name: fullName,
             whatsapp,
-            // email is handled separately or read-only/linked to auth
         });
 
         if (error) {
             toast({
-                title: 'Gagal memperbarui profil',
+                title: t('dashboard:profile.failed', 'Gagal memperbarui profil'),
                 description: error.message,
                 variant: 'destructive'
             });
         } else {
             toast({
-                title: 'Profil berhasil diperbarui',
-                description: 'Perubahan telah disimpan.'
+                title: t('dashboard:profile.success', 'Profil berhasil diperbarui'),
+                description: t('dashboard:profile.successDescription', 'Perubahan telah disimpan.')
             });
         }
         setIsUpdatingProfile(false);
@@ -218,20 +210,11 @@ export default function Dashboard() {
 
         if (!booking) return;
 
-        // If it's a new payment needed (e.g. DP -> Full, or initial payment creation if redirect_url missing), 
-        // we might still need the old logic. But mostly we want to just resume or create.
-        // For simplicity, if it's PENDING and has redirect_url, we resume.
-        // If it's DP and we want to pay remainder, or PENDING but no URL, we likely need to hit the function.
-        // The centralized hook's resumePayment is simple redirect. 
-        // We will keep the old logic for CREATING transaction if needed, but use resume logic if available.
-
-        // Actually, user request says: "Tombol 'Lanjut Bayar' untuk PENDING: langsung redirect ke redirect_url yang sudah ada (tanpa membuat sesi baru)"
         if (booking.payment_status === 'PENDING' && booking.redirect_url) {
             await resumePayment(booking);
             return;
         }
 
-        // Fallback to creating transaction if no redirect URL or if it's a different type (e.g. paying off DP)
         setIsInternalProcessing(true);
 
         try {
@@ -239,7 +222,7 @@ export default function Dashboard() {
             const accessToken = sessionData?.session?.access_token;
 
             if (!accessToken) {
-                throw new Error('Sesi tidak valid');
+                throw new Error(t('common:messages.invalidSession', 'Sesi tidak valid'));
             }
 
             const response = await fetch(
@@ -260,35 +243,34 @@ export default function Dashboard() {
             if (!response.ok) {
                 const err = await response.json();
 
-                // Handle 410 EXPIRED status - refresh bookings and close modal
                 if (response.status === 410) {
                     toast({
-                        title: 'Pembayaran Expired',
-                        description: err.details || 'Waktu pembayaran habis. Silakan buat booking baru.',
+                        title: t('dashboard:booking.payment.expired', 'Pembayaran Expired'),
+                        description: err.details || t('dashboard:booking.payment.expiredDescription', 'Waktu pembayaran habis. Silakan buat booking baru.'),
                         variant: 'destructive'
                     });
                     setShowPaymentModal(false);
                     setBookingToPay(null);
-                    fetchBookings(); // Refresh to show updated status
+                    fetchBookings();
                     return;
                 }
 
-                throw new Error(err.details || err.error || 'Gagal memulai pembayaran');
+                throw new Error(err.details || err.error || t('dashboard:booking.payment.failed', 'Gagal memulai pembayaran'));
             }
 
             const data = await response.json();
             if (data.redirect_url) {
                 if (data.resumed) {
                     toast({
-                        title: 'Melanjutkan Pembayaran',
-                        description: 'Menggunakan sesi pembayaran yang sama.',
+                        title: t('dashboard:booking.payment.resuming', 'Melanjutkan Pembayaran'),
+                        description: t('dashboard:booking.payment.resumingDescription', 'Menggunakan sesi pembayaran yang sama.'),
                     });
                 }
                 window.location.href = data.redirect_url;
             }
         } catch (error: any) {
             toast({
-                title: 'Gagal Memproses',
+                title: t('dashboard:booking.payment.failed', 'Gagal Memproses'),
                 description: error.message,
                 variant: 'destructive'
             });
@@ -319,12 +301,12 @@ export default function Dashboard() {
 
             if (!response.ok) {
                 const err = await response.json();
-                throw new Error(err.details || err.error || 'Gagal membatalkan booking');
+                throw new Error(err.details || err.error || t('dashboard:booking.cancelDialog.failed', 'Gagal membatalkan booking'));
             }
 
             toast({
-                title: "Booking Dibatalkan",
-                description: "Booking berhasil dibatalkan."
+                title: t('dashboard:booking.cancelDialog.success', 'Booking Dibatalkan'),
+                description: t('dashboard:booking.cancelDialog.successDescription', 'Booking berhasil dibatalkan.')
             });
 
             setShowCancelDialog(false);
@@ -332,7 +314,7 @@ export default function Dashboard() {
             fetchBookings();
         } catch (error: any) {
             toast({
-                title: 'Gagal Membatalkan',
+                title: t('dashboard:booking.cancelDialog.failed', 'Gagal Membatalkan'),
                 description: error.message,
                 variant: 'destructive'
             });
@@ -352,23 +334,45 @@ export default function Dashboard() {
             case 'lunas':
             case 'paid':
             case 'selesai':
-                return 'text-green-800 bg-green-100 border-green-200'; // Green
+                return 'text-green-800 bg-green-100 border-green-200';
             case 'dp':
-                return 'text-blue-800 bg-blue-100 border-blue-200'; // Blue for DP
+                return 'text-blue-800 bg-blue-100 border-blue-200';
             case 'pending':
-                return 'text-amber-800 bg-amber-100 border-amber-200'; // Amber/Orange for Pending
+                return 'text-amber-800 bg-amber-100 border-amber-200';
             case 'expired':
-                return 'text-gray-600 bg-gray-100 border-gray-200'; // Neutral Gray for Expired
+                return 'text-gray-600 bg-gray-100 border-gray-200';
             case 'batal':
             case 'cancelled':
-                return 'text-red-800 bg-red-100 border-red-200'; // Red
+                return 'text-red-800 bg-red-100 border-red-200';
             default:
                 return 'text-gray-600 bg-gray-50 border-gray-200';
         }
     };
 
+    const getStatusLabel = (status: string) => {
+        const lower = status?.toLowerCase() || '';
+        switch (lower) {
+            case 'lunas':
+            case 'paid':
+                return t('common:status.paid');
+            case 'dp':
+                return t('common:status.dp');
+            case 'pending':
+                return t('common:status.pending');
+            case 'expired':
+                return t('common:status.expired');
+            case 'batal':
+            case 'cancelled':
+                return t('common:status.cancelled');
+            case 'selesai':
+                return t('common:status.selesai');
+            default:
+                return status;
+        }
+    };
+
     if (loading || !user) {
-        return null; // or loading spinner
+        return null;
     }
 
     return (
@@ -390,19 +394,20 @@ export default function Dashboard() {
                             </span>
                         </button>
                         <div className="h-6 w-px bg-gray-200 mx-2 hidden sm:block"></div>
-                        <h1 className="text-sm font-medium text-muted-foreground hidden sm:block">User Dashboard</h1>
+                        <h1 className="text-sm font-medium text-muted-foreground hidden sm:block">{t('dashboard:header.title')}</h1>
                     </div>
                     <div className="flex items-center gap-4">
+                        <LanguageSwitcher />
                         <div className="h-6 w-px bg-gray-200 hidden md:block"></div>
 
                         <Button variant="ghost" size="sm" className="text-muted-foreground hover:text-foreground" onClick={() => navigate('/')}>
                             <Home className="w-4 h-4 md:mr-2" />
-                            <span className="hidden md:inline">Home</span>
+                            <span className="hidden md:inline">{t('dashboard:header.home')}</span>
                         </Button>
 
                         <Button variant="ghost" size="sm" className="text-red-600 hover:text-red-700 hover:bg-red-50" onClick={handleSignOut}>
                             <LogOut className="w-4 h-4 md:mr-2" />
-                            <span className="hidden md:inline">Keluar</span>
+                            <span className="hidden md:inline">{t('dashboard:header.logout')}</span>
                         </Button>
                     </div>
                 </div>
@@ -410,7 +415,7 @@ export default function Dashboard() {
 
             <div className="container-wide py-8">
                 <div className="flex flex-col md:flex-row gap-8">
-                    {/* Sidebar / Mobile Tabs */}
+                    {/* Sidebar */}
                     <aside className="w-full md:w-64 flex-shrink-0">
                         <div className="bg-white rounded-xl border p-6 mb-6">
                             <div className="flex items-center gap-4 mb-6">
@@ -424,42 +429,39 @@ export default function Dashboard() {
                             </div>
 
                             <nav className="space-y-1">
-                                {/* Simplified Nav for Sidebar */}
                                 <button
                                     onClick={() => navigate('/dashboard')}
                                     className={`w-full flex items-center gap-3 px-4 py-2 rounded-lg text-sm font-medium transition-colors ${location.pathname === '/dashboard' ? 'bg-primary/5 text-primary' : 'text-muted-foreground hover:bg-slate-50'}`}
                                 >
                                     <LayoutDashboard className="w-4 h-4" />
-                                    Overview
+                                    {t('dashboard:sidebar.overview')}
                                 </button>
                                 <button
                                     onClick={() => navigate('/dashboard/riwayat')}
                                     className={`w-full flex items-center gap-3 px-4 py-2 rounded-lg text-sm font-medium transition-colors ${location.pathname.startsWith('/dashboard/riwayat') ? 'bg-primary/5 text-primary' : 'text-muted-foreground hover:bg-slate-50'}`}
                                 >
                                     <History className="w-4 h-4" />
-                                    Riwayat Booking
+                                    {t('dashboard:sidebar.bookingHistory')}
                                 </button>
                                 <button
                                     onClick={() => navigate('/dashboard/profil')}
                                     className={`w-full flex items-center gap-3 px-4 py-2 rounded-lg text-sm font-medium transition-colors ${location.pathname.startsWith('/dashboard/profil') ? 'bg-primary/5 text-primary' : 'text-muted-foreground hover:bg-slate-50'}`}
                                 >
                                     <User className="w-4 h-4" />
-                                    Profil Akun
+                                    {t('dashboard:sidebar.profile')}
                                 </button>
                             </nav>
                         </div>
 
                         <div className="bg-primary/5 rounded-xl border border-primary/10 p-4">
-                            <h3 className="font-display font-medium text-primary mb-2">Book Now</h3>
-                            <p className="text-xs text-muted-foreground mb-4">Siap untuk sesi foto berikutnya?</p>
+                            <h3 className="font-display font-medium text-primary mb-2">{t('dashboard:sidebar.bookNow')}</h3>
+                            <p className="text-xs text-muted-foreground mb-4">{t('dashboard:sidebar.bookNowDescription')}</p>
                             <div className="space-y-2">
                                 <Button
                                     className="w-full justify-start bg-white hover:bg-slate-50 text-foreground border shadow-soft"
                                     onClick={() => {
-                                        // Navigate to home page and then scroll to packages section
                                         if (window.location.pathname !== '/') {
                                             navigate('/');
-                                            // Small delay to ensure the page has loaded before scrolling
                                             setTimeout(() => {
                                                 const element = document.getElementById('packages');
                                                 if (element) {
@@ -475,15 +477,13 @@ export default function Dashboard() {
                                     }}
                                 >
                                     <Camera className="w-4 h-4 mr-2 text-primary" />
-                                    Studio
+                                    {t('dashboard:sidebar.studio')}
                                 </Button>
                                 <Button
                                     className="w-full justify-start bg-white hover:bg-slate-50 text-foreground border shadow-soft"
                                     onClick={() => {
-                                        // Navigate to home page and then scroll to photobox section
                                         if (window.location.pathname !== '/') {
                                             navigate('/');
-                                            // Small delay to ensure the page has loaded before scrolling
                                             setTimeout(() => {
                                                 const element = document.getElementById('photobox');
                                                 if (element) {
@@ -499,13 +499,13 @@ export default function Dashboard() {
                                     }}
                                 >
                                     <Calendar className="w-4 h-4 mr-2 text-primary" />
-                                    Photobox
+                                    {t('dashboard:sidebar.photobox')}
                                 </Button>
                             </div>
                         </div>
                     </aside>
 
-                    {/* Mobile Navigation (Horizontal Scroll) */}
+                    {/* Mobile Navigation */}
                     <div className="md:hidden mb-6 -mx-4 px-4 overflow-x-auto no-scrollbar">
                         <div className="flex gap-2 min-w-max pb-2">
                             <button
@@ -513,21 +513,21 @@ export default function Dashboard() {
                                 className={`flex items-center gap-2 px-4 py-2 rounded-full text-sm font-medium transition-colors border ${location.pathname === '/dashboard' ? 'bg-primary text-primary-foreground border-primary' : 'bg-white text-muted-foreground border-gray-200'}`}
                             >
                                 <LayoutDashboard className="w-4 h-4" />
-                                Overview
+                                {t('dashboard:mobile.overview')}
                             </button>
                             <button
                                 onClick={() => navigate('/dashboard/riwayat')}
                                 className={`flex items-center gap-2 px-4 py-2 rounded-full text-sm font-medium transition-colors border ${location.pathname.startsWith('/dashboard/riwayat') ? 'bg-primary text-primary-foreground border-primary' : 'bg-white text-muted-foreground border-gray-200'}`}
                             >
                                 <History className="w-4 h-4" />
-                                Riwayat
+                                {t('dashboard:mobile.history')}
                             </button>
                             <button
                                 onClick={() => navigate('/dashboard/profil')}
                                 className={`flex items-center gap-2 px-4 py-2 rounded-full text-sm font-medium transition-colors border ${location.pathname.startsWith('/dashboard/profil') ? 'bg-primary text-primary-foreground border-primary' : 'bg-white text-muted-foreground border-gray-200'}`}
                             >
                                 <User className="w-4 h-4" />
-                                Profil
+                                {t('dashboard:mobile.profile')}
                             </button>
                         </div>
                     </div>
@@ -548,26 +548,28 @@ export default function Dashboard() {
                             {/* OVERVIEW TAB */}
                             <TabsContent value="overview" className="space-y-6 animate-in fade-in duration-500">
                                 <div>
-                                    <h2 className="text-2xl font-display font-bold mb-1">Hi, {profile?.full_name?.split(' ')[0] || 'User'} 👋</h2>
-                                    <p className="text-muted-foreground">Selamat datang di dashboard Morain Studio.</p>
+                                    <h2 className="text-2xl font-display font-bold mb-1">
+                                        {t('dashboard:overview.greeting', { name: profile?.full_name?.split(' ')[0] || 'User' })}
+                                    </h2>
+                                    <p className="text-muted-foreground">{t('dashboard:overview.welcome')}</p>
                                 </div>
 
                                 <div className="grid sm:grid-cols-3 gap-4">
                                     <Card>
                                         <CardHeader className="pb-2">
-                                            <CardDescription>Total Booking</CardDescription>
+                                            <CardDescription>{t('dashboard:overview.stats.totalBookings')}</CardDescription>
                                             <CardTitle className="text-3xl font-body">{stats.total}</CardTitle>
                                         </CardHeader>
                                     </Card>
                                     <Card>
                                         <CardHeader className="pb-2">
-                                            <CardDescription>Booking Aktif</CardDescription>
+                                            <CardDescription>{t('dashboard:overview.stats.activeBookings')}</CardDescription>
                                             <CardTitle className="text-3xl font-body text-blue-600">{stats.upcoming}</CardTitle>
                                         </CardHeader>
                                     </Card>
                                     <Card>
                                         <CardHeader className="pb-2">
-                                            <CardDescription>Selesai</CardDescription>
+                                            <CardDescription>{t('dashboard:overview.stats.completed')}</CardDescription>
                                             <CardTitle className="text-3xl font-body text-green-600">{stats.completed}</CardTitle>
                                         </CardHeader>
                                     </Card>
@@ -575,8 +577,8 @@ export default function Dashboard() {
 
                                 <div>
                                     <div className="flex items-center justify-between mb-4">
-                                        <h3 className="font-semibold text-lg">Booking Terakhir</h3>
-                                        <Button variant="link" onClick={() => navigate('/dashboard/riwayat')} className="p-0 h-auto">Lihat Semua</Button>
+                                        <h3 className="font-semibold text-lg">{t('dashboard:overview.recentBookings')}</h3>
+                                        <Button variant="link" onClick={() => navigate('/dashboard/riwayat')} className="p-0 h-auto">{t('dashboard:overview.viewAll')}</Button>
                                     </div>
 
                                     {isLoadingBookings ? (
@@ -593,23 +595,23 @@ export default function Dashboard() {
                                                         </div>
                                                         <div>
                                                             <div className="flex items-center gap-2">
-                                                                <p className="font-medium">{booking.service_type === 'studio' ? 'Studio Session' : 'Photobox Session'}</p>
+                                                                <p className="font-medium">{booking.service_type === 'studio' ? t('dashboard:overview.studioSession') : t('dashboard:overview.photoboxSession')}</p>
                                                                 <span className="text-xs bg-slate-100 px-2 py-0.5 rounded text-muted-foreground font-mono">{booking.booking_code}</span>
                                                             </div>
                                                             <p className="text-sm text-muted-foreground flex items-center gap-2 mt-1">
                                                                 <Calendar className="w-3 h-3" />
-                                                                {format(new Date(booking.booking_date), 'd MMMM yyyy', { locale: id })}
+                                                                {formatDate(new Date(booking.booking_date), 'd MMMM yyyy', i18n.language)}
                                                                 <span className="w-1 h-1 bg-gray-300 rounded-full" />
                                                                 {booking.start_time}
                                                             </p>
                                                         </div>
                                                     </div>
                                                     <div className="flex items-center gap-3 w-full sm:w-auto mt-2 sm:mt-0">
-                                                        <span className={`px-2.5 py-0.5 rounded-full text-xs font-medium border capitalize ${getStatusColor(booking.payment_status)}`}>
-                                                            {booking.payment_status}
+                                                        <span className={`px-2.5 py-0.5 rounded-full text-xs font-medium border uppercase ${getStatusColor(booking.payment_status)}`}>
+                                                            {getStatusLabel(booking.payment_status)}
                                                         </span>
                                                         <Button size="sm" variant="outline" onClick={() => setSelectedBooking(booking)}>
-                                                            Detail
+                                                            {t('common:buttons.detail')}
                                                         </Button>
                                                     </div>
                                                 </div>
@@ -617,8 +619,8 @@ export default function Dashboard() {
                                         </div>
                                     ) : (
                                         <div className="text-center py-12 bg-white rounded-xl border border-dashed">
-                                            <p className="text-muted-foreground">Belum ada booking.</p>
-                                            <Button variant="link" onClick={() => navigate('/#packages')} className="mt-2">Mulai Booking</Button>
+                                            <p className="text-muted-foreground">{t('dashboard:overview.noBookings')}</p>
+                                            <Button variant="link" onClick={() => navigate('/#packages')} className="mt-2">{t('dashboard:overview.startBooking')}</Button>
                                         </div>
                                     )}
                                 </div>
@@ -627,8 +629,8 @@ export default function Dashboard() {
                             {/* HISTORY TAB */}
                             <TabsContent value="history" className="space-y-6 animate-in fade-in duration-500">
                                 <div>
-                                    <h2 className="text-2xl font-display font-bold mb-1">Riwayat Booking</h2>
-                                    <p className="text-muted-foreground">Semua aktivitas booking Anda.</p>
+                                    <h2 className="text-2xl font-display font-bold mb-1">{t('dashboard:history.title')}</h2>
+                                    <p className="text-muted-foreground">{t('dashboard:history.description')}</p>
                                 </div>
 
                                 {isLoadingBookings ? (
@@ -639,20 +641,18 @@ export default function Dashboard() {
                                     <div className="bg-white rounded-xl border overflow-hidden">
                                         {/* Desktop Table Header */}
                                         <div className="hidden md:grid grid-cols-[160px_minmax(260px,1fr)_140px_140px_160px_72px] gap-0 border-b bg-slate-50 text-sm font-medium text-muted-foreground w-full">
-                                            <div className="flex items-center justify-center text-center px-2 py-4 h-full">Kode</div>
-                                            <div className="flex items-center justify-center text-center px-2 py-4 h-full">Detail Layanan</div>
-                                            <div className="flex items-center justify-center text-center px-2 py-4 h-full">Status</div>
-                                            <div className="flex items-center justify-center text-center px-2 py-4 h-full">Total</div>
-                                            <div className="flex items-center justify-center text-center px-2 py-4 h-full">Pembayaran</div>
-                                            <div className="flex items-center justify-center text-center px-2 py-4 h-full">Aksi</div>
+                                            <div className="flex items-center justify-center text-center px-2 py-4 h-full">{t('dashboard:history.table.code')}</div>
+                                            <div className="flex items-center justify-center text-center px-2 py-4 h-full">{t('dashboard:history.table.serviceDetail')}</div>
+                                            <div className="flex items-center justify-center text-center px-2 py-4 h-full">{t('dashboard:history.table.status')}</div>
+                                            <div className="flex items-center justify-center text-center px-2 py-4 h-full">{t('dashboard:history.table.total')}</div>
+                                            <div className="flex items-center justify-center text-center px-2 py-4 h-full">{t('dashboard:history.table.payment')}</div>
+                                            <div className="flex items-center justify-center text-center px-2 py-4 h-full">{t('dashboard:history.table.action')}</div>
                                         </div>
 
                                         {bookings.map((booking) => {
                                             const isPending = booking.payment_status === 'PENDING';
                                             const { timeLeftString, isExpired: isExpiredTime } = getCountdown(booking.expires_at, booking.created_at)(now);
 
-                                            // Force expired status in UI if time is up, even if DB says pending
-                                            // We check both: actual status EXPIRED OR (PENDING but timer ran out)
                                             let displayStatus = booking.payment_status;
                                             if (isPending && isExpiredTime) {
                                                 displayStatus = 'EXPIRED';
@@ -679,10 +679,10 @@ export default function Dashboard() {
                                                             </div>
                                                             <div className="flex flex-col items-start overflow-hidden">
                                                                 <p className="font-medium text-sm text-left truncate max-w-[180px]" title={booking.package_name || booking.style_name}>
-                                                                    {booking.service_type === 'studio' ? 'Studio' : 'Photobox'} – {booking.package_name?.replace('Paket Foto Studio – ', '') || booking.style_name || booking.service_type}
+                                                                    {booking.service_type === 'studio' ? t('dashboard:sidebar.studio') : t('dashboard:sidebar.photobox')} – {booking.package_name?.replace('Paket Foto Studio – ', '') || booking.style_name || booking.service_type}
                                                                 </p>
                                                                 <p className="text-xs text-muted-foreground text-left">
-                                                                    {format(new Date(booking.booking_date), 'd MMM yyyy', { locale: id })} • {booking.start_time}
+                                                                    {formatDate(new Date(booking.booking_date), 'd MMM yyyy', i18n.language)} • {booking.start_time}
                                                                 </p>
                                                             </div>
                                                         </div>
@@ -690,14 +690,14 @@ export default function Dashboard() {
                                                         {/* Status */}
                                                         <div className="flex items-center justify-center text-center px-2 py-4">
                                                             <span className={`inline-flex items-center justify-center px-2.5 py-0.5 rounded-full text-xs font-medium border uppercase tracking-wide ${getStatusColor(displayStatus)}`}>
-                                                                {displayStatus}
+                                                                {getStatusLabel(displayStatus)}
                                                             </span>
                                                         </div>
 
                                                         {/* Total */}
                                                         <div className="flex items-center justify-center text-center px-2 py-4">
                                                             <div className="text-sm font-medium text-muted-foreground">
-                                                                Rp {booking.total_amount?.toLocaleString('id-ID')}
+                                                                {formatCurrency(booking.total_amount, i18n.language)}
                                                             </div>
                                                         </div>
 
@@ -715,7 +715,7 @@ export default function Dashboard() {
                                                                             className="h-7 text-xs px-2 flex-1 bg-amber-600 hover:bg-amber-700 text-white border-none shadow-sm"
                                                                             onClick={() => handleResumePaymentClick('FULL', booking.id)}
                                                                         >
-                                                                            Bayar
+                                                                            {t('dashboard:history.actions.pay')}
                                                                         </Button>
                                                                         <Button
                                                                             size="sm"
@@ -726,7 +726,7 @@ export default function Dashboard() {
                                                                                 setShowCancelDialog(true);
                                                                             }}
                                                                         >
-                                                                            Batal
+                                                                            {t('dashboard:history.actions.cancel')}
                                                                         </Button>
                                                                     </div>
                                                                 </div>
@@ -734,20 +734,20 @@ export default function Dashboard() {
                                                                 <div className="flex flex-col items-center gap-1">
                                                                     <span className="text-xs font-medium text-blue-700 flex items-center gap-1">
                                                                         <Check className="w-3 h-3" />
-                                                                        DP Terbayar
+                                                                        {t('dashboard:history.paymentStatus.dpPaid')}
                                                                     </span>
                                                                     <span className="text-[10px] text-muted-foreground leading-tight text-center">
-                                                                        Pelunasan di studio
+                                                                        {t('dashboard:history.paymentStatus.settlementAtStudio')}
                                                                     </span>
                                                                 </div>
                                                             ) : displayStatus === 'LUNAS' || displayStatus === 'PAID' ? (
                                                                 <span className="text-xs font-medium text-green-700 flex items-center gap-1">
                                                                     <Check className="w-3 h-3" />
-                                                                    Lunas
+                                                                    {t('dashboard:history.paymentStatus.paid')}
                                                                 </span>
                                                             ) : displayStatus === 'EXPIRED' ? (
                                                                 <div className="flex flex-col items-center">
-                                                                    <span className="text-xs font-medium text-muted-foreground">Waktu habis</span>
+                                                                    <span className="text-xs font-medium text-muted-foreground">{t('dashboard:history.paymentStatus.expired')}</span>
                                                                 </div>
                                                             ) : (
                                                                 <span className="text-xs text-muted-foreground capitalize">-</span>
@@ -760,17 +760,17 @@ export default function Dashboard() {
                                                                 <DropdownMenuTrigger asChild>
                                                                     <Button variant="ghost" size="icon" className="h-8 w-8 text-muted-foreground hover:text-foreground">
                                                                         <MoreVertical className="w-4 h-4" />
-                                                                        <span className="sr-only">Lihat Detail</span>
+                                                                        <span className="sr-only">{t('dashboard:history.actions.detail')}</span>
                                                                     </Button>
                                                                 </DropdownMenuTrigger>
                                                                 <DropdownMenuContent align="end">
                                                                     <DropdownMenuItem onClick={() => setSelectedBooking(booking)}>
                                                                         <Search className="mr-2 h-4 w-4" />
-                                                                        <span>Detail Booking</span>
+                                                                        <span>{t('dashboard:history.actions.detail')}</span>
                                                                     </DropdownMenuItem>
-                                                                    <DropdownMenuItem onClick={() => { /* In future: Open Invoice */ setSelectedBooking(booking); }}>
+                                                                    <DropdownMenuItem onClick={() => { setSelectedBooking(booking); }}>
                                                                         <FileText className="mr-2 h-4 w-4" />
-                                                                        <span>Invoice</span>
+                                                                        <span>{t('dashboard:history.actions.invoice')}</span>
                                                                     </DropdownMenuItem>
                                                                 </DropdownMenuContent>
                                                             </DropdownMenu>
@@ -788,10 +788,10 @@ export default function Dashboard() {
                                                                     <div className="flex items-center gap-2">
                                                                         <p className="font-medium text-sm capitalize">{booking.service_type}</p>
                                                                         <span className={`inline-flex items-center px-1.5 py-0.5 rounded text-[10px] font-medium border uppercase tracking-wide ${getStatusColor(displayStatus)}`}>
-                                                                            {displayStatus}
+                                                                            {getStatusLabel(displayStatus)}
                                                                         </span>
                                                                     </div>
-                                                                    <p className="text-xs text-muted-foreground mt-0.5">{format(new Date(booking.booking_date), 'd MMM yyyy', { locale: id })} • {booking.start_time}</p>
+                                                                    <p className="text-xs text-muted-foreground mt-0.5">{formatDate(new Date(booking.booking_date), 'd MMM yyyy', i18n.language)} • {booking.start_time}</p>
                                                                 </div>
                                                             </div>
                                                             <DropdownMenu>
@@ -803,11 +803,11 @@ export default function Dashboard() {
                                                                 <DropdownMenuContent align="end">
                                                                     <DropdownMenuItem onClick={() => setSelectedBooking(booking)}>
                                                                         <Search className="mr-2 h-4 w-4" />
-                                                                        <span>Detail Booking</span>
+                                                                        <span>{t('dashboard:history.actions.detail')}</span>
                                                                     </DropdownMenuItem>
                                                                     <DropdownMenuItem onClick={() => setSelectedBooking(booking)}>
                                                                         <FileText className="mr-2 h-4 w-4" />
-                                                                        <span>Invoice</span>
+                                                                        <span>{t('dashboard:history.actions.invoice')}</span>
                                                                     </DropdownMenuItem>
                                                                 </DropdownMenuContent>
                                                             </DropdownMenu>
@@ -817,15 +817,15 @@ export default function Dashboard() {
                                                         {displayStatus === 'PENDING' && (
                                                             <div className="bg-amber-50 rounded-lg p-3 border border-amber-100 flex flex-col gap-3">
                                                                 <div className="flex items-center justify-between">
-                                                                    <span className="text-xs text-amber-800">Sisa Waktu Pembayaran</span>
+                                                                    <span className="text-xs text-amber-800">{t('dashboard:history.paymentStatus.timeLeft')}</span>
                                                                     <span className="font-mono font-bold text-amber-700 text-sm animate-pulse">{timeLeftString}</span>
                                                                 </div>
                                                                 <div className="grid grid-cols-2 gap-2">
                                                                     <Button size="sm" className="h-8 bg-amber-600 hover:bg-amber-700 text-white text-xs" onClick={() => handleResumePaymentClick('FULL', booking.id)}>
-                                                                        Lanjut Bayar
+                                                                        {t('common:buttons.continuePay', 'Lanjut Bayar')}
                                                                     </Button>
                                                                     <Button size="sm" variant="outline" className="h-8 border-red-200 text-red-600 hover:bg-red-50 text-xs" onClick={() => { setBookingToCancel(booking); setShowCancelDialog(true); }}>
-                                                                        Batalkan
+                                                                        {t('dashboard:history.actions.cancel')}
                                                                     </Button>
                                                                 </div>
                                                             </div>
@@ -835,8 +835,8 @@ export default function Dashboard() {
                                                                 <div className="flex items-start gap-2">
                                                                     <Check className="w-4 h-4 text-blue-600 mt-0.5" />
                                                                     <div className="flex flex-col">
-                                                                        <span className="text-xs font-medium text-blue-800">DP Sudah Dibayar</span>
-                                                                        <span className="text-[10px] text-blue-600 mt-0.5">Pelunasan dilakukan langsung di studio.</span>
+                                                                        <span className="text-xs font-medium text-blue-800">{t('dashboard:history.paymentStatus.dpPaidNote')}</span>
+                                                                        <span className="text-[10px] text-blue-600 mt-0.5">{t('dashboard:history.paymentStatus.settlementAtStudioNote')}</span>
                                                                     </div>
                                                                 </div>
                                                             </div>
@@ -849,11 +849,11 @@ export default function Dashboard() {
                                 ) : (
                                     <div className="text-center py-16 bg-white rounded-xl border border-dashed">
                                         <History className="w-12 h-12 text-gray-300 mx-auto mb-4" />
-                                        <h3 className="text-lg font-medium">Belum ada riwayat booking</h3>
-                                        <p className="text-muted-foreground mb-6">Booking studio atau photobox sekarang untuk membuat kenangan!</p>
+                                        <h3 className="text-lg font-medium">{t('dashboard:history.noHistory')}</h3>
+                                        <p className="text-muted-foreground mb-6">{t('dashboard:history.noHistoryDescription')}</p>
                                         <div className="flex gap-4 justify-center">
-                                            <Button onClick={() => navigate('/#packages')}>Book Studio</Button>
-                                            <Button variant="outline" onClick={() => navigate('/#photobox')}>Book Photobox</Button>
+                                            <Button onClick={() => navigate('/#packages')}>{t('dashboard:history.bookStudio')}</Button>
+                                            <Button variant="outline" onClick={() => navigate('/#photobox')}>{t('dashboard:history.bookPhotobox')}</Button>
                                         </div>
                                     </div>
                                 )}
@@ -862,43 +862,43 @@ export default function Dashboard() {
                             {/* PROFILE TAB */}
                             <TabsContent value="profile" className="space-y-6 animate-in fade-in duration-500">
                                 <div>
-                                    <h2 className="text-2xl font-display font-bold mb-1">Profil Akun</h2>
-                                    <p className="text-muted-foreground">Kelola informasi pribadi Anda.</p>
+                                    <h2 className="text-2xl font-display font-bold mb-1">{t('dashboard:profile.title')}</h2>
+                                    <p className="text-muted-foreground">{t('dashboard:profile.description')}</p>
                                 </div>
 
                                 <div className="bg-white rounded-xl border p-6 max-w-2xl">
                                     <form onSubmit={handleUpdateProfile} className="space-y-6">
                                         <div className="space-y-4">
                                             <div className="grid gap-2">
-                                                <Label htmlFor="fullName">Nama Lengkap</Label>
+                                                <Label htmlFor="fullName">{t('dashboard:profile.fields.fullName')}</Label>
                                                 <Input
                                                     id="fullName"
                                                     value={fullName}
                                                     onChange={(e) => setFullName(e.target.value)}
-                                                    placeholder="Nama Lengkap Anda"
+                                                    placeholder={t('dashboard:profile.fields.fullNamePlaceholder')}
                                                 />
                                             </div>
 
                                             <div className="grid gap-2">
-                                                <Label htmlFor="whatsapp">Nomor WhatsApp</Label>
+                                                <Label htmlFor="whatsapp">{t('dashboard:profile.fields.whatsapp')}</Label>
                                                 <div className="relative">
                                                     <Input
                                                         id="whatsapp"
                                                         type="tel"
                                                         value={whatsapp}
                                                         onChange={(e) => setWhatsapp(e.target.value)}
-                                                        placeholder="08xxxxxxxxxx"
+                                                        placeholder={t('dashboard:profile.fields.whatsappPlaceholder')}
                                                         className="pl-10"
                                                     />
                                                     <div className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground">
                                                         <span className="text-xs font-medium">+62</span>
                                                     </div>
                                                 </div>
-                                                <p className="text-xs text-muted-foreground">Nomor ini akan digunakan sebagai kontak utama untuk booking.</p>
+                                                <p className="text-xs text-muted-foreground">{t('dashboard:profile.fields.whatsappNote')}</p>
                                             </div>
 
                                             <div className="grid gap-2">
-                                                <Label htmlFor="email">Email</Label>
+                                                <Label htmlFor="email">{t('dashboard:profile.fields.email')}</Label>
                                                 <Input
                                                     id="email"
                                                     type="email"
@@ -906,13 +906,13 @@ export default function Dashboard() {
                                                     disabled
                                                     className="bg-slate-50 text-muted-foreground"
                                                 />
-                                                <p className="text-xs text-muted-foreground">Email tidak dapat diubah karena terdaftar sebagai akun login.</p>
+                                                <p className="text-xs text-muted-foreground">{t('dashboard:profile.fields.emailNote')}</p>
                                             </div>
                                         </div>
 
                                         <div className="pt-4 border-t flex justify-end">
                                             <Button type="submit" variant="sage" disabled={isUpdatingProfile}>
-                                                {isUpdatingProfile ? 'Menyimpan...' : 'Simpan Perubahan'}
+                                                {isUpdatingProfile ? t('dashboard:profile.saving') : t('dashboard:profile.saveChanges')}
                                             </Button>
                                         </div>
                                     </form>
@@ -933,9 +933,9 @@ export default function Dashboard() {
             <Dialog open={showPaymentModal} onOpenChange={setShowPaymentModal}>
                 <DialogContent className="sm:max-w-md">
                     <DialogHeader>
-                        <DialogTitle>Pilih Metode Pembayaran</DialogTitle>
+                        <DialogTitle>{t('dashboard:booking.paymentModal.title')}</DialogTitle>
                         <DialogDescription>
-                            Anda ingin membayar lunas atau DP 50% dulu?
+                            {t('dashboard:booking.paymentModal.description')}
                         </DialogDescription>
                     </DialogHeader>
                     <div className="grid gap-4 py-4">
@@ -946,8 +946,8 @@ export default function Dashboard() {
                             disabled={isProcessing}
                         >
                             <div className="text-left">
-                                <div className="font-semibold">Full Payment</div>
-                                <div className="text-xs text-muted-foreground">Bayar lunas sekarang</div>
+                                <div className="font-semibold">{t('dashboard:booking.paymentModal.full.title')}</div>
+                                <div className="text-xs text-muted-foreground">{t('dashboard:booking.paymentModal.full.description')}</div>
                             </div>
                             <div className="text-[#849283] font-bold">100%</div>
                         </Button>
@@ -958,8 +958,8 @@ export default function Dashboard() {
                             disabled={isProcessing}
                         >
                             <div className="text-left">
-                                <div className="font-semibold">Down Payment (DP)</div>
-                                <div className="text-xs text-muted-foreground">Bayar 50% untuk booking</div>
+                                <div className="font-semibold">{t('dashboard:booking.paymentModal.dp.title')}</div>
+                                <div className="text-xs text-muted-foreground">{t('dashboard:booking.paymentModal.dp.description')}</div>
                             </div>
                             <div className="text-[#849283] font-bold">50%</div>
                         </Button>
@@ -970,13 +970,13 @@ export default function Dashboard() {
             <AlertDialog open={showCancelDialog} onOpenChange={setShowCancelDialog}>
                 <AlertDialogContent>
                     <AlertDialogHeader>
-                        <AlertDialogTitle>Batalkan Booking?</AlertDialogTitle>
+                        <AlertDialogTitle>{t('dashboard:booking.cancelDialog.title')}</AlertDialogTitle>
                         <AlertDialogDescription>
-                            Tindakan ini tidak dapat dibatalkan. Booking Anda akan dihapus dari jadwal aktif.
+                            {t('dashboard:booking.cancelDialog.description')}
                         </AlertDialogDescription>
                     </AlertDialogHeader>
                     <AlertDialogFooter>
-                        <AlertDialogCancel>Kembali</AlertDialogCancel>
+                        <AlertDialogCancel>{t('dashboard:booking.cancelDialog.back')}</AlertDialogCancel>
                         <AlertDialogAction
                             onClick={(e) => {
                                 e.preventDefault();
@@ -984,11 +984,11 @@ export default function Dashboard() {
                             }}
                             className="bg-red-600 hover:bg-red-700 text-white"
                         >
-                            {isProcessing ? 'Memproses...' : 'Ya, Batalkan'}
+                            {isProcessing ? t('dashboard:booking.cancelDialog.processing') : t('dashboard:booking.cancelDialog.confirm')}
                         </AlertDialogAction>
                     </AlertDialogFooter>
                 </AlertDialogContent>
             </AlertDialog>
-        </div >
+        </div>
     );
 }

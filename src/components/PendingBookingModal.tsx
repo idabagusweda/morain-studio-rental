@@ -9,8 +9,8 @@ import {
     AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
 import { PaymentTimer } from "@/components/PaymentTimer";
-import { format } from "date-fns";
-import { id } from "date-fns/locale";
+import { useTranslation } from "react-i18next";
+import { formatDate } from "@/lib/i18nUtils";
 
 interface PendingBookingModalProps {
     booking: any;
@@ -21,37 +21,38 @@ interface PendingBookingModalProps {
 }
 
 export const PendingBookingModal = ({ booking, isOpen, onCancel, onResume, isProcessing }: PendingBookingModalProps) => {
+    const { t, i18n } = useTranslation(['booking', 'common']);
     if (!booking) return null;
 
     return (
         <AlertDialog open={isOpen}>
             <AlertDialogContent>
                 <AlertDialogHeader>
-                    <AlertDialogTitle>Anda memiliki booking pending</AlertDialogTitle>
+                    <AlertDialogTitle>{t('booking:pendingModal.title')}</AlertDialogTitle>
                     <AlertDialogDescription>
-                        Anda masih memiliki booking yang belum dibayar. Mohon selesaikan atau batalkan sebelum membuat booking baru.
+                        {t('booking:pendingModal.description')}
                     </AlertDialogDescription>
                 </AlertDialogHeader>
 
                 <div className="bg-slate-50 p-4 rounded-lg text-sm space-y-2 border">
                     <div className="flex justify-between font-medium">
-                        <span>{booking.service_type === 'studio' ? 'Studio' : 'Photobox'}</span>
+                        <span>{booking.service_type === 'studio' ? t('common:services.studio', 'Studio') : t('common:services.photobox', 'Photobox')}</span>
                         <span className="font-mono">{booking.booking_code}</span>
                     </div>
                     <div className="text-muted-foreground flex justify-between">
-                        <span>{format(new Date(booking.booking_date), 'd MMMM yyyy', { locale: id })}</span>
+                        <span>{formatDate(new Date(booking.booking_date), 'd MMMM yyyy', i18n.language)}</span>
                         <span>{booking.start_time}</span>
                     </div>
                     <div className="flex justify-between items-center pt-2 border-t mt-2">
-                        <span className="text-muted-foreground">Sisa Waktu:</span>
+                        <span className="text-muted-foreground">{t('booking:payment.timeLeft')}:</span>
                         <PaymentTimer expiresAt={booking.expires_at} showLabel={false} center={false} />
                     </div>
                 </div>
 
                 <AlertDialogFooter>
-                    <AlertDialogCancel onClick={onCancel} disabled={isProcessing}>Batalkan Booking Ini</AlertDialogCancel>
+                    <AlertDialogCancel onClick={onCancel} disabled={isProcessing}>{t('booking:pendingModal.cancel')}</AlertDialogCancel>
                     <AlertDialogAction onClick={(e) => { e.preventDefault(); onResume(); }} disabled={isProcessing} className="bg-[#849283] hover:bg-[#6b7a6a]">
-                        {isProcessing ? 'Memproses...' : 'Lanjut Bayar'}
+                        {isProcessing ? t('booking:summary.processing') : t('booking:pendingModal.continuePay')}
                     </AlertDialogAction>
                 </AlertDialogFooter>
             </AlertDialogContent>

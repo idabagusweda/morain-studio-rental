@@ -1,6 +1,7 @@
 import { useState, useEffect, useCallback, useRef } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
+import { useTranslation } from 'react-i18next';
 
 // Standalone function to sync expired payments
 export const syncExpiredPayments = async () => {
@@ -67,6 +68,7 @@ export const usePaymentCountdown = (expiresAt: string | null) => {
 };
 
 export const usePaymentLogic = () => {
+    const { t } = useTranslation(['booking', 'common']);
     const { toast } = useToast();
     const [isProcessing, setIsProcessing] = useState(false);
 
@@ -100,7 +102,7 @@ export const usePaymentLogic = () => {
         if (!booking || !booking.redirect_url) {
             toast({
                 title: "Error",
-                description: "Link pembayaran tidak ditemukan.",
+                description: t('booking:messages.paymentLinkNotFound'),
                 variant: "destructive"
             });
             return;
@@ -132,18 +134,18 @@ export const usePaymentLogic = () => {
 
             if (!response.ok) {
                 const err = await response.json();
-                throw new Error(err.details || err.error || 'Gagal membatalkan booking');
+                throw new Error(err.details || err.error || t('booking:messages.cancelFailed'));
             }
 
             toast({
-                title: "Booking Dibatalkan",
-                description: "Booking berhasil dibatalkan."
+                title: t('booking:messages.bookingCancelled'),
+                description: t('booking:messages.bookingCancelledDesc')
             });
 
             return true;
         } catch (error: any) {
             toast({
-                title: 'Gagal Membatalkan',
+                title: t('booking:messages.cancelFailed'),
                 description: error.message,
                 variant: 'destructive'
             });

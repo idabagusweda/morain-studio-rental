@@ -16,6 +16,9 @@ import { TermsModal } from './TermsModal';
 import { useToast } from '@/hooks/use-toast';
 import { usePaymentLogic } from '@/hooks/usePaymentLogic';
 import { PendingBookingModal } from '@/components/PendingBookingModal';
+import { useTranslation } from 'react-i18next';
+import { formatCurrency, formatDate } from '@/lib/i18nUtils';
+import { id } from 'date-fns/locale';
 
 interface PhotoboxBookingModalProps {
   isOpen: boolean;
@@ -67,6 +70,7 @@ const paymentMethodsList = [
 ];
 
 export const PhotoboxBookingModal = ({ isOpen, onClose, styles, initialSelectedStyle }: PhotoboxBookingModalProps) => {
+  const { t, i18n } = useTranslation(['booking', 'common', 'auth']);
   const { user, profile } = useAuth();
   const { toast } = useToast();
   const { checkActivePendingPayment, resumePayment, cancelBooking, isProcessing: isPaymentProcessing } = usePaymentLogic();
@@ -349,11 +353,11 @@ export const PhotoboxBookingModal = ({ isOpen, onClose, styles, initialSelectedS
   };
 
   const steps = [
-    { num: 1, label: 'Jadwal', icon: CalendarDays },
-    { num: 2, label: 'Style', icon: Sparkles },
-    { num: 3, label: 'Data', icon: User },
-    { num: 4, label: 'Bayar', icon: Wallet },
-    { num: 5, label: 'Konfirmasi', icon: Check },
+    { num: 1, label: t('booking:steps.schedule'), icon: CalendarDays },
+    { num: 2, label: t('booking:steps.style'), icon: Sparkles },
+    { num: 3, label: t('booking:steps.data'), icon: User },
+    { num: 4, label: t('booking:steps.payment'), icon: Wallet },
+    { num: 5, label: t('booking:steps.confirm'), icon: Check },
   ];
 
   // Common Summary Component
@@ -361,40 +365,40 @@ export const PhotoboxBookingModal = ({ isOpen, onClose, styles, initialSelectedS
     <div className={`space-y-4 p-5 bg-[#849283]/5 rounded-xl border border-[#849283]/10 h-fit ${className}`}>
       <h4 className="font-display font-medium text-lg flex items-center gap-2 text-[#849283]">
         <Sparkles className="w-4 h-4" />
-        Ringkasan Booking
+        {t('booking:summary.title')}
       </h4>
       <div className="space-y-3 text-sm">
         <div className="flex justify-between py-2 border-b border-dashed border-[#849283]/20">
-          <span className="text-muted-foreground">Style</span>
+          <span className="text-muted-foreground">{t('booking:steps.style')}</span>
           <span className="font-medium">{styles.find(s => s.id === selectedStyle)?.name || '-'}</span>
         </div>
         <div className="flex justify-between py-2 border-b border-dashed border-[#849283]/20">
-          <span className="text-muted-foreground">Durasi</span>
-          <span className="font-medium">15 Menit</span>
+          <span className="text-muted-foreground">{t('booking:summary.duration')}</span>
+          <span className="font-medium">15 {t('common:time.minutes')}</span>
         </div>
         {selectedDate && (
           <div className="flex justify-between py-2 border-b border-dashed border-[#849283]/20">
-            <span className="text-muted-foreground">Tanggal</span>
-            <span className="font-medium">{selectedDate.toLocaleDateString('id-ID')}</span>
+            <span className="text-muted-foreground">{t('booking:summary.date')}</span>
+            <span className="font-medium">{formatDate(selectedDate, 'dd/MM/yyyy', i18n.language)}</span>
           </div>
         )}
         {selectedTime && (
           <div className="flex justify-between py-2 border-b border-dashed border-[#849283]/20">
-            <span className="text-muted-foreground">Jam</span>
+            <span className="text-muted-foreground">{t('booking:summary.time')}</span>
             <span className="font-medium">{selectedTime} WITA</span>
           </div>
         )}
 
         {step >= 4 && (
           <div className="flex justify-between py-2 border-b border-dashed border-[#849283]/20">
-            <span className="text-muted-foreground">{paymentType === 'full' ? 'Bayar Full' : 'DP 50%'}</span>
-            <span className="font-medium text-[#849283]">Rp {paymentAmount.toLocaleString('id-ID')}</span>
+            <span className="text-muted-foreground">{paymentType === 'full' ? t('booking:payment.full') : t('booking:payment.dp')}</span>
+            <span className="font-medium text-[#849283]">{formatCurrency(paymentAmount, i18n.language)}</span>
           </div>
         )}
 
         <div className="flex justify-between pt-2">
-          <span className="text-muted-foreground">Total Estimasi</span>
-          <span className="font-bold text-lg text-[#849283]">Rp {price.toLocaleString('id-ID')}</span>
+          <span className="text-muted-foreground">{t('booking:summary.estimatedTotal')}</span>
+          <span className="font-bold text-lg text-[#849283]">{formatCurrency(price, i18n.language)}</span>
         </div>
       </div>
     </div>
@@ -504,7 +508,7 @@ export const PhotoboxBookingModal = ({ isOpen, onClose, styles, initialSelectedS
                 <div className="space-y-4">
                   <div className="flex items-center gap-2 mb-2">
                     <CalendarDays className="w-5 h-5 text-[#849283]" />
-                    <Label className="text-base font-medium">Pilih Tanggal</Label>
+                    <Label className="text-base font-medium">{t('booking:date.select')}</Label>
                   </div>
                   <div className="flex justify-center lg:justify-start">
                     <Calendar
@@ -528,7 +532,7 @@ export const PhotoboxBookingModal = ({ isOpen, onClose, styles, initialSelectedS
                 <div className="space-y-6">
                   <div className="flex items-center gap-2 mb-2">
                     <Clock className="w-5 h-5 text-[#849283]" />
-                    <Label className="text-base font-medium">Pilih Jam (WITA)</Label>
+                    <Label className="text-base font-medium">{t('booking:time.select')}</Label>
                   </div>
                   {selectedDate ? (
                     <div className="space-y-4 animate-in fade-in duration-300">
@@ -584,15 +588,15 @@ export const PhotoboxBookingModal = ({ isOpen, onClose, styles, initialSelectedS
                       <div className="p-4 bg-secondary/30 rounded-lg text-sm text-muted-foreground flex gap-3 items-start border border-border/50">
                         <Clock className="w-4 h-4 mt-0.5 shrink-0" />
                         <div>
-                          <p className="font-medium text-foreground mb-1">Informasi Waktu</p>
-                          <p>Setiap sesi berdurasi 15 menit. Mohon hadir tepat waktu.</p>
+                          <p className="font-medium text-foreground mb-1">{t('booking:time.timeInfo')}</p>
+                          <p>{t('booking:time.photoboxSessionDuration')}</p>
                         </div>
                       </div>
                     </div>
                   ) : (
                     <div className="h-full flex flex-col items-center justify-center text-muted-foreground border-2 border-dashed rounded-xl p-8 bg-secondary/20">
                       <CalendarDays className="w-10 h-10 mb-2 opacity-50" />
-                      <p>Silakan pilih tanggal terlebih dahulu</p>
+                      <p>{t('booking:time.selectDateFirst')}</p>
                     </div>
                   )}
                 </div>
@@ -604,7 +608,7 @@ export const PhotoboxBookingModal = ({ isOpen, onClose, styles, initialSelectedS
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 animate-in fade-in slide-in-from-right-4 duration-500">
                 <div className="space-y-6">
                   <div>
-                    <Label className="text-base font-medium mb-4 block">Pilih Style Photobox</Label>
+                    <Label className="text-base font-medium mb-4 block">{t('booking:photobox.selectTheme')}</Label>
                     <div className="grid grid-cols-1 gap-4">
                       {styles.map((style) => {
                         const MODAL_STYLE_THEMES: Record<string, { iconBg: string; border: string }> = {
@@ -674,50 +678,50 @@ export const PhotoboxBookingModal = ({ isOpen, onClose, styles, initialSelectedS
                 <div className="space-y-5">
                   <div className="flex items-center gap-2 mb-1">
                     <User className="w-5 h-5 text-[#849283]" />
-                    <Label className="text-base font-medium">Data Pemesan</Label>
+                    <Label className="text-base font-medium">{t('booking:form.title')}</Label>
                   </div>
 
                   <div className="space-y-4">
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                       <div className="space-y-2">
-                        <Label htmlFor="name">Nama Lengkap <span className="text-red-500">*</span></Label>
+                        <Label htmlFor="name">{t('booking:form.fullName')} <span className="text-red-500">*</span></Label>
                         <Input
                           id="name"
                           value={formData.name}
                           onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                          placeholder="Nama sesuai KTP"
+                          placeholder={t('booking:form.fullNamePlaceholder')}
                           className="bg-white h-11"
                         />
-                        {!formData.name && <p className="text-[10px] text-red-500">Wajib diisi</p>}
+                        {!formData.name && <p className="text-[10px] text-red-500">{t('booking:form.required')}</p>}
                       </div>
                       <div className="space-y-2">
-                        <Label htmlFor="whatsapp">WhatsApp <span className="text-red-500">*</span></Label>
+                        <Label htmlFor="whatsapp">{t('booking:form.whatsapp')} <span className="text-red-500">*</span></Label>
                         <Input
                           id="whatsapp"
                           value={formData.whatsapp}
                           onChange={(e) => setFormData({ ...formData, whatsapp: e.target.value })}
-                          placeholder="08xxxxxxxxxx"
+                          placeholder={t('booking:form.whatsappPlaceholder')}
                           className="bg-white h-11"
                         />
-                        {!formData.whatsapp && <p className="text-[10px] text-red-500">Wajib diisi</p>}
+                        {!formData.whatsapp && <p className="text-[10px] text-red-500">{t('booking:form.required')}</p>}
                       </div>
                     </div>
 
                     <div className="space-y-2">
-                      <Label htmlFor="email">Email <span className="text-red-500">*</span></Label>
+                      <Label htmlFor="email">{t('booking:form.email')} <span className="text-red-500">*</span></Label>
                       <Input
                         id="email"
                         type="email"
                         value={formData.email}
                         onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                        placeholder="email@contoh.com"
+                        placeholder={t('booking:form.emailPlaceholder')}
                         className="bg-white h-11"
                       />
-                      {!formData.email && <p className="text-[10px] text-red-500">Wajib diisi</p>}
+                      {!formData.email && <p className="text-[10px] text-red-500">{t('booking:form.required')}</p>}
                     </div>
 
                     <div className="space-y-2">
-                      <Label htmlFor="guests">Jumlah Orang (Maks 5) <span className="text-red-500">*</span></Label>
+                      <Label htmlFor="guests">{t('booking:form.guestsCountMax5')} <span className="text-red-500">*</span></Label>
                       <Input
                         id="guests"
                         type="number"
@@ -727,16 +731,16 @@ export const PhotoboxBookingModal = ({ isOpen, onClose, styles, initialSelectedS
                         onChange={(e) => setFormData({ ...formData, guests: e.target.value })}
                         className="bg-white h-11"
                       />
-                      {!formData.guests && <p className="text-[10px] text-red-500">Wajib diisi</p>}
+                      {!formData.guests && <p className="text-[10px] text-red-500">{t('booking:form.required')}</p>}
                     </div>
 
                     <div className="space-y-2">
-                      <Label htmlFor="notes">Catatan Tambahan (Opsional)</Label>
+                      <Label htmlFor="notes">{t('booking:form.notes')}</Label>
                       <Textarea
                         id="notes"
                         value={formData.notes}
                         onChange={(e) => setFormData({ ...formData, notes: e.target.value })}
-                        placeholder="Ada request khusus? Tulis disini..."
+                        placeholder={t('booking:form.notesPlaceholder')}
                         rows={3}
                         className="bg-white resize-none"
                       />
@@ -761,7 +765,7 @@ export const PhotoboxBookingModal = ({ isOpen, onClose, styles, initialSelectedS
                       <div className="bg-[#849283] text-white p-1 rounded-md">
                         <CreditCard className="w-3 h-3" />
                       </div>
-                      Opsi Pembayaran
+                      {t('booking:payment.options')}
                     </Label>
                     <div className="grid grid-cols-2 gap-4">
                       <div
@@ -772,10 +776,10 @@ export const PhotoboxBookingModal = ({ isOpen, onClose, styles, initialSelectedS
                             : 'border-border hover:border-[#849283]/30 bg-white'}`}
                       >
                         <div className="flex justify-between items-center">
-                          <span className="font-medium">Bayar Full (100%)</span>
+                          <span className="font-medium">{t('booking:payment.full')}</span>
                           {paymentType === 'full' && <div className="w-4 h-4 rounded-full bg-[#849283] flex items-center justify-center"><Check className="w-3 h-3 text-white" /></div>}
                         </div>
-                        <p className="text-xs text-muted-foreground">Lunasi semua sekarang.</p>
+                        <p className="text-xs text-muted-foreground">{t('booking:payment.fullDesc')}</p>
                       </div>
 
                       <div
@@ -786,10 +790,10 @@ export const PhotoboxBookingModal = ({ isOpen, onClose, styles, initialSelectedS
                             : 'border-border hover:border-[#849283]/30 bg-white'}`}
                       >
                         <div className="flex justify-between items-center">
-                          <span className="font-medium">DP (50%)</span>
+                          <span className="font-medium">{t('booking:payment.dp')}</span>
                           {paymentType === 'dp' && <div className="w-4 h-4 rounded-full bg-[#849283] flex items-center justify-center"><Check className="w-3 h-3 text-white" /></div>}
                         </div>
-                        <p className="text-xs text-muted-foreground">Amankan slot dengan DP.</p>
+                        <p className="text-xs text-muted-foreground">{t('booking:payment.dpDesc')}</p>
                       </div>
                     </div>
                   </div>
@@ -797,19 +801,19 @@ export const PhotoboxBookingModal = ({ isOpen, onClose, styles, initialSelectedS
                   {/* Payment Methods - REMOVED for Midtrans Snap Integration */}
                   {/* Midtrans Snap handles payment method selection automatically */}
                   <div className="p-4 bg-muted/30 rounded-lg text-sm text-muted-foreground">
-                    Metode pembayaran (Transfer Bank, E-Wallet, QRIS, dll) akan dipilih pada halaman pembayaran selanjutnya.
+                    {t('booking:payment.methodNotice')}
                   </div>
 
                 </div>
 
                 <div className="flex flex-col">
                   <div className="space-y-6 p-6 bg-gradient-to-br from-[#849283]/10 to-transparent rounded-2xl border border-[#849283]/20 sticky top-4">
-                    <h3 className="font-display font-medium text-xl text-[#849283]">Rincian Pembayaran</h3>
+                    <h3 className="font-display font-medium text-xl text-[#849283]">{t('booking:payment.breakdown')}</h3>
 
                     <div className="space-y-4">
                       <div className="flex justify-between items-center text-sm">
-                        <span className="text-muted-foreground">Total Booking</span>
-                        <span className="font-medium text-foreground">Rp {price.toLocaleString('id-ID')}</span>
+                        <span className="text-muted-foreground">{t('booking:payment.totalBooking')}</span>
+                        <span className="font-medium text-foreground">{formatCurrency(price, i18n.language)}</span>
                       </div>
 
                       <div className="w-full h-px bg-border/50 border-t border-dashed"></div>
@@ -817,28 +821,28 @@ export const PhotoboxBookingModal = ({ isOpen, onClose, styles, initialSelectedS
                       <div className="flex justify-between items-start">
                         <div>
                           <p className="font-medium text-lg">
-                            {paymentType === 'full' ? 'Total Dibayar (100%)' : 'DP Dibayar (50%)'}
+                            {paymentType === 'full' ? t('booking:payment.fullPaid') : t('booking:payment.dpPaid')}
                           </p>
                           <p className="text-xs text-stone-500">
-                            {paymentType === 'full' ? 'Lunas di awal' : 'Bayar sebagian untuk booking'}
+                            {paymentType === 'full' ? t('booking:payment.fullPaidDesc') : t('booking:payment.dpPaidDesc')}
                           </p>
                         </div>
                         <span className="font-display text-3xl font-bold text-[#849283]">
-                          Rp {paymentAmount.toLocaleString('id-ID')}
+                          {formatCurrency(paymentAmount, i18n.language)}
                         </span>
                       </div>
 
                       <div className="flex justify-between items-center text-sm pt-2">
-                        <span className="text-muted-foreground">Sisa Pembayaran</span>
+                        <span className="text-muted-foreground">{t('booking:payment.remainingPayment')}</span>
                         <span className="font-medium text-foreground">
-                          {paymentType === 'full' ? 'Rp 0' : `Rp ${(price - paymentAmount).toLocaleString('id-ID')}`}
+                          {paymentType === 'full' ? formatCurrency(0, i18n.language) : formatCurrency(price - paymentAmount, i18n.language)}
                         </span>
                       </div>
 
                       {paymentType === 'dp' && (
                         <div className="text-xs text-[#849283] bg-[#849283]/5 p-2 rounded-lg border border-[#849283]/10 flex gap-2">
                           <div className="w-1 bg-[#849283] rounded-full shrink-0"></div>
-                          <p>Sisa pembayaran dapat dilunasi langsung di studio saat sesi berlangsung.</p>
+                          <p>{t('booking:payment.dpStudioNote')}</p>
                         </div>
                       )}
 
@@ -847,7 +851,7 @@ export const PhotoboxBookingModal = ({ isOpen, onClose, styles, initialSelectedS
                         <div className="flex items-start gap-3">
                           <div className="flex items-center h-5 mt-0.5">
                             <input
-                              id="terms_pb"
+                              id="terms"
                               type="checkbox"
                               checked={isTermsAccepted}
                               onChange={(e) => setIsTermsAccepted(e.target.checked)}
@@ -855,11 +859,11 @@ export const PhotoboxBookingModal = ({ isOpen, onClose, styles, initialSelectedS
                             />
                           </div>
                           <div className="text-sm">
-                            <label htmlFor="terms_pb" className="font-medium text-foreground cursor-pointer select-none">
-                              Saya setuju dengan <button type="button" onClick={() => setShowTermsModal(true)} className="text-[#849283] underline hover:text-[#6b7a6a] transition-colors focus:outline-none focus:ring-2 focus:ring-[#849283]/20 rounded px-0.5">Terms & Conditions Morain Studio</button>
+                            <label htmlFor="terms" className="font-medium text-foreground cursor-pointer select-none">
+                              {t('booking:payment.termsAgree')} <button type="button" onClick={() => setShowTermsModal(true)} className="text-[#849283] underline hover:text-[#6b7a6a] transition-colors focus:outline-none focus:ring-2 focus:ring-[#849283]/20 rounded px-0.5">{t('booking:payment.termsLink')}</button>
                             </label>
                             <p className="text-muted-foreground text-xs mt-1">
-                              Dengan mencentang ini, Anda menyetujui semua syarat dan ketentuan yang berlaku.
+                              {t('booking:payment.termsNote')}
                             </p>
                           </div>
                         </div>
@@ -878,33 +882,33 @@ export const PhotoboxBookingModal = ({ isOpen, onClose, styles, initialSelectedS
                   <Check className="w-12 h-12 text-[#849283] relative z-10" />
                 </div>
                 <div>
-                  <h2 className="font-display text-2xl font-bold mb-2">Booking Berhasil Dibuat!</h2>
-                  <p className="text-muted-foreground">Silakan lanjutkan pembayaran DP untuk konfirmasi slot.</p>
+                  <h2 className="font-display text-2xl font-bold mb-2">{t('booking:confirmation.success')}</h2>
+                  <p className="text-muted-foreground">{t('booking:confirmation.successSubtitle')}</p>
                 </div>
 
                 <div className="bg-card border border-border/50 rounded-2xl p-6 shadow-sm relative overflow-hidden">
                   <div className="absolute top-0 left-0 w-full h-1 bg-[#849283]"></div>
-                  <p className="text-xs text-muted-foreground mb-2 uppercase tracking-widest font-medium">KODE BOOKING</p>
+                  <p className="text-xs text-muted-foreground mb-2 uppercase tracking-widest font-medium">{t('booking:confirmation.bookingCode')}</p>
                   <p className="font-display text-4xl font-bold text-foreground tracking-tight mb-6">{bookingCode}</p>
 
                   <div className="grid grid-cols-2 gap-4 text-left border-t border-dashed pt-4">
                     <div>
-                      <p className="text-muted-foreground text-xs mb-1">Style</p>
+                      <p className="text-muted-foreground text-xs mb-1">{t('booking:steps.style')}</p>
                       <p className="font-medium text-sm">{styles.find(s => s.id === selectedStyle)?.name || '-'}</p>
                     </div>
                     <div>
-                      <p className="text-muted-foreground text-xs mb-1">Waktu Sesi</p>
-                      <p className="font-medium text-sm">{selectedDate?.toLocaleDateString('id-ID')}, {selectedTime}</p>
+                      <p className="text-muted-foreground text-xs mb-1">{t('booking:confirmation.sessionTime')}</p>
+                      <p className="font-medium text-sm">{selectedDate ? formatDate(selectedDate, 'dd/MM/yyyy', i18n.language) : ''}, {selectedTime}</p>
                     </div>
                   </div>
                 </div>
 
                 <Button variant="hero" className="w-full h-14 text-base shadow-lg hover:shadow-xl hover:shadow-[#849283]/20 transition-all rounded-xl" onClick={handleConfirmWhatsApp}>
                   <MessageCircle className="mr-2 w-5 h-5" />
-                  Konfirmasi & Bayar via WhatsApp
+                  {t('booking:confirmation.confirmWhatsapp')}
                 </Button>
                 <button onClick={handleClose} className="text-sm text-muted-foreground hover:text-foreground transition-colors">
-                  Kembali ke Beranda
+                  {t('booking:confirmation.backHome')}
                 </button>
               </div>
             )}
@@ -917,7 +921,7 @@ export const PhotoboxBookingModal = ({ isOpen, onClose, styles, initialSelectedS
               {step > 1 ? (
                 <Button variant="outline" onClick={handleBack} className="h-12 px-6 border-border/60 hover:bg-secondary/50 hover:text-foreground/70 rounded-xl">
                   <ArrowLeft className="mr-2 w-4 h-4" />
-                  Kembali
+                  {t('common:buttons.back')}
                 </Button>
               ) : (
                 <div></div> // Spacer
@@ -934,7 +938,7 @@ export const PhotoboxBookingModal = ({ isOpen, onClose, styles, initialSelectedS
                 }
                 className="h-12 px-8 shadow-md hover:shadow-lg transition-all rounded-xl min-w-[140px]"
               >
-                {step === 4 ? (isProcessing ? 'Memproses...' : 'Bayar Sekarang') : 'Lanjut'}
+                {step === 4 ? (isProcessing ? t('booking:summary.processing') : t('booking:payment.payNow')) : t('common:buttons.continue')}
                 {!isProcessing && <ArrowRight className="ml-2 w-4 h-4" />}
               </Button>
             </div>

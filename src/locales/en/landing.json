@@ -1,0 +1,185 @@
+{
+  "hero": {
+    "location": "Teuku Umar, Denpasar",
+    "title": "Your Trusted",
+    "titleHighlight": "Studio Rental",
+    "titleEnd": "& Photobox in Denpasar",
+    "description": "Capture your best moments in a clean, bright, and cinematic studio. Convenient booking, real-time schedule, professional results.",
+    "viewPackages": "View Packages & Book",
+    "ourGallery": "Our Gallery"
+  },
+  "packages": {
+    "sectionTag": "Our Packages",
+    "title": "Studio Photo Package",
+    "description": "Choose a studio package that fits your needs. All packages include a professional photographer.",
+    "basic": {
+      "name": "Studio Photo Package – Basic",
+      "price": "Rp 150,000",
+      "unit": "/ hour",
+      "capacity": "Max 5 people",
+      "size": "3×4 m",
+      "description": "Perfect for personal photos, couples, or small product shoots with maximum results."
+    },
+    "standard": {
+      "name": "Studio Photo Package – Standard",
+      "price": "Rp 250,000",
+      "unit": "/ hour",
+      "capacity": "Max 15 people",
+      "size": "4×6 m",
+      "description": "The right choice for small families, group portraits, and content creators.",
+      "popular": "Most Popular"
+    },
+    "premium": {
+      "name": "Studio Photo Package – Premium",
+      "price": "Rp 400,000",
+      "unit": "/ hour",
+      "capacity": "Max 30 people",
+      "size": "6×8 m",
+      "description": "The best solution for large groups, office events, and professional photo sessions."
+    },
+    "facilities": {
+      "softbox": "2-3 lighting softboxes",
+      "backgrounds": "Various background options",
+      "stool": "Aesthetic stool / chair",
+      "mirror": "Full body standing mirror",
+      "ac": "Air-conditioned room",
+      "power": "Power outlets available",
+      "photographer": "Professional photographer included"
+    },
+    "bookButton": "Book {{name}}",
+    "note": "All facilities are included in every package. Additional props can be brought by yourself."
+  },
+  "photobox": {
+    "sectionTag": "Photobox",
+    "title": "Self-Service Photobox",
+    "description": "Capture your moments in a photobox with various aesthetic themes. Perfect for hanging out with friends, couples, or social media content.",
+    "perSession": "/ session",
+    "includes": "Includes:",
+    "prints": "{{count}} printed photos",
+    "digitalCopies": "All digital copies",
+    "props": "Props can be brought",
+    "bookNow": "Book Photobox",
+    "howItWorks": {
+      "title": "How Photobox Works",
+      "step1": {
+        "title": "Choose Theme",
+        "description": "Select your favorite aesthetic theme"
+      },
+      "step2": {
+        "title": "Photo Freely",
+        "description": "Take unlimited photos for 10 minutes"
+      },
+      "step3": {
+        "title": "Print & Download",
+        "description": "Choose 6 best photos to print + all digital photos"
+      }
+    },
+    "themes": {
+      "cowboy": "Cowboy",
+      "retroFilm": "Retro Film",
+      "cyberpunk": "Cyberpunk",
+      "cutePastel": "Cute Pastel",
+      "minimalClean": "Minimal Clean"
+    }
+  },
+  "whyChoose": {
+    "sectionTag": "Why Choose Us",
+    "title": "Why Choose Morain Studio?",
+    "description": "We provide the best studio rental and photobox services in Denpasar with various advantages.",
+    "features": {
+      "professional": {
+        "title": "Professional Photographer",
+        "description": "Every studio package includes an experienced photographer for maximum results."
+      },
+      "equipment": {
+        "title": "Complete Equipment",
+        "description": "Softbox lighting, various backgrounds, and quality photo props."
+      },
+      "realtime": {
+        "title": "Real-Time Booking",
+        "description": "See available schedules directly and book within minutes."
+      },
+      "flexible": {
+        "title": "Flexible Schedule",
+        "description": "Open every day with various time slots to suit your needs."
+      }
+    }
+  },
+  "gallery": {
+    "sectionTag": "Gallery",
+    "title": "Our Portfolio",
+    "description": "See the work of our clients who have trusted Morain Studio.",
+    "viewAll": "View All Photos"
+  },
+  "testimonials": {
+    "sectionTag": "Testimonials",
+    "title": "What They Say?",
+    "description": "Real experiences from clients satisfied with our services."
+  },
+  "faq": {
+    "sectionTag": "FAQ",
+    "title": "Frequently Asked Questions",
+    "description": "Answers to frequently asked questions about our services.",
+    "questions": {
+      "bookingProcess": {
+        "q": "How do I book a studio or photobox?",
+        "a": "Choose the package you want, select the available date and time, then make the payment. You will receive a booking confirmation via email and WhatsApp."
+      },
+      "payment": {
+        "q": "What payment methods are available?",
+        "a": "We accept payments via bank transfer, e-wallets (OVO, GoPay, Dana), and credit/debit cards via Midtrans payment gateway."
+      },
+      "cancellation": {
+        "q": "Can I reschedule or cancel my booking?",
+        "a": "Rescheduling can be done at least 24 hours before the scheduled booking. For cancellations, please contact us via WhatsApp."
+      },
+      "photographer": {
+        "q": "Is a photographer included in the studio package?",
+        "a": "Yes, all studio packages include a professional photographer ready to assist your photo session."
+      },
+      "duration": {
+        "q": "How long is the photo session?",
+        "a": "Studio session duration depends on the package you choose (per hour). For photobox, the standard duration is 10 minutes per session."
+      },
+      "props": {
+        "q": "Can I bring my own props?",
+        "a": "Of course! You are free to bring your own photo props to complete your photo session."
+      }
+    }
+  },
+  "contact": {
+    "sectionTag": "Contact Us",
+    "title": "Contact Us",
+    "description": "Have questions or need help? Our team is ready to assist you.",
+    "form": {
+      "name": "Full Name",
+      "namePlaceholder": "Enter your name",
+      "email": "Email",
+      "emailPlaceholder": "name@email.com",
+      "message": "Message",
+      "messagePlaceholder": "Write your message here...",
+      "send": "Send Message",
+      "sending": "Sending..."
+    },
+    "info": {
+      "address": "Address",
+      "addressValue": "Jl. Teuku Umar, Denpasar, Bali",
+      "phone": "Phone",
+      "email": "Email",
+      "hours": "Operating Hours",
+      "hoursValue": "Every day, 09:00 - 21:00 WITA"
+    },
+    "success": "Message sent successfully! We will contact you soon.",
+    "error": "Failed to send message. Please try again or contact us via WhatsApp."
+  },
+  "footer": {
+    "about": {
+      "title": "About Morain Studio",
+      "description": "Professional photo studio in Denpasar with studio rental and self-service photobox services. Capture your best moments with us."
+    },
+    "quickLinks": "Quick Links",
+    "followUs": "Follow Us",
+    "copyright": "© 2024 Morain Studio. All rights reserved.",
+    "madeWith": "Made with ❤️ in Bali"
+  }
+}

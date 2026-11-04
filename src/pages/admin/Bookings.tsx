@@ -13,8 +13,8 @@ import {
     Camera
 } from 'lucide-react';
 import { BookingDetailModal } from '@/components/admin/BookingDetailModal';
-import { format } from 'date-fns';
-import { id } from 'date-fns/locale';
+import { useTranslation } from 'react-i18next';
+import { formatCurrency, formatDate } from '@/lib/i18nUtils';
 
 interface Booking {
     id: string;
@@ -39,6 +39,7 @@ interface Booking {
 }
 
 const Bookings = () => {
+    const { t, i18n } = useTranslation(['admin', 'common', 'booking']);
     const { toast } = useToast();
     const [bookings, setBookings] = useState<Booking[]>([]);
     const [loading, setLoading] = useState(true);
@@ -62,11 +63,11 @@ const Bookings = () => {
 
             if (error) throw error;
             setBookings(data || []);
-        } catch (error: any) {
+        } catch (error: unknown) {
             console.error('Error fetching bookings:', error);
             toast({
-                title: 'Error',
-                description: 'Gagal memuat data booking',
+                title: t('common:messages.error', 'Error'),
+                description: t('admin:bookings.errorFetch', 'Gagal memuat data booking'),
                 variant: 'destructive'
             });
         } finally {
@@ -93,8 +94,22 @@ const Bookings = () => {
         }
     };
 
-    const formatCurrency = (amount: number) => {
-        return new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR' }).format(amount);
+    const getStatusLabel = (status: string) => {
+        const lowerStatus = status?.toLowerCase() || '';
+        switch (lowerStatus) {
+            case 'lunas':
+            case 'paid':
+                return t('common:status.paid', 'Lunas');
+            case 'dp':
+                return t('common:status.dp', 'DP');
+            case 'pending':
+                return t('common:status.pending', 'Pending');
+            case 'batal':
+            case 'cancelled':
+                return t('common:status.cancelled', 'Cancelled');
+            default:
+                return status;
+        }
     };
 
     const filteredBookings = bookings.filter(booking => {
@@ -113,21 +128,21 @@ const Bookings = () => {
         <div className="space-y-6 animate-in fade-in duration-500">
             <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
                 <div>
-                    <h2 className="text-2xl font-display font-bold mb-1 text-[#849283]">Bookings</h2>
-                    <p className="text-muted-foreground">Kelola semua booking studio dan photobox.</p>
+                    <h2 className="text-2xl font-display font-bold mb-1 text-[#849283]">{t('admin:bookings.title', 'Bookings')}</h2>
+                    <p className="text-muted-foreground">{t('admin:bookings.description', 'Kelola semua booking studio dan photobox.')}</p>
                 </div>
                 <Button onClick={fetchBookings} variant="outline" size="sm" disabled={loading}>
                     <RefreshCw className={`w-4 h-4 mr-2 ${loading ? 'animate-spin' : ''}`} />
-                    Refresh
+                    {t('admin:bookings.refresh', 'Refresh')}
                 </Button>
             </div>
 
-            {/* Filters (Styled as User Card) */}
+            {/* Filters */}
             <div className="flex flex-wrap gap-4 items-center bg-white p-4 rounded-xl border shadow-soft">
                 <div className="relative flex-1 min-w-[200px]">
                     <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-muted-foreground" />
                     <Input
-                        placeholder="Cari kode, nama, atau WhatsApp..."
+                        placeholder={t('admin:bookings.searchPlaceholder', 'Cari kode, nama, atau WhatsApp...')}
                         value={searchQuery}
                         onChange={(e) => setSearchQuery(e.target.value)}
                         className="pl-10 border-gray-200"
@@ -135,46 +150,46 @@ const Bookings = () => {
                 </div>
                 <Select value={statusFilter} onValueChange={setStatusFilter}>
                     <SelectTrigger className="w-[150px] border-gray-200">
-                        <SelectValue placeholder="Status Pembayaran" />
+                        <SelectValue placeholder={t('admin:bookings.paymentStatusPlaceholder', 'Status Pembayaran')} />
                     </SelectTrigger>
                     <SelectContent>
-                        <SelectItem value="all">Semua Status</SelectItem>
-                        <SelectItem value="PENDING">Pending</SelectItem>
-                        <SelectItem value="DP">DP</SelectItem>
-                        <SelectItem value="LUNAS">Lunas</SelectItem>
-                        <SelectItem value="CANCELLED">Cancelled</SelectItem>
+                        <SelectItem value="all">{t('admin:bookings.allStatus', 'Semua Status')}</SelectItem>
+                        <SelectItem value="PENDING">{t('common:status.pending', 'Pending')}</SelectItem>
+                        <SelectItem value="DP">{t('common:status.dp', 'DP')}</SelectItem>
+                        <SelectItem value="LUNAS">{t('common:status.lunas', 'Lunas')}</SelectItem>
+                        <SelectItem value="CANCELLED">{t('common:status.cancelled', 'Cancelled')}</SelectItem>
                     </SelectContent>
                 </Select>
                 <Select value={serviceFilter} onValueChange={setServiceFilter}>
                     <SelectTrigger className="w-[150px] border-gray-200">
-                        <SelectValue placeholder="Tipe Layanan" />
+                        <SelectValue placeholder={t('admin:bookings.serviceTypePlaceholder', 'Tipe Layanan')} />
                     </SelectTrigger>
                     <SelectContent>
-                        <SelectItem value="all">Semua Layanan</SelectItem>
-                        <SelectItem value="studio">Studio</SelectItem>
-                        <SelectItem value="photobox">Photobox</SelectItem>
+                        <SelectItem value="all">{t('admin:bookings.allServices', 'Semua Layanan')}</SelectItem>
+                        <SelectItem value="studio">{t('common:navigation.studio', 'Studio')}</SelectItem>
+                        <SelectItem value="photobox">{t('common:navigation.photobox', 'Photobox')}</SelectItem>
                     </SelectContent>
                 </Select>
             </div>
 
-            {/* Table (Styled matching User Dashboard History) */}
+            {/* Table */}
             <div className="bg-white rounded-xl border shadow-soft overflow-hidden">
                 <div className="overflow-x-auto">
                     {/* Header Row */}
                     <div className="min-w-[800px] grid grid-cols-7 gap-4 p-4 border-b bg-slate-50 text-sm font-medium text-muted-foreground">
-                        <div className="col-span-2">Klien & Layanan</div>
-                        <div className="text-center">Jadwal</div>
-                        <div className="text-center">Paket</div>
-                        <div className="text-center">Total</div>
-                        <div className="text-center">Status</div>
-                        <div className="text-center">Aksi</div>
+                        <div className="col-span-2">{t('admin:bookings.table.clientAndService', 'Klien & Layanan')}</div>
+                        <div className="text-center">{t('admin:bookings.table.schedule', 'Jadwal')}</div>
+                        <div className="text-center">{t('admin:bookings.table.package', 'Paket')}</div>
+                        <div className="text-center">{t('admin:bookings.table.total', 'Total')}</div>
+                        <div className="text-center">{t('admin:bookings.table.status', 'Status')}</div>
+                        <div className="text-center">{t('admin:bookings.table.action', 'Aksi')}</div>
                     </div>
 
                     <div className="divide-y">
                         {loading ? (
-                            <div className="p-8 text-center text-muted-foreground">Memuat data...</div>
+                            <div className="p-8 text-center text-muted-foreground">{t('admin:bookings.loading', 'Memuat data...')}</div>
                         ) : filteredBookings.length === 0 ? (
-                            <div className="p-8 text-center text-muted-foreground">Tidak ada data booking yang sesuai filter.</div>
+                            <div className="p-8 text-center text-muted-foreground">{t('admin:bookings.noFiltered', 'Tidak ada data booking yang sesuai filter.')}</div>
                         ) : (
                             filteredBookings.map((booking) => (
                                 <div key={booking.id} className="min-w-[800px] grid grid-cols-7 gap-4 p-4 items-center hover:bg-slate-50 transition-colors">
@@ -195,7 +210,7 @@ const Bookings = () => {
 
                                     {/* Schedule */}
                                     <div className="text-center">
-                                        <div className="text-sm font-medium">{format(new Date(booking.booking_date), 'd MMM yyyy', { locale: id })}</div>
+                                        <div className="text-sm font-medium">{formatDate(new Date(booking.booking_date), 'd MMM yyyy', i18n.language)}</div>
                                         <div className="text-xs text-muted-foreground flex items-center justify-center gap-1">
                                             <Clock className="w-3 h-3" />
                                             {booking.start_time} - {booking.end_time}
@@ -209,16 +224,18 @@ const Bookings = () => {
 
                                     {/* Total */}
                                     <div className="text-center">
-                                        <div className="font-medium text-sm">{formatCurrency(booking.total_amount)}</div>
+                                        <div className="font-medium text-sm">{formatCurrency(booking.total_amount, i18n.language)}</div>
                                         {booking.remaining_amount > 0 && (
-                                            <div className="text-[10px] text-red-500 font-medium">Sisa: {formatCurrency(booking.remaining_amount)}</div>
+                                            <div className="text-[10px] text-red-500 font-medium">
+                                                {t('admin:bookings.remaining', { amount: formatCurrency(booking.remaining_amount, i18n.language), defaultValue: `Sisa: ${formatCurrency(booking.remaining_amount, i18n.language)}` })}
+                                            </div>
                                         )}
                                     </div>
 
                                     {/* Status */}
                                     <div className="text-center">
-                                        <span className={`inline-flex items-center px-2 py-1 rounded-full text-xs font-medium border capitalize ${getStatusColor(booking.payment_status)}`}>
-                                            {booking.payment_status}
+                                        <span className={`inline-flex items-center px-2 py-1 rounded-full text-xs font-medium border uppercase ${getStatusColor(booking.payment_status)}`}>
+                                            {getStatusLabel(booking.payment_status)}
                                         </span>
                                     </div>
 
@@ -234,7 +251,7 @@ const Bookings = () => {
                                             className="h-8 hover:bg-slate-100"
                                         >
                                             <Eye className="w-4 h-4 mr-2" />
-                                            Detail
+                                            {t('common:buttons.detail', 'Detail')}
                                         </Button>
                                     </div>
                                 </div>

@@ -1,0 +1,176 @@
+{
+  "calendar": {
+    "title": "Kalender Ketersediaan Studio",
+    "selectDate": "Pilih Tanggal",
+    "continue": "Lanjut ke Booking",
+    "hint": "Pilih tanggal dan waktu untuk melanjutkan ke pemesanan"
+  },
+  "modal": {
+    "title": "Book Studio",
+    "selectPackage": "Pilih Paket",
+    "selectDate": "Pilih Tanggal",
+    "selectTime": "Pilih Jam (WITA)",
+    "confirmBooking": "Konfirmasi Booking"
+  },
+  "steps": {
+    "schedule": "Jadwal",
+    "style": "Style",
+    "package": "Paket",
+    "data": "Data",
+    "payment": "Bayar",
+    "confirm": "Konfirmasi",
+    "date": "Tanggal",
+    "time": "Waktu"
+  },
+  "package": {
+    "select": "Pilih paket Anda",
+    "details": "Detail Paket",
+    "selectDuration": "Pilih Durasi Sesi",
+    "perHour": "/ jam",
+    "capacity": "Maksimal {{count}} orang",
+    "continue": "Lanjutkan"
+  },
+  "date": {
+    "select": "Pilih tanggal booking",
+    "availability": "Cek ketersediaan",
+    "legend": "Keterangan:",
+    "continue": "Lanjutkan"
+  },
+  "time": {
+    "select": "Pilih slot waktu",
+    "available": "Tersedia",
+    "booked": "Sudah Terbooking",
+    "noSlots": "Tidak ada slot tersedia untuk tanggal ini",
+    "infoTitle": "Informasi Waktu",
+    "infoDescription": "Waktu yang tertera adalah WITA (Waktu Indonesia Tengah). Mohon hadir 15 menit sebelum jadwal.",
+    "selectDateFirst": "Silakan pilih tanggal terlebih dahulu",
+    "continue": "Lanjutkan"
+  },
+  "data": {
+    "title": "Data Pemesan",
+    "guestCount": "Jumlah Orang",
+    "purpose": "Keperluan Foto",
+    "selectCategory": "Pilih kategori"
+  },
+  "payment": {
+    "options": "Opsi Pembayaran",
+    "full": "Bayar Full (100%)",
+    "fullDesc": "Lunasi semua sekarang.",
+    "dp": "DP (50%)",
+    "dpDesc": "Amankan slot dengan DP.",
+    "breakdown": "Rincian Pembayaran",
+    "totalBooking": "Total Booking",
+    "fullPaid": "Total Dibayar (100%)",
+    "dpPaid": "DP Dibayar (50%)",
+    "fullPaidDesc": "Lunas di awal",
+    "dpPaidDesc": "Bayar sebagian untuk booking",
+    "remainingPayment": "Sisa Pembayaran",
+    "dpStudioNote": "Sisa pembayaran dapat dilunasi langsung di studio saat sesi berlangsung.",
+    "methodNotice": "Metode pembayaran (Transfer Bank, E-Wallet, QRIS, dll) akan dipilih pada halaman pembayaran selanjutnya.",
+    "termsAgree": "Saya setuju dengan",
+    "termsLink": "Terms & Conditions Morain Studio",
+    "termsNote": "Dengan mencentang ini, Anda menyetujui semua syarat dan ketentuan yang berlaku.",
+    "payNow": "Bayar Sekarang"
+  },
+  "summary": {
+    "title": "Ringkasan Booking",
+    "package": "Paket",
+    "date": "Tanggal",
+    "time": "Jam",
+    "duration": "Durasi",
+    "price": "Harga",
+    "total": "Total",
+    "estimatedTotal": "Total Estimasi",
+    "notes": "Catatan Tambahan (Opsional)",
+    "notesPlaceholder": "Ada request khusus? Tulis disini...",
+    "confirmBooking": "Konfirmasi & Bayar",
+    "processing": "Memproses..."
+  },
+  "confirmation": {
+    "success": "Booking Berhasil Dibuat!",
+    "successSubtitle": "Silakan lanjutkan pembayaran DP untuk konfirmasi slot.",
+    "bookingCode": "KODE BOOKING",
+    "packageAndDuration": "Paket & Durasi",
+    "sessionTime": "Waktu Sesi",
+    "confirmWhatsapp": "Konfirmasi & Bayar via WhatsApp",
+    "backHome": "Kembali ke Beranda"
+  },
+  "photobox": {
+    "title": "Book Photobox",
+    "selectTheme": "Pilih Tema",
+    "themes": {
+      "cowboy": "Cowboy",
+      "retroFilm": "Retro Film",
+      "cyberpunk": "Cyberpunk",
+      "cutePastel": "Cute Pastel",
+      "minimalClean": "Minimal Clean"
+    }
+  },
+  "validation": {
+    "selectPackage": "Silakan pilih paket",
+    "selectDate": "Silakan pilih tanggal",
+    "selectTime": "Silakan pilih slot waktu",
+    "loginRequired": "Silakan login untuk melanjutkan booking"
+  },
+  "messages": {
+    "bookingSuccess": "Booking Berhasil",
+    "bookingSuccessDescription": "Booking Anda telah dikonfirmasi. Cek email untuk detailnya.",
+    "bookingFailed": "Booking Gagal",
+    "slotUnavailable": "Slot waktu tidak tersedia lagi. Silakan pilih waktu lain.",
+    "paymentPending": "Pembayaran Pending",
+    "redirectingToPayment": "Mengarahkan ke halaman pembayaran...",
+    "paymentLinkNotFound": "Link pembayaran tidak ditemukan.",
+    "bookingCancelled": "Booking Dibatalkan",
+    "bookingCancelledDesc": "Booking berhasil dibatalkan.",
+    "cancelFailed": "Gagal Membatalkan"
+  },
+  "pendingModal": {
+    "title": "Anda memiliki booking pending",
+    "description": "Anda masih memiliki booking yang belum dibayar. Mohon selesaikan atau batalkan sebelum membuat booking baru.",
+    "cancel": "Batalkan Booking Ini",
+    "continuePay": "Lanjut Bayar"
+  },
+  "termsModal": {
+    "title": "Terms & Conditions",
+    "notice": "Mohon scroll ke bawah untuk membaca seluruh syarat dan ketentuan sebelum melanjutkan.",
+    "section1Title": "1. Booking & Jadwal",
+    "sec1Item1": "Booking wajib dilakukan minimal <strong>H-1</strong> sebelum sesi pemotretan.",
+    "sec1Item2": "Reschedule jadwal diperbolehkan maksimal <strong>1 (satu) kali</strong> dengan pemberitahuan minimal 24 jam sebelum sesi dimulai.",
+    "sec1Item3": "Diharapkan hadir <strong>15 menit sebelum</strong> jadwal sesi dimulai untuk persiapan makeup dan fitting.",
+    "section2Title": "2. Kebijakan DP & Pembayaran",
+    "sec2Item1": "Wajib melakukan <strong>DP (Down Payment) sebesar 50%</strong> untuk mengamankan slot jadwal.",
+    "sec2Item2": "Pelunasan sisa pembayaran wajib dilakukan di studio <strong>setelah sesi foto selesai</strong>.",
+    "sec2Item3": "Kami menerima pembayaran via Transfer Bank (BCA/BNI), E-Wallet (Dana/GoPay), dan QRIS.",
+    "section3Title": "3. Pembatalan & Keterlambatan",
+    "sec3Item1": "DP (Down Payment) <span class=\"text-red-500 font-medium bg-red-50 px-1 rounded\">tidak dapat dikembalikan (non-refundable)</span> jika terjadi pembatalan sepihak dari klien.",
+    "sec3Item2": "Toleransi keterlambatan maksimal <strong>15 menit</strong>. Jika lebih dari itu, durasi sesi foto akan dipotong sesuai sisa waktu agar tidak mengganggu jadwal klien berikutnya.",
+    "sec3Item3": "Jika tidak ada kabar (No-Show) melebihi 30 menit, booking dianggap hangus.",
+    "section4Title": "4. Tanggung Jawab & Properti",
+    "sec4Item1": "Klien bertanggung jawab penuh atas kerusakan atau kehilangan properti studio yang disebabkan oleh kelalaian klien.",
+    "sec4Item2": "Morain Studio tidak bertanggung jawab atas kehilangan barang pribadi klien di area studio.",
+    "sec4Item3": "File foto original (softcopy) akan disimpan di database kami selama maksimal <strong>1 bulan</strong>. Harap segera diunduh karena kami tidak bertanggung jawab setelah periode tersebut.",
+    "endOfTerms": "-- Akhir dari Syarat & Ketentuan --",
+    "readAll": "Sudah dibaca seluruhnya",
+    "scrollDown": "Scroll ke bawah",
+    "iUnderstand": "Saya Mengerti"
+  },
+  "paymentReturn": {
+    "successTitle": "Pembayaran Berhasil!",
+    "successDesc": "Terima kasih, pembayaran Anda telah diterima.",
+    "pendingTitle": "Menunggu Pembayaran",
+    "pendingDesc": "Silakan selesaikan pembayaran Anda sesuai instruksi.",
+    "errorTitle": "Pembayaran Gagal",
+    "errorDesc": "Terjadi kesalahan pada pembayaran Anda.",
+    "processingTitle": "Memproses...",
+    "processingDesc": "Mohon tunggu sebentar.",
+    "bookingCode": "Kode Booking",
+    "service": "Layanan",
+    "packageOrStyle": "Paket/Style",
+    "total": "Total",
+    "paid": "Dibayar",
+    "remaining": "Sisa",
+    "status": "Status",
+    "viewHistory": "Lihat Riwayat Booking",
+    "backHome": "Kembali ke Beranda"
+  }
+}
