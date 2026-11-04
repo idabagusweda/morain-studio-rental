@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="./public/images/logoMorain.png" alt="Morain Studio Rental" width="180" />
+  <img src="./public/images/morainLogo-New.png" alt="Morain Studio Rental" width="180" />
 </p>
 
 <h1 align="center">Morain Studio Rental</h1>
@@ -9,7 +9,7 @@
 </p>
 
 <p align="center">
-  <a href="https://morain-studio.vercel.app">Live Demo</a>
+  <a href="https://morainstudio.web.id">Live Demo</a>
   &nbsp;·&nbsp;
   <a href="https://github.com/idabagusweda/morain-studio-rental/issues">Report an Issue</a>
 </p>
