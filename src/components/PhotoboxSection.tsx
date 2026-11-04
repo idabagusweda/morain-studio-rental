@@ -4,46 +4,37 @@ import { Sparkles, Users, Clock, Zap, Download, Printer, QrCode, Smile, Calendar
 import { PhotoboxBookingModal } from './PhotoboxBookingModal';
 import { useTranslation } from 'react-i18next';
 
-const photoboxStyles = [
+const styleDefinitions = [
   {
     id: 'cowboy',
-    name: 'Cowboy',
-    description: 'Nuansa western yang maskulin dan petualang dengan properti topi & laras.',
+    defaultName: 'Cowboy',
+    defaultDesc: 'Nuansa western yang maskulin dan petualang dengan properti topi & laras.',
     color: 'bg-gradient-to-r from-amber-700/20 via-orange-800/20 to-amber-700/20 animate-gradient-x',
   },
   {
     id: 'retro-film',
-    name: 'Retro Film',
-    description: 'Estetika klasik analog dengan tone hangat dan nostalgik.',
+    defaultName: 'Retro Film',
+    defaultDesc: 'Estetika klasik analog dengan tone hangat dan nostalgik.',
     color: 'bg-gradient-to-r from-orange-400/20 via-amber-200/20 to-orange-400/20 animate-gradient-x',
   },
   {
     id: 'cyberpunk',
-    name: 'Cyberpunk',
-    description: 'Futuristik dengan lampu neon dan nuansa digital modern.',
+    defaultName: 'Cyberpunk',
+    defaultDesc: 'Futuristik dengan lampu neon dan nuansa digital modern.',
     color: 'bg-gradient-to-r from-purple-500/20 via-pink-500/20 to-purple-500/20 animate-gradient-x',
   },
   {
     id: 'cute-pastel',
-    name: 'Cute Pastel',
-    description: 'Warna-warni lembut yang manis dan ceria untuk hasil foto cute.',
+    defaultName: 'Cute Pastel',
+    defaultDesc: 'Warna-warni lembut yang manis dan ceria untuk hasil foto cute.',
     color: 'bg-gradient-to-r from-pink-200/30 via-blue-200/30 to-pink-200/30 animate-gradient-x',
   },
   {
     id: 'minimal-clean',
-    name: 'Minimal Clean',
-    description: 'Tampilan bersih dan modern yang fokus pada subjek foto.',
+    defaultName: 'Minimal Clean',
+    defaultDesc: 'Tampilan bersih dan modern yang fokus pada subjek foto.',
     color: 'bg-secondary/50',
   },
-];
-
-const outputs = [
-  { icon: Download, text: 'File digital instan (Google Drive)' },
-  { icon: Printer, text: 'Cetak foto strip / 4R' },
-  { icon: Sparkles, text: 'Template frame custom' },
-  { icon: QrCode, text: 'Akses download QR Code' },
-  { icon: Clock, text: 'Durasi 15 Menit' },
-  { icon: Users, text: 'Maksimal 5 orang' },
 ];
 
 export const PhotoboxSection = () => {
@@ -54,6 +45,51 @@ export const PhotoboxSection = () => {
   const handleBookNow = () => {
     setIsBookingOpen(true);
   };
+
+  const getStyleKey = (id: string) => {
+    switch (id) {
+      case 'retro-film': return 'retroFilm';
+      case 'cute-pastel': return 'cutePastel';
+      case 'minimal-clean': return 'minimalClean';
+      default: return id;
+    }
+  };
+
+  const photoboxStyles = styleDefinitions.map(s => {
+    const key = getStyleKey(s.id);
+    return {
+      id: s.id,
+      name: t(`photobox.styles.${key}.name`, { defaultValue: s.defaultName }),
+      description: t(`photobox.styles.${key}.description`, { defaultValue: s.defaultDesc }),
+      color: s.color,
+    };
+  });
+
+  const packageItems = (t('photobox.items', { returnObjects: true }) as string[]) || [
+    "File digital instan (Google Drive)",
+    "Cetak foto strip / 4R",
+    "Template frame custom",
+    "Akses download QR Code",
+    "Durasi 15 menit",
+    "Maksimal 5 orang"
+  ];
+
+  const featureIcons = [Zap, Smile, Printer, Users];
+  const featureList = ((t('photobox.featureList', { returnObjects: true }) as Array<{ title: string; desc: string }>) || []).map((f, i) => ({
+    icon: featureIcons[i] || Zap,
+    title: f.title,
+    desc: f.desc,
+  }));
+
+  const timelineIcons = [Calendar, CreditCard, Camera];
+  const timelineSteps = ((t('photobox.howToBookSteps', { returnObjects: true }) as string[]) || [
+    "Pilih Jadwal",
+    "Bayar DP/Full",
+    "Datang & Foto"
+  ]).map((step, i) => ({
+    icon: timelineIcons[i] || Calendar,
+    text: step,
+  }));
 
   return (
     <section id="photobox" className="section-padding bg-secondary/30">
@@ -79,7 +115,7 @@ export const PhotoboxSection = () => {
             <div className="relative p-8 rounded-2xl border-2 border-primary bg-card shadow-medium hover-lift flex flex-col h-fit">
               <span className="absolute -top-3 left-1/2 -translate-x-1/2 px-4 py-1 bg-primary text-primary-foreground text-xs font-medium rounded-full flex items-center gap-1">
                 <Sparkles className="w-3 h-3" />
-                Fun & Quick
+                {t('photobox.badge')}
               </span>
 
               <h3 className="font-display text-xl font-semibold mb-2 mt-4 text-left w-full pl-2">
@@ -100,14 +136,7 @@ export const PhotoboxSection = () => {
               <div className="w-full h-px bg-border/50 mb-6"></div>
 
               <ul className="space-y-3 mb-8">
-                {[
-                  "File digital instan (Google Drive)",
-                  "Cetak foto strip / 4R",
-                  "Template frame custom",
-                  "Akses download QR Code",
-                  "Durasi 15 menit",
-                  "Maksimal 5 orang"
-                ].map((item, i) => (
+                {packageItems.map((item, i) => (
                   <li key={i} className="flex items-start gap-3 text-sm">
                     <div className="mt-0.5 min-w-[16px] flex justify-center">
                       <Check className="w-4 h-4 text-primary flex-shrink-0" />
@@ -120,7 +149,7 @@ export const PhotoboxSection = () => {
               {/* Style Selection - Embedded */}
               <div className="mb-8">
                 <label className="text-sm font-semibold mb-3 block text-left text-foreground/80 tracking-normal pl-2">
-                  Pilih Style Photobox
+                  {t('photobox.selectStyle')}
                 </label>
                 <div className="flex flex-wrap gap-2 justify-start">
                   {photoboxStyles.map((style) => (
@@ -146,7 +175,7 @@ export const PhotoboxSection = () => {
                 onClick={handleBookNow}
               >
                 <Zap className="mr-2" />
-                Pesan Photobox
+                {t('photobox.bookButton')}
               </Button>
             </div>
           </div>
@@ -155,12 +184,7 @@ export const PhotoboxSection = () => {
           <div className="fade-in-section space-y-8" style={{ transitionDelay: '150ms' }}>
             {/* Feature Cards */}
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              {[
-                { icon: Zap, title: "Instant Result", desc: "Langsung jadi digital & cetak" },
-                { icon: Smile, title: "Fun Props Ready", desc: "Aksesoris lucu gratis" },
-                { icon: Printer, title: "High Quality", desc: "Kertas foto premium anti-air" },
-                { icon: Users, title: "Max 5 People", desc: "Muat bareng bestie/keluarga" }
-              ].map((feature, i) => (
+              {featureList.map((feature, i) => (
                 <div key={i} className="p-4 bg-white rounded-xl border border-border hover:border-[#849283] hover:shadow-soft transition-all duration-300 group">
                   <div className="w-10 h-10 bg-[#849283]/10 rounded-lg flex items-center justify-center mb-3 group-hover:bg-[#849283] transition-colors">
                     <feature.icon className="w-5 h-5 text-[#849283] group-hover:text-white transition-colors" />
@@ -174,18 +198,16 @@ export const PhotoboxSection = () => {
             {/* Mini Timeline */}
             <div className="bg-white p-6 rounded-xl border border-border">
               <div className="flex items-center justify-between mb-6">
-                <h5 className="font-medium text-sm text-muted-foreground uppercase tracking-wider">Cara Booking Simple</h5>
+                <h5 className="font-medium text-sm text-muted-foreground uppercase tracking-wider">
+                  {t('photobox.howToBookTitle')}
+                </h5>
               </div>
 
               <div className="relative flex justify-between mt-2 px-2">
                 {/* Connecting Line */}
                 <div className="absolute top-4 left-0 w-full h-[1px] bg-border z-0"></div>
 
-                {[
-                  { icon: Calendar, text: "Pilih Jadwal" },
-                  { icon: CreditCard, text: "Bayar DP/Full" },
-                  { icon: Camera, text: "Datang & Foto" }
-                ].map((step, i) => (
+                {timelineSteps.map((step, i) => (
                   <div key={i} className="relative z-10 flex flex-col items-center gap-3 bg-white px-2">
                     <div className="w-8 h-8 rounded-full bg-white border border-[#849283] flex items-center justify-center text-[#849283]">
                       <step.icon className="w-4 h-4" />

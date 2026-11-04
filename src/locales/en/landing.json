@@ -10,7 +10,7 @@
   },
   "packages": {
     "sectionTag": "Our Packages",
-    "title": "Studio Photo Package",
+    "title": "Studio Photo Packages",
     "description": "Choose a studio package that fits your needs. All packages include a professional photographer.",
     "basic": {
       "name": "Studio Photo Package – Basic",
@@ -53,12 +53,74 @@
     "sectionTag": "Photobox",
     "title": "Self-Service Photobox",
     "description": "Capture your moments in a photobox with various aesthetic themes. Perfect for hanging out with friends, couples, or social media content.",
+    "badge": "Fun & Quick",
     "perSession": "/ session",
     "includes": "Includes:",
     "prints": "{{count}} printed photos",
     "digitalCopies": "All digital copies",
     "props": "Props can be brought",
     "bookNow": "Book Photobox",
+    "package": {
+      "name": "Self-Service Photobox Package",
+      "unit": "session",
+      "description": "Fun self-service photo session with instant prints and full digital soft copies."
+    },
+    "selectStyle": "Choose Photobox Style",
+    "bookButton": "Book Photobox",
+    "items": [
+      "Instant digital files (Google Drive)",
+      "Photo strip / 4R print",
+      "Custom frame templates",
+      "QR Code download access",
+      "15 minutes duration",
+      "Maximum 5 people"
+    ],
+    "featureList": [
+      {
+        "title": "Instant Results",
+        "desc": "Ready in digital & print"
+      },
+      {
+        "title": "Fun Props Ready",
+        "desc": "Free cute accessories"
+      },
+      {
+        "title": "High Quality",
+        "desc": "Premium waterproof photo paper"
+      },
+      {
+        "title": "Max 5 People",
+        "desc": "Fit with your besties/family"
+      }
+    ],
+    "howToBookTitle": "Simple Booking Steps",
+    "howToBookSteps": [
+      "Choose Schedule",
+      "Pay DP/Full",
+      "Arrive & Shoot"
+    ],
+    "styles": {
+      "cowboy": {
+        "name": "Cowboy",
+        "description": "Western vibes with adventurous hats & barrel props."
+      },
+      "retroFilm": {
+        "name": "Retro Film",
+        "description": "Classic analog aesthetics with warm and nostalgic tones."
+      },
+      "cyberpunk": {
+        "name": "Cyberpunk",
+        "description": "Futuristic neon lighting with modern digital vibes."
+      },
+      "cutePastel": {
+        "name": "Cute Pastel",
+        "description": "Soft, sweet colors for adorable photos."
+      },
+      "minimalClean": {
+        "name": "Minimal Clean",
+        "description": "Clean and modern look focused directly on the subject."
+      }
+    },
     "howItWorks": {
       "title": "How Photobox Works",
       "step1": {
@@ -86,6 +148,32 @@
     "sectionTag": "Why Choose Us",
     "title": "Why Choose Morain Studio?",
     "description": "We provide the best studio rental and photobox services in Denpasar with various advantages.",
+    "items": {
+      "easyBooking": {
+        "title": "Easy Online Booking",
+        "description": "Book your photo session in minutes with our simple booking system."
+      },
+      "realtimeCalendar": {
+        "title": "Real-time Calendar",
+        "description": "View available schedules instantly and secure your preferred time."
+      },
+      "minimalistAesthetic": {
+        "title": "Minimalist & Aesthetic",
+        "description": "Clean studio design perfect for any style of photoshoot."
+      },
+      "strategicLocation": {
+        "title": "Strategic Location",
+        "description": "Easily accessible on Jalan Teuku Umar, in the heart of Denpasar."
+      },
+      "transparentPricing": {
+        "title": "Transparent Pricing",
+        "description": "No hidden fees. All prices already include a professional photographer."
+      },
+      "funPhotobox": {
+        "title": "Fun Photobox",
+        "description": "Quick & fun photo session with instant digital and printed results."
+      }
+    },
     "features": {
       "professional": {
         "title": "Professional Photographer",
@@ -106,20 +194,107 @@
     }
   },
   "gallery": {
-    "sectionTag": "Gallery",
+    "sectionTag": "Our Gallery",
     "title": "Our Portfolio",
     "description": "See the work of our clients who have trusted Morain Studio.",
-    "viewAll": "View All Photos"
+    "viewAll": "View All Photos",
+    "moreUpdates": "See more recent updates"
   },
   "testimonials": {
     "sectionTag": "Testimonials",
-    "title": "What They Say?",
-    "description": "Real experiences from clients satisfied with our services."
+    "title": "What They Say",
+    "description": "Real experiences from clients who are satisfied with our service.",
+    "items": [
+      {
+        "id": 1,
+        "name": "A.P.",
+        "role": "Student",
+        "content": "Super friendly service and the photo results are really clean! Definitely coming back.",
+        "rating": 5
+      },
+      {
+        "id": 2,
+        "name": "R.D.",
+        "role": "Content Creator",
+        "content": "Fast booking, cozy studio, complete lighting setup. Perfect for content creation!",
+        "rating": 5
+      },
+      {
+        "id": 3,
+        "name": "N.W.",
+        "role": "Family Session",
+        "content": "The photobox is fun and aesthetic, highly recommended for fun times with family!",
+        "rating": 5
+      },
+      {
+        "id": 4,
+        "name": "M.S.",
+        "role": "SME Owner",
+        "content": "The product photo results are very professional, noticeably boosted our online sales!",
+        "rating": 5
+      },
+      {
+        "id": 5,
+        "name": "D.K.",
+        "role": "Corporate Client",
+        "content": "Studio Large is ideal for team photos. The booking process was straightforward and transparent.",
+        "rating": 5
+      },
+      {
+        "id": 6,
+        "name": "S.A.",
+        "role": "Pre-wedding",
+        "content": "Our couple photoshoot turned out amazing! Clean, bright, and very cinematic.",
+        "rating": 5
+      }
+    ]
   },
   "faq": {
     "sectionTag": "FAQ",
     "title": "Frequently Asked Questions",
     "description": "Answers to frequently asked questions about our services.",
+    "items": [
+      {
+        "question": "Is a photographer included in the price?",
+        "answer": "Yes, all packages include a professional photographer from Morain. You do not need to bring your own."
+      },
+      {
+        "question": "Can I bring my own photographer?",
+        "answer": "No, because every session already includes our internal photographer to ensure consistent photo quality."
+      },
+      {
+        "question": "Can I bring my own props?",
+        "answer": "Yes, as long as they are safe and do not damage studio facilities. Please coordinate with us beforehand if bringing large props."
+      },
+      {
+        "question": "What is the maximum capacity per room?",
+        "answer": "Studio Small: max 5 people, Studio Medium: max 15 people, Studio Large: max 30 people. For Photobox max 5 people."
+      },
+      {
+        "question": "Can I reschedule my booking?",
+        "answer": "Yes, rescheduling can be requested up to 24 hours prior depending on schedule availability. Please contact us via WhatsApp."
+      },
+      {
+        "question": "What is the refund policy?",
+        "answer": "Cancellations receive a partial refund according to terms & conditions. Cancellation at least 24 hours prior receives a 50% refund of the down payment."
+      },
+      {
+        "question": "What payment methods are available?",
+        "answer": "We accept payments via BCA, BNI, QRIS, Dana, and GoPay. A minimum 50% down payment is required to secure your slot."
+      },
+      {
+        "question": "Can photobox photos be printed?",
+        "answer": "Yes! Photo strip and 4R prints are available. You also receive all digital soft copies and QR download access."
+      },
+      {
+        "question": "How long is each photobox session?",
+        "answer": "Each photobox session lasts 15 minutes, including preparation and photo taking."
+      },
+      {
+        "question": "Are there any extra fees besides the listed price?",
+        "answer": "No hidden fees. The listed price is all-inclusive, covering the photographer, lighting equipment, and studio facilities."
+      }
+    ],
     "questions": {
       "bookingProcess": {
         "q": "How do I book a studio or photobox?",
@@ -149,8 +324,16 @@
   },
   "contact": {
     "sectionTag": "Contact Us",
-    "title": "Contact Us",
-    "description": "Have questions or need help? Our team is ready to assist you.",
+    "title": "Have Questions?",
+    "titleHighlight": "Get in Touch With Us",
+    "description": "Have questions or need assistance regarding studio rental or photobox booking? Our team is ready to help.",
+    "whatsappButton": "Chat via WhatsApp",
+    "whatsappMessage": "Hello Morain Studio! I would like to inquire about studio rental services. 📸",
+    "locationLabel": "Location",
+    "hoursLabel": "Operating Hours",
+    "hoursValue": "09:00 - 20:00 WITA (Daily)",
+    "floatingCardTitle": "Morain Studio",
+    "floatingCardSubtitle": "Professional Photo Studio • Teuku Umar, Denpasar",
     "form": {
       "name": "Full Name",
       "namePlaceholder": "Enter your name",
@@ -178,8 +361,15 @@
       "description": "Professional photo studio in Denpasar with studio rental and self-service photobox services. Capture your best moments with us."
     },
     "quickLinks": "Quick Links",
+    "contact": "Contact",
     "followUs": "Follow Us",
     "copyright": "© 2024 Morain Studio. All rights reserved.",
     "madeWith": "Made with ❤️ in Bali"
+  },
+  "meta": {
+    "title": "Morain Studio | Professional Photo Studio Rental & Photobox in Denpasar, Bali",
+    "description": "Morain Studio - Your trusted studio rental & photobox in Denpasar, Bali. Book online for clean, bright, and cinematic photography. Professional photographer included.",
+    "ogTitle": "Morain Studio | Professional Photo Studio in Denpasar",
+    "ogDescription": "Frame Your Story with our clean, bright, and cinematic studio experience. Easy online booking available."
   }
 }

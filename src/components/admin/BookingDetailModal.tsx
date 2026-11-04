@@ -204,11 +204,11 @@ export const BookingDetailModal = ({ booking, isOpen, onClose, onUpdate }: Booki
                                                 <SelectValue />
                                             </SelectTrigger>
                                             <SelectContent>
-                                                <SelectItem value="PENDING">Pending</SelectItem>
-                                                <SelectItem value="DP">DP</SelectItem>
-                                                <SelectItem value="LUNAS">Lunas</SelectItem>
-                                                <SelectItem value="EXPIRED">Expired</SelectItem>
-                                                <SelectItem value="CANCELLED">Cancelled</SelectItem>
+                                                <SelectItem value="PENDING">{t('common:status.pending')}</SelectItem>
+                                                <SelectItem value="DP">{t('common:status.dp')}</SelectItem>
+                                                <SelectItem value="LUNAS">{t('common:status.lunas')}</SelectItem>
+                                                <SelectItem value="EXPIRED">{t('common:status.expired')}</SelectItem>
+                                                <SelectItem value="CANCELLED">{t('common:status.cancelled')}</SelectItem>
                                             </SelectContent>
                                         </Select>
                                     </div>
@@ -222,9 +222,9 @@ export const BookingDetailModal = ({ booking, isOpen, onClose, onUpdate }: Booki
                                                 <SelectValue />
                                             </SelectTrigger>
                                             <SelectContent>
-                                                <SelectItem value="ACTIVE">Active</SelectItem>
-                                                <SelectItem value="DONE">Done</SelectItem>
-                                                <SelectItem value="CANCELLED">Cancelled</SelectItem>
+                                                <SelectItem value="ACTIVE">{t('common:status.active')}</SelectItem>
+                                                <SelectItem value="DONE">{t('common:status.done')}</SelectItem>
+                                                <SelectItem value="CANCELLED">{t('common:status.cancelled')}</SelectItem>
                                             </SelectContent>
                                         </Select>
                                     </div>

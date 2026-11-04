@@ -178,6 +178,7 @@ export const Header = () => {
               <Button
                 variant="ghost"
                 onClick={() => setShowAuthModal(true)}
+                className="text-foreground/80 hover:text-foreground hover:bg-muted font-medium transition-colors"
               >
                 {t('common:buttons.loginRegister')}
               </Button>

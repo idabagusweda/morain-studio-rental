@@ -37,14 +37,14 @@ const timeSlots = [
   '15:00', '16:00', '17:00', '18:00', '19:00'
 ];
 
-const purposes = [
-  'Portrait',
-  'Couple',
-  'Family',
-  'Product',
-  'Corporate',
-  'Student',
-  'Lainnya',
+const purposeOptions = [
+  { value: 'Portrait', labelKey: 'portrait' },
+  { value: 'Couple', labelKey: 'couple' },
+  { value: 'Family', labelKey: 'family' },
+  { value: 'Product', labelKey: 'product' },
+  { value: 'Corporate', labelKey: 'corporate' },
+  { value: 'Student', labelKey: 'student' },
+  { value: 'Lainnya', labelKey: 'other' },
 ];
 
 const paymentMethods = [
@@ -56,7 +56,7 @@ const paymentMethods = [
 ];
 
 export const BookingModal = ({ isOpen, onClose, selectedPackage }: BookingModalProps) => {
-  const { t, i18n } = useTranslation(['booking', 'common', 'auth']);
+  const { t, i18n } = useTranslation(['booking', 'common', 'auth', 'landing']);
   const { user, profile } = useAuth();
   const { toast } = useToast();
   const { checkActivePendingPayment, resumePayment, cancelBooking, isProcessing: isPaymentProcessing } = usePaymentLogic();
@@ -146,6 +146,17 @@ export const BookingModal = ({ isOpen, onClose, selectedPackage }: BookingModalP
   const totalPrice = selectedPackage ? selectedPackage.price * parseInt(duration) : 0;
   const paymentAmount = paymentType === 'full' ? totalPrice : totalPrice * 0.5;
 
+  // Translated display name for the selected package (DB stores the original Indonesian name)
+  const packageDisplayName = selectedPackage
+    ? t(`landing:packages.${selectedPackage.id}.name`, { defaultValue: selectedPackage.name })
+    : '';
+
+  // Translate a stored purpose value (e.g. 'Lainnya') for display/messages
+  const purposeLabel = (value: string) => {
+    const option = purposeOptions.find(p => p.value === value);
+    return option ? t(`booking:data.purposes.${option.labelKey}`, { defaultValue: value }) : value;
+  };
+
   const generateBookingCode = () => {
     const code = `MOR-2025-${Math.random().toString(36).substring(2, 6).toUpperCase()}`;
     setBookingCode(code);
@@ -167,8 +178,8 @@ export const BookingModal = ({ isOpen, onClose, selectedPackage }: BookingModalP
   const saveBooking = async (code: string) => {
     if (!user || !selectedPackage || !selectedDate || !selectedTime) {
       toast({
-        title: "Data tidak lengkap",
-        description: "Mohon lengkapi data booking (Tanggal/Jam)",
+        title: t('booking:messages.incompleteTitle'),
+        description: t('booking:messages.incompleteDescription'),
         variant: "destructive"
       });
       return null;
@@ -211,13 +222,13 @@ export const BookingModal = ({ isOpen, onClose, selectedPackage }: BookingModalP
       // Check for unique constraint violation (double booking)
       if (error.code === '23505' || error.message?.includes('unique') || error.message?.includes('duplicate')) {
         toast({
-          title: 'Slot Sudah Terisi',
-          description: 'Maaf, slot ini baru saja dipesan orang lain. Silakan pilih waktu lain.',
+          title: t('booking:messages.slotTakenTitle'),
+          description: t('booking:messages.slotTakenDescription'),
           variant: 'destructive'
         });
       } else {
         toast({
-          title: 'Gagal menyimpan booking',
+          title: t('booking:messages.saveFailed'),
           description: error.message,
           variant: 'destructive'
         });
@@ -235,8 +246,8 @@ export const BookingModal = ({ isOpen, onClose, selectedPackage }: BookingModalP
 
       if (!accessToken) {
         toast({
-          title: 'Error',
-          description: 'Sesi login tidak valid. Silakan login ulang.',
+          title: t('common:messages.error'),
+          description: t('booking:messages.invalidSession'),
           variant: 'destructive'
         });
         return null;
@@ -259,7 +270,7 @@ export const BookingModal = ({ isOpen, onClose, selectedPackage }: BookingModalP
 
       if (!response.ok) {
         const errorData = await response.json();
-        throw new Error(errorData.error || 'Gagal membuat transaksi pembayaran');
+        throw new Error(errorData.error || t('booking:messages.transactionFailed'));
       }
 
       const data = await response.json();
@@ -267,8 +278,8 @@ export const BookingModal = ({ isOpen, onClose, selectedPackage }: BookingModalP
     } catch (error) {
       console.error('Payment initiation error:', error);
       toast({
-        title: 'Gagal Memproses Pembayaran',
-        description: error instanceof Error ? error.message : 'Terjadi kesalahan',
+        title: t('booking:messages.paymentFailed'),
+        description: error instanceof Error ? error.message : t('common:messages.error'),
         variant: 'destructive'
       });
       return null;
@@ -308,25 +319,29 @@ export const BookingModal = ({ isOpen, onClose, selectedPackage }: BookingModalP
   const handleConfirmWhatsApp = () => {
     const paymentMethodName = paymentMethodsList
       .flatMap(g => g.items)
-      .find(p => p.id === paymentMethod)?.name;
+      .find(p => p.id === paymentMethod)?.name || 'Midtrans';
 
-    const paymentAmount = paymentType === 'full' ? totalPrice : (totalPrice * 0.5);
-    const paymentTypeLabel = paymentType === 'full' ? 'Full Payment' : 'DP 50%';
+    const paymentTypeLabel = paymentType === 'full'
+      ? t('booking:whatsapp.fullPayment')
+      : t('booking:whatsapp.dpPayment');
 
     const message = encodeURIComponent(
-      `Halo Morain Studio! 👋\n\nSaya ingin konfirmasi booking:\n\n` +
-      `📋 Kode Booking: ${bookingCode}\n` +
-      `📦 Paket: ${selectedPackage?.name}\n` +
-      `⏱ Durasi: ${duration} jam\n` +
-      `📅 Tanggal: ${selectedDate?.toLocaleDateString('id-ID')}\n` +
-      `🕐 Jam: ${selectedTime} WITA\n` +
-      `👤 Nama: ${formData.name}\n` +
-      `👥 Jumlah: ${formData.guests} orang\n` +
-      `🎯 Keperluan: ${formData.purpose}\n` +
-      `💳 Pembayaran: ${paymentMethodName} (${paymentTypeLabel})\n` +
-      `💰 Total Tagihan: Rp ${totalPrice.toLocaleString('id-ID')}\n` +
-      `💵 Nominal Dibayar: Rp ${paymentAmount.toLocaleString('id-ID')}\n\n` +
-      `Terima kasih! 🙏`
+      t('booking:whatsapp.studioMessage', {
+        code: bookingCode,
+        package: packageDisplayName,
+        duration,
+        hours: t('common:time.hours'),
+        date: selectedDate ? formatDate(selectedDate, 'd MMMM yyyy', i18n.language) : '',
+        time: selectedTime,
+        name: formData.name,
+        guests: formData.guests,
+        people: t('common:labels.people'),
+        purpose: purposeLabel(formData.purpose),
+        paymentMethod: paymentMethodName,
+        paymentType: paymentTypeLabel,
+        total: formatCurrency(totalPrice, i18n.language),
+        paid: formatCurrency(paymentAmount, i18n.language),
+      })
     );
     window.open(`https://wa.me/6289531511894?text=${message}`, '_blank');
     handleClose();
@@ -383,7 +398,7 @@ export const BookingModal = ({ isOpen, onClose, selectedPackage }: BookingModalP
       <div className="space-y-3 text-sm">
         <div className="flex justify-between py-2 border-b border-dashed border-[#849283]/20">
           <span className="text-muted-foreground">{t('booking:summary.package')}</span>
-          <span className="font-medium">{selectedPackage?.name}</span>
+          <span className="font-medium">{packageDisplayName}</span>
         </div>
         <div className="flex justify-between py-2 border-b border-dashed border-[#849283]/20">
           <span className="text-muted-foreground">{t('booking:summary.duration')}</span>
@@ -442,7 +457,7 @@ export const BookingModal = ({ isOpen, onClose, selectedPackage }: BookingModalP
           <div className="p-6 border-b sticky top-0 bg-white z-20 flex flex-col gap-6">
             <DialogHeader className="p-0">
               <DialogTitle className="font-display text-2xl">
-                Booking {selectedPackage?.name}
+                {t('booking:modal.bookingTitle', { name: packageDisplayName })}
               </DialogTitle>
             </DialogHeader>
 
@@ -615,7 +630,7 @@ export const BookingModal = ({ isOpen, onClose, selectedPackage }: BookingModalP
                       <div className="absolute top-0 right-0 p-4 opacity-10">
                         <Package className="w-32 h-32" />
                       </div>
-                      <h3 className="font-display text-2xl font-medium mb-2 relative z-10">{selectedPackage?.name}</h3>
+                      <h3 className="font-display text-2xl font-medium mb-2 relative z-10">{packageDisplayName}</h3>
                       <div className="space-y-2 relative z-10 text-muted-foreground mb-6">
                         <p className="flex items-center gap-2">
                           <span className="w-1.5 h-1.5 rounded-full bg-[#849283]" />
@@ -721,8 +736,10 @@ export const BookingModal = ({ isOpen, onClose, selectedPackage }: BookingModalP
                             <SelectValue placeholder={t('booking:data.selectCategory')} />
                           </SelectTrigger>
                           <SelectContent>
-                            {purposes.map((p) => (
-                              <SelectItem key={p} value={p}>{p}</SelectItem>
+                            {purposeOptions.map((p) => (
+                              <SelectItem key={p.value} value={p.value}>
+                                {t(`booking:data.purposes.${p.labelKey}`)}
+                              </SelectItem>
                             ))}
                           </SelectContent>
                         </Select>
@@ -890,7 +907,7 @@ export const BookingModal = ({ isOpen, onClose, selectedPackage }: BookingModalP
                   <div className="grid grid-cols-2 gap-4 text-left border-t border-dashed pt-4">
                     <div>
                       <p className="text-muted-foreground text-xs mb-1">{t('booking:confirmation.packageAndDuration')}</p>
-                      <p className="font-medium text-sm">{selectedPackage?.name} • {duration} {t('common:time.hours')}</p>
+                      <p className="font-medium text-sm">{packageDisplayName} • {duration} {t('common:time.hours')}</p>
                     </div>
                     <div>
                       <p className="text-muted-foreground text-xs mb-1">{t('booking:confirmation.sessionTime')}</p>

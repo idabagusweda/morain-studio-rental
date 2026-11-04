@@ -39,6 +39,7 @@ The application uses React and TypeScript on the frontend, with Supabase providi
 - **Payment options:** Pay in full or choose a 50% down payment through Midtrans.
 - **Booking dashboard:** Review booking history, access invoices, and manage profile information.
 - **Payment countdown:** A 15-minute countdown is provided during the payment process.
+- **Language support:** Switch between Indonesian and English for all interface text.
 
 ### Administration
 
@@ -57,6 +58,7 @@ The application uses React and TypeScript on the frontend, with Supabase providi
 | Routing              | React Router                             |
 | Forms and validation | React Hook Form, Zod                     |
 | Server state         | TanStack Query                           |
+| Internationalization | i18next, react-i18next, date-fns         |
 | Backend services     | Supabase                                 |
 | Database             | PostgreSQL with Row Level Security (RLS) |
 | Serverless functions | Supabase Edge Functions (Deno)           |
@@ -172,13 +174,21 @@ morain-studio-rental/
 │   └── images/                 # Public images and static assets
 ├── src/
 │   ├── components/             # Shared and feature-specific components
+│   │   ├── admin/              # Administration components
+│   │   ├── dashboard/          # Customer dashboard components
 │   │   └── ui/                 # UI components
-│   ├── pages/                  # Application pages and route views
-│   │   └── admin/              # Administration pages
 │   ├── hooks/                  # Custom React hooks
 │   ├── integrations/
 │   │   └── supabase/           # Supabase client and generated types
-│   └── layouts/                # Shared page layouts
+│   ├── layouts/                # Shared page layouts
+│   ├── lib/                    # Utility helpers and locale formatters
+│   ├── locales/                # Translation dictionaries
+│   │   ├── en/                 # English translations
+│   │   └── id/                 # Indonesian translations
+│   ├── pages/                  # Application pages and route views
+│   │   └── admin/              # Administration pages
+│   ├── App.tsx                 # Application routes
+│   └── i18n.ts                 # i18next configuration
 ├── supabase/
 │   ├── functions/              # Supabase Edge Functions
 │   └── migrations/             # Database migrations

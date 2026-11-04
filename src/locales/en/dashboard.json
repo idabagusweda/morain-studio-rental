@@ -60,7 +60,8 @@
     "noHistory": "No booking history yet",
     "noHistoryDescription": "Book a studio or photobox now to create memories!",
     "bookStudio": "Book Studio",
-    "bookPhotobox": "Book Photobox"
+    "bookPhotobox": "Book Photobox",
+    "invoiceFor": "Booking Invoice"
   },
   "profile": {
     "title": "Account Profile",

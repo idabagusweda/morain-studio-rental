@@ -1,54 +1,64 @@
 import { Star, Quote } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 
-const testimonials = [
-  {
-    id: 1,
-    name: 'A.P.',
-    role: 'Student',
-    content: 'Pelayanan sangat ramah dan hasil fotonya clean banget! Pasti balik lagi.',
-    rating: 5,
-  },
-  {
-    id: 2,
-    name: 'R.D.',
-    role: 'Content Creator',
-    content: 'Booking cepat, studio nyaman, lighting lengkap. Perfect for content creation!',
-    rating: 5,
-  },
-  {
-    id: 3,
-    name: 'N.W.',
-    role: 'Family Session',
-    content: 'Photobox-nya fun dan estetik, recommended untuk seru-seruan bareng keluarga!',
-    rating: 5,
-  },
-  {
-    id: 4,
-    name: 'M.S.',
-    role: 'UMKM Owner',
-    content: 'Hasil foto produk sangat profesional, meningkatkan penjualan online kami!',
-    rating: 5,
-  },
-  {
-    id: 5,
-    name: 'D.K.',
-    role: 'Corporate Client',
-    content: 'Studio Large sangat cocok untuk team photo. Proses booking mudah dan transparan.',
-    rating: 5,
-  },
-  {
-    id: 6,
-    name: 'S.A.',
-    role: 'Pre-wedding',
-    content: 'Hasil foto couple kami amazing! Clean, bright, dan sangat cinematic.',
-    rating: 5,
-  },
-];
+interface TestimonialItem {
+  id: number;
+  name: string;
+  role: string;
+  content: string;
+  rating: number;
+}
 
 export const TestimonialsSection = () => {
   const { t } = useTranslation(['landing']);
-  
+
+  const defaultTestimonials: TestimonialItem[] = [
+    {
+      id: 1,
+      name: 'A.P.',
+      role: 'Student',
+      content: 'Pelayanan sangat ramah dan hasil fotonya clean banget! Pasti balik lagi.',
+      rating: 5,
+    },
+    {
+      id: 2,
+      name: 'R.D.',
+      role: 'Content Creator',
+      content: 'Booking cepat, studio nyaman, lighting lengkap. Perfect for content creation!',
+      rating: 5,
+    },
+    {
+      id: 3,
+      name: 'N.W.',
+      role: 'Family Session',
+      content: 'Photobox-nya fun dan estetik, recommended untuk seru-seruan bareng keluarga!',
+      rating: 5,
+    },
+    {
+      id: 4,
+      name: 'M.S.',
+      role: 'UMKM Owner',
+      content: 'Hasil foto produk sangat profesional, meningkatkan penjualan online kami!',
+      rating: 5,
+    },
+    {
+      id: 5,
+      name: 'D.K.',
+      role: 'Corporate Client',
+      content: 'Studio Large sangat cocok untuk team photo. Proses booking mudah dan transparan.',
+      rating: 5,
+    },
+    {
+      id: 6,
+      name: 'S.A.',
+      role: 'Pre-wedding',
+      content: 'Hasil foto couple kami amazing! Clean, bright, dan sangat cinematic.',
+      rating: 5,
+    },
+  ];
+
+  const testimonials = (t('testimonials.items', { returnObjects: true }) as TestimonialItem[]) || defaultTestimonials;
+
   return (
     <section id="testimonials" className="section-padding bg-secondary/50">
       <div className="container-wide">

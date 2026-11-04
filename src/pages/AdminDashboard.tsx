@@ -10,6 +10,8 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { useToast } from '@/hooks/use-toast';
 import { PaymentTimer } from '@/components/PaymentTimer';
 import { usePaymentLogic } from '@/hooks/usePaymentLogic';
+import { useTranslation } from 'react-i18next';
+import { formatCurrency, formatDate } from '@/lib/i18nUtils';
 import {
     CalendarDays,
     Users,
@@ -58,6 +60,7 @@ interface Profile {
 }
 
 const AdminDashboard = () => {
+    const { t, i18n } = useTranslation(['admin', 'common']);
     const { user, profile, isAdmin, loading, signOut } = useAuth();
     const navigate = useNavigate();
     const { toast } = useToast();
@@ -78,13 +81,13 @@ const AdminDashboard = () => {
     useEffect(() => {
         if (!loading && (!user || !isAdmin)) {
             toast({
-                title: 'Akses Ditolak',
-                description: 'Anda tidak memiliki akses ke halaman admin.',
+                title: t('admin:layout.accessDeniedTitle'),
+                description: t('admin:layout.accessDeniedDesc'),
                 variant: 'destructive'
             });
             navigate('/');
         }
-    }, [user, isAdmin, loading, navigate, toast]);
+    }, [user, isAdmin, loading, navigate, toast, t]);
 
     // Fetch bookings
     const fetchBookings = async () => {
@@ -103,7 +106,7 @@ const AdminDashboard = () => {
         } catch (error: any) {
             console.error('Error fetching bookings:', error);
             toast({
-                title: 'Gagal memuat data booking',
+                title: t('admin:bookings.errorFetch'),
                 description: error.message,
                 variant: 'destructive'
             });
@@ -126,7 +129,7 @@ const AdminDashboard = () => {
         } catch (error: any) {
             console.error('Error fetching users:', error);
             toast({
-                title: 'Gagal memuat data user',
+                title: t('admin:users.errorFetch'),
                 description: error.message,
                 variant: 'destructive'
             });
@@ -164,15 +167,15 @@ const AdminDashboard = () => {
             if (error) throw error;
 
             toast({
-                title: 'Berhasil',
-                description: `Status berhasil diupdate ke ${value}`,
+                title: t('admin:bookings.updateSuccess'),
+                description: t('admin:bookings.updateSuccessDesc', { status: value }),
             });
 
             fetchBookings();
         } catch (error: any) {
             console.error('Error updating booking:', error);
             toast({
-                title: 'Gagal update status',
+                title: t('admin:bookings.updateError'),
                 description: error.message,
                 variant: 'destructive'
             });
@@ -200,11 +203,6 @@ const AdminDashboard = () => {
         })
         : [];
 
-    // Format currency
-    const formatCurrency = (amount: number) => {
-        return new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR' }).format(amount);
-    };
-
     // Get status badge color
     const getStatusBadge = (status: string, type: 'payment' | 'booking') => {
         const colors: Record<string, string> = {
@@ -216,9 +214,18 @@ const AdminDashboard = () => {
             'ACTIVE': 'bg-green-100 text-green-800',
             'DONE': 'bg-gray-100 text-gray-800',
         };
+        const statusLabels: Record<string, string> = {
+            'PENDING': t('common:status.pending'),
+            'DP': t('common:status.dp'),
+            'LUNAS': t('common:status.lunas'),
+            'EXPIRED': t('common:status.expired'),
+            'CANCELLED': t('common:status.cancelled'),
+            'ACTIVE': t('common:status.active'),
+            'DONE': t('common:status.done'),
+        };
         return (
             <span className={`px-2 py-1 rounded-full text-xs font-medium ${colors[status] || 'bg-gray-100 text-gray-800'}`}>
-                {status}
+                {statusLabels[status] || status}
             </span>
         );
     };
@@ -242,15 +249,15 @@ const AdminDashboard = () => {
                 <div className="container mx-auto px-4 py-4 flex items-center justify-between">
                     <div className="flex items-center gap-4">
                         <h1 className="text-xl font-display font-semibold text-[#849283]">
-                            Admin Dashboard
+                            {t('admin:layout.title')}
                         </h1>
                         <span className="text-sm text-muted-foreground">
-                            Selamat datang, {profile?.full_name || 'Admin'}
+                            {t('admin:layout.welcome', { name: profile?.full_name || t('common:user.admin') })}
                         </span>
                     </div>
                     <Button variant="outline" onClick={signOut} size="sm">
                         <LogOut className="w-4 h-4 mr-2" />
-                        Keluar
+                        {t('common:buttons.logout')}
                     </Button>
                 </div>
             </header>
@@ -264,7 +271,7 @@ const AdminDashboard = () => {
                         className={activeTab === 'bookings' ? 'bg-[#849283] hover:bg-[#6b7a6b]' : ''}
                     >
                         <FileText className="w-4 h-4 mr-2" />
-                        Daftar Booking
+                        {t('admin:bookings.tabList')}
                     </Button>
                     <Button
                         variant={activeTab === 'calendar' ? 'default' : 'ghost'}
@@ -272,7 +279,7 @@ const AdminDashboard = () => {
                         className={activeTab === 'calendar' ? 'bg-[#849283] hover:bg-[#6b7a6b]' : ''}
                     >
                         <CalendarDays className="w-4 h-4 mr-2" />
-                        Kalender
+                        {t('admin:calendar.title')}
                     </Button>
                     <Button
                         variant={activeTab === 'users' ? 'default' : 'ghost'}
@@ -280,7 +287,7 @@ const AdminDashboard = () => {
                         className={activeTab === 'users' ? 'bg-[#849283] hover:bg-[#6b7a6b]' : ''}
                     >
                         <Users className="w-4 h-4 mr-2" />
-                        Pengguna
+                        {t('admin:users.tabList')}
                     </Button>
                 </div>
 
@@ -292,7 +299,7 @@ const AdminDashboard = () => {
                             <div className="relative flex-1 min-w-[200px]">
                                 <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-muted-foreground" />
                                 <Input
-                                    placeholder="Cari kode booking, nama, atau WhatsApp..."
+                                    placeholder={t('admin:bookings.searchPlaceholder')}
                                     value={searchQuery}
                                     onChange={(e) => setSearchQuery(e.target.value)}
                                     className="pl-10"
@@ -300,29 +307,29 @@ const AdminDashboard = () => {
                             </div>
                             <Select value={statusFilter} onValueChange={setStatusFilter}>
                                 <SelectTrigger className="w-[150px]">
-                                    <SelectValue placeholder="Status Bayar" />
+                                    <SelectValue placeholder={t('admin:bookings.paymentStatusPlaceholder')} />
                                 </SelectTrigger>
                                 <SelectContent>
-                                    <SelectItem value="all">Semua Status</SelectItem>
-                                    <SelectItem value="PENDING">Pending</SelectItem>
-                                    <SelectItem value="DP">DP</SelectItem>
-                                    <SelectItem value="LUNAS">Lunas</SelectItem>
-                                    <SelectItem value="CANCELLED">Cancelled</SelectItem>
+                                    <SelectItem value="all">{t('admin:bookings.allStatus')}</SelectItem>
+                                    <SelectItem value="PENDING">{t('common:status.pending')}</SelectItem>
+                                    <SelectItem value="DP">{t('common:status.dp')}</SelectItem>
+                                    <SelectItem value="LUNAS">{t('common:status.lunas')}</SelectItem>
+                                    <SelectItem value="CANCELLED">{t('common:status.cancelled')}</SelectItem>
                                 </SelectContent>
                             </Select>
                             <Select value={serviceFilter} onValueChange={setServiceFilter}>
                                 <SelectTrigger className="w-[150px]">
-                                    <SelectValue placeholder="Layanan" />
+                                    <SelectValue placeholder={t('admin:bookings.serviceTypePlaceholder')} />
                                 </SelectTrigger>
                                 <SelectContent>
-                                    <SelectItem value="all">Semua Layanan</SelectItem>
-                                    <SelectItem value="studio">Studio</SelectItem>
-                                    <SelectItem value="photobox">Photobox</SelectItem>
+                                    <SelectItem value="all">{t('admin:bookings.allServices')}</SelectItem>
+                                    <SelectItem value="studio">{t('common:navigation.studio')}</SelectItem>
+                                    <SelectItem value="photobox">{t('common:navigation.photobox')}</SelectItem>
                                 </SelectContent>
                             </Select>
                             <Button variant="outline" onClick={fetchBookings} disabled={loadingData}>
                                 <RefreshCw className={`w-4 h-4 mr-2 ${loadingData ? 'animate-spin' : ''}`} />
-                                Refresh
+                                {t('admin:bookings.refresh')}
                             </Button>
                         </div>
 
@@ -332,21 +339,21 @@ const AdminDashboard = () => {
                                 <table className="w-full">
                                     <thead className="bg-secondary/50">
                                         <tr>
-                                            <th className="px-4 py-3 text-left text-xs font-medium text-muted-foreground uppercase">Kode</th>
-                                            <th className="px-4 py-3 text-left text-xs font-medium text-muted-foreground uppercase">Klien</th>
-                                            <th className="px-4 py-3 text-left text-xs font-medium text-muted-foreground uppercase">Layanan</th>
-                                            <th className="px-4 py-3 text-left text-xs font-medium text-muted-foreground uppercase">Jadwal</th>
-                                            <th className="px-4 py-3 text-left text-xs font-medium text-muted-foreground uppercase">Total</th>
-                                            <th className="px-4 py-3 text-left text-xs font-medium text-muted-foreground uppercase">Status Bayar</th>
-                                            <th className="px-4 py-3 text-left text-xs font-medium text-muted-foreground uppercase">Status Booking</th>
-                                            <th className="px-4 py-3 text-left text-xs font-medium text-muted-foreground uppercase">Aksi</th>
+                                            <th className="px-4 py-3 text-left text-xs font-medium text-muted-foreground uppercase">{t('admin:bookings.table.code')}</th>
+                                            <th className="px-4 py-3 text-left text-xs font-medium text-muted-foreground uppercase">{t('admin:bookings.table.client')}</th>
+                                            <th className="px-4 py-3 text-left text-xs font-medium text-muted-foreground uppercase">{t('admin:bookings.table.service')}</th>
+                                            <th className="px-4 py-3 text-left text-xs font-medium text-muted-foreground uppercase">{t('admin:bookings.table.schedule')}</th>
+                                            <th className="px-4 py-3 text-left text-xs font-medium text-muted-foreground uppercase">{t('admin:bookings.table.total')}</th>
+                                            <th className="px-4 py-3 text-left text-xs font-medium text-muted-foreground uppercase">{t('admin:bookings.table.paymentStatus')}</th>
+                                            <th className="px-4 py-3 text-left text-xs font-medium text-muted-foreground uppercase">{t('admin:bookings.table.bookingStatus')}</th>
+                                            <th className="px-4 py-3 text-left text-xs font-medium text-muted-foreground uppercase">{t('admin:bookings.table.action')}</th>
                                         </tr>
                                     </thead>
                                     <tbody className="divide-y divide-border">
                                         {filteredBookings.length === 0 ? (
                                             <tr>
                                                 <td colSpan={8} className="px-4 py-8 text-center text-muted-foreground">
-                                                    Tidak ada data booking
+                                                    {t('admin:bookings.noData')}
                                                 </td>
                                             </tr>
                                         ) : (
@@ -370,7 +377,7 @@ const AdminDashboard = () => {
                                                     <td className="px-4 py-3 text-sm">
                                                         <div className="flex items-center gap-1">
                                                             <CalendarDays className="w-3 h-3" />
-                                                            {new Date(booking.booking_date).toLocaleDateString('id-ID')}
+                                                            {formatDate(new Date(booking.booking_date), 'dd MMM yyyy', i18n.language)}
                                                         </div>
                                                         <div className="flex items-center gap-1 text-muted-foreground">
                                                             <Clock className="w-3 h-3" />
@@ -378,7 +385,7 @@ const AdminDashboard = () => {
                                                         </div>
                                                     </td>
                                                     <td className="px-4 py-3 text-sm font-medium">
-                                                        {formatCurrency(booking.total_amount)}
+                                                        {formatCurrency(booking.total_amount, i18n.language)}
                                                     </td>
                                                     <td className="px-4 py-3">
                                                         <div className="flex flex-col gap-1 items-start">
@@ -401,7 +408,7 @@ const AdminDashboard = () => {
                                                                     className="h-7 text-xs"
                                                                 >
                                                                     <Check className="w-3 h-3 mr-1" />
-                                                                    Lunas
+                                                                    {t('admin:bookings.markPaid')}
                                                                 </Button>
                                                             )}
                                                             {booking.booking_status === 'ACTIVE' && (
@@ -412,7 +419,7 @@ const AdminDashboard = () => {
                                                                         onClick={() => updateBookingStatus(booking.id, 'booking_status', 'DONE')}
                                                                         className="h-7 text-xs"
                                                                     >
-                                                                        Selesai
+                                                                        {t('admin:bookings.markDone')}
                                                                     </Button>
                                                                     <Button
                                                                         size="sm"
@@ -440,7 +447,7 @@ const AdminDashboard = () => {
                 {activeTab === 'calendar' && (
                     <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
                         <div className="bg-white rounded-lg border border-border p-4">
-                            <h3 className="font-medium mb-4">Pilih Tanggal</h3>
+                            <h3 className="font-medium mb-4">{t('admin:calendar.selectDate')}</h3>
                             <Calendar
                                 mode="single"
                                 selected={selectedDate}
@@ -450,16 +457,15 @@ const AdminDashboard = () => {
                         </div>
                         <div className="bg-white rounded-lg border border-border p-4">
                             <h3 className="font-medium mb-4">
-                                Booking pada {selectedDate?.toLocaleDateString('id-ID', {
-                                    weekday: 'long',
-                                    year: 'numeric',
-                                    month: 'long',
-                                    day: 'numeric'
+                                {t('admin:calendar.bookingsOn', {
+                                    date: selectedDate
+                                        ? formatDate(selectedDate, 'EEEE, d MMMM yyyy', i18n.language)
+                                        : ''
                                 })}
                             </h3>
                             {bookingsForDate.length === 0 ? (
                                 <p className="text-muted-foreground text-center py-8">
-                                    Tidak ada booking pada tanggal ini
+                                    {t('admin:calendar.noEvents')}
                                 </p>
                             ) : (
                                 <div className="space-y-3 max-h-[400px] overflow-y-auto">
@@ -492,18 +498,18 @@ const AdminDashboard = () => {
                             <table className="w-full">
                                 <thead className="bg-secondary/50">
                                     <tr>
-                                        <th className="px-4 py-3 text-left text-xs font-medium text-muted-foreground uppercase">Nama</th>
-                                        <th className="px-4 py-3 text-left text-xs font-medium text-muted-foreground uppercase">Email</th>
-                                        <th className="px-4 py-3 text-left text-xs font-medium text-muted-foreground uppercase">WhatsApp</th>
-                                        <th className="px-4 py-3 text-left text-xs font-medium text-muted-foreground uppercase">Role</th>
-                                        <th className="px-4 py-3 text-left text-xs font-medium text-muted-foreground uppercase">Bergabung</th>
+                                        <th className="px-4 py-3 text-left text-xs font-medium text-muted-foreground uppercase">{t('admin:users.table.name')}</th>
+                                        <th className="px-4 py-3 text-left text-xs font-medium text-muted-foreground uppercase">{t('admin:users.table.email')}</th>
+                                        <th className="px-4 py-3 text-left text-xs font-medium text-muted-foreground uppercase">{t('admin:users.table.whatsapp')}</th>
+                                        <th className="px-4 py-3 text-left text-xs font-medium text-muted-foreground uppercase">{t('admin:users.table.role')}</th>
+                                        <th className="px-4 py-3 text-left text-xs font-medium text-muted-foreground uppercase">{t('admin:users.table.joined')}</th>
                                     </tr>
                                 </thead>
                                 <tbody className="divide-y divide-border">
                                     {users.length === 0 ? (
                                         <tr>
                                             <td colSpan={5} className="px-4 py-8 text-center text-muted-foreground">
-                                                Tidak ada data pengguna
+                                                {t('admin:users.noUsersData')}
                                             </td>
                                         </tr>
                                     ) : (
@@ -521,7 +527,7 @@ const AdminDashboard = () => {
                                                     </span>
                                                 </td>
                                                 <td className="px-4 py-3 text-sm text-muted-foreground">
-                                                    {new Date(u.created_at).toLocaleDateString('id-ID')}
+                                                    {formatDate(new Date(u.created_at), 'dd MMM yyyy', i18n.language)}
                                                 </td>
                                             </tr>
                                         ))

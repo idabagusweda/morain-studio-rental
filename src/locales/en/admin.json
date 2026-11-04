@@ -4,6 +4,7 @@
     "administratorAccess": "Administrator Access",
     "accessDeniedTitle": "Access Denied",
     "accessDeniedDesc": "You do not have access to the admin page.",
+    "welcome": "Welcome, {{name}}",
     "nav": {
       "overview": "Overview",
       "bookings": "Bookings",
@@ -42,12 +43,24 @@
       "package": "Package",
       "total": "Total",
       "status": "Status",
-      "action": "Action"
+      "action": "Action",
+      "code": "Code",
+      "client": "Client",
+      "service": "Service",
+      "paymentStatus": "Payment Status",
+      "bookingStatus": "Booking Status"
     },
     "remaining": "Remaining: {{amount}}",
     "loading": "Loading data...",
     "noFiltered": "No bookings found matching the filters.",
-    "errorFetch": "Failed to load booking data"
+    "errorFetch": "Failed to load booking data",
+    "tabList": "Booking List",
+    "noData": "No booking data",
+    "markPaid": "Paid",
+    "markDone": "Complete",
+    "updateSuccess": "Success",
+    "updateSuccessDesc": "Status successfully updated to {{status}}",
+    "updateError": "Failed to update status"
   },
   "calendar": {
     "title": "Calendar",
@@ -57,7 +70,9 @@
     "scheduledSessions": "{{count}} Scheduled Sessions",
     "noEvents": "No bookings for this date",
     "pickOtherDate": "Select another date to view schedules.",
-    "errorFetch": "Failed to load calendar data"
+    "errorFetch": "Failed to load calendar data",
+    "selectDate": "Select Date",
+    "bookingsOn": "Bookings on {{date}}"
   },
   "users": {
     "title": "Users",
@@ -70,7 +85,8 @@
       "whatsapp": "WhatsApp",
       "role": "Role",
       "registered": "Registered",
-      "action": "Action"
+      "action": "Action",
+      "joined": "Joined"
     },
     "roles": {
       "admin": "Admin",
@@ -83,7 +99,9 @@
     "confirmChangeRole": "Are you sure you want to change this user's role to {{role}}?",
     "roleSuccess": "User successfully {{action}}d",
     "errorFetch": "Failed to load users data",
-    "errorUpdateRole": "Failed to update role"
+    "errorUpdateRole": "Failed to update role",
+    "tabList": "Users",
+    "noUsersData": "No user data"
   },
   "settings": {
     "title": "Settings",

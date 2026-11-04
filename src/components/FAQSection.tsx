@@ -6,52 +6,59 @@ import {
 } from '@/components/ui/accordion';
 import { useTranslation } from 'react-i18next';
 
-const faqs = [
-  {
-    question: 'Apakah harga sudah termasuk fotografer?',
-    answer: 'Ya, semua paket sudah termasuk fotografer profesional Morain. Anda tidak perlu membawa fotografer sendiri.',
-  },
-  {
-    question: 'Bisakah membawa fotografer sendiri?',
-    answer: 'Tidak, karena setiap sesi sudah termasuk jasa fotografer internal Morain untuk memastikan kualitas hasil foto yang konsisten.',
-  },
-  {
-    question: 'Apakah boleh membawa properti sendiri?',
-    answer: 'Ya, selama aman dan tidak merusak fasilitas studio. Silakan koordinasikan terlebih dahulu jika membawa properti besar.',
-  },
-  {
-    question: 'Berapa jumlah maksimum orang per ruangan?',
-    answer: 'Studio Small: max 5 orang, Studio Medium: max 15 orang, Studio Large: max 30 orang. Untuk Photobox max 5 orang.',
-  },
-  {
-    question: 'Apakah bisa reschedule?',
-    answer: 'Bisa, reschedule dapat dilakukan hingga H-1 tergantung ketersediaan jadwal. Silakan hubungi kami via WhatsApp.',
-  },
-  {
-    question: 'Bagaimana kebijakan refund?',
-    answer: 'Pembatalan akan menerima refund sebagian sesuai terms & conditions. Pembatalan H-1 mendapat refund 50% dari DP.',
-  },
-  {
-    question: 'Metode pembayaran apa saja yang tersedia?',
-    answer: 'Kami menerima pembayaran via BCA, BNI, QRIS, Dana, dan GoPay. DP minimal 50% untuk mengamankan slot booking.',
-  },
-  {
-    question: 'Apakah hasil photobox bisa dicetak?',
-    answer: 'Bisa! Tersedia pilihan photo strip dan 4R print. Anda juga mendapat digital file dan QR download untuk akses instan.',
-  },
-  {
-    question: 'Berapa lama waktu per sesi photobox?',
-    answer: 'Setiap sesi photobox adalah 15 menit, termasuk waktu persiapan dan pengambilan foto.',
-  },
-  {
-    question: 'Apakah ada biaya tambahan selain yang tertera?',
-    answer: 'Tidak ada biaya tersembunyi. Harga yang tertera sudah all-in termasuk fotografer, lighting, dan fasilitas studio.',
-  },
-];
+interface FAQItem {
+  question: string;
+  answer: string;
+}
 
 export const FAQSection = () => {
   const { t } = useTranslation(['landing']);
-  
+
+  const defaultFaqs: FAQItem[] = [
+    {
+      question: 'Apakah harga sudah termasuk fotografer?',
+      answer: 'Ya, semua paket sudah termasuk fotografer profesional Morain. Anda tidak perlu membawa fotografer sendiri.',
+    },
+    {
+      question: 'Bisakah membawa fotografer sendiri?',
+      answer: 'Tidak, karena setiap sesi sudah termasuk jasa fotografer internal Morain untuk memastikan kualitas hasil foto yang konsisten.',
+    },
+    {
+      question: 'Apakah boleh membawa properti sendiri?',
+      answer: 'Ya, selama aman dan tidak merusak fasilitas studio. Silakan koordinasikan terlebih dahulu jika membawa properti besar.',
+    },
+    {
+      question: 'Berapa jumlah maksimum orang per ruangan?',
+      answer: 'Studio Small: max 5 orang, Studio Medium: max 15 orang, Studio Large: max 30 orang. Untuk Photobox max 5 orang.',
+    },
+    {
+      question: 'Apakah bisa reschedule?',
+      answer: 'Bisa, reschedule dapat dilakukan hingga H-1 tergantung ketersediaan jadwal. Silakan hubungi kami via WhatsApp.',
+    },
+    {
+      question: 'Bagaimana kebijakan refund?',
+      answer: 'Pembatalan akan menerima refund sebagian sesuai terms & conditions. Pembatalan H-1 mendapat refund 50% dari DP.',
+    },
+    {
+      question: 'Metode pembayaran apa saja yang tersedia?',
+      answer: 'Kami menerima pembayaran via BCA, BNI, QRIS, Dana, dan GoPay. DP minimal 50% untuk mengamankan slot booking.',
+    },
+    {
+      question: 'Apakah hasil photobox bisa dicetak?',
+      answer: 'Bisa! Tersedia pilihan photo strip dan 4R print. Anda juga mendapat digital file dan QR download untuk akses instan.',
+    },
+    {
+      question: 'Berapa lama waktu per sesi photobox?',
+      answer: 'Setiap sesi photobox adalah 15 menit, termasuk waktu persiapan dan pengambilan foto.',
+    },
+    {
+      question: 'Apakah ada biaya tambahan selain yang tertera?',
+      answer: 'Tidak ada biaya tersembunyi. Harga yang tertera sudah all-in termasuk fotografer, lighting, dan fasilitas studio.',
+    },
+  ];
+
+  const faqs = (t('faq.items', { returnObjects: true }) as FAQItem[]) || defaultFaqs;
+
   return (
     <section id="faq" className="section-padding">
       <div className="container-wide">

@@ -60,7 +60,8 @@
     "noHistory": "Belum ada riwayat booking",
     "noHistoryDescription": "Booking studio atau photobox sekarang untuk membuat kenangan!",
     "bookStudio": "Book Studio",
-    "bookPhotobox": "Book Photobox"
+    "bookPhotobox": "Book Photobox",
+    "invoiceFor": "Invoice Booking"
   },
   "profile": {
     "title": "Profil Akun",

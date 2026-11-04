@@ -136,7 +136,7 @@ export const PortfolioSection = () => {
 
         {/* Instagram CTA */}
         <div className="text-center mt-12 animate-in fade-in duration-700 delay-200">
-          <p className="text-muted-foreground mb-4">Lihat lebih banyak update terbaru</p>
+          <p className="text-muted-foreground mb-4">{t('gallery.moreUpdates')}</p>
           <Button variant="outline" asChild className="rounded-full hover:bg-white hover:text-foreground transition-all duration-300 px-8 border-primary/20">
             <a href="https://instagram.com/morain.id" target="_blank" rel="noopener noreferrer">
               @morain.id

@@ -9,25 +9,27 @@ import { FAQSection } from '@/components/FAQSection';
 import { ContactSection } from '@/components/ContactSection';
 import { Footer } from '@/components/Footer';
 import { Helmet } from 'react-helmet-async';
+import { useTranslation } from 'react-i18next';
 
 import { useScrollAnimation } from '@/hooks/useScrollAnimation';
 
 const Index = () => {
+  const { t } = useTranslation(['landing']);
   useScrollAnimation();
 
   return (
     <>
       <Helmet>
-        <title>Morain Studio | Professional Photo Studio Rental & Photobox in Denpasar, Bali</title>
+        <title>{t('landing:meta.title')}</title>
         <meta
           name="description"
-          content="Morain Studio - Your trusted studio rental & photobox in Denpasar, Bali. Book online for clean, bright, and cinematic photography. Professional photographer included."
+          content={t('landing:meta.description')}
         />
         <meta name="keywords" content="photo studio rental, photobox denpasar, studio foto bali, photography studio, studio rental bali" />
         <link rel="canonical" href="https://morain.studio" />
 
-        <meta property="og:title" content="Morain Studio | Professional Photo Studio in Denpasar" />
-        <meta property="og:description" content="Frame Your Story with our clean, bright, and cinematic studio experience. Easy online booking available." />
+        <meta property="og:title" content={t('landing:meta.ogTitle')} />
+        <meta property="og:description" content={t('landing:meta.ogDescription')} />
         <meta property="og:type" content="website" />
 
         <script type="application/ld+json">

@@ -7,6 +7,7 @@
   },
   "modal": {
     "title": "Book Studio",
+    "bookingTitle": "Booking {{name}}",
     "selectPackage": "Select Package",
     "selectDate": "Select Date",
     "selectTime": "Select Time (WITA)",
@@ -43,6 +44,8 @@
     "noSlots": "No slots available for this date",
     "infoTitle": "Time Information",
     "infoDescription": "Times shown are in WITA (Central Indonesia Time, UTC+8). Please arrive 15 minutes before your schedule.",
+    "timeInfo": "Time Information",
+    "photoboxSessionDuration": "Each photobox session lasts 15 minutes (WITA). Please arrive on time.",
     "selectDateFirst": "Please select a date first",
     "continue": "Continue"
   },
@@ -50,7 +53,30 @@
     "title": "Booking Details",
     "guestCount": "Number of People",
     "purpose": "Photo Purpose",
-    "selectCategory": "Select category"
+    "selectCategory": "Select category",
+    "purposes": {
+      "portrait": "Portrait",
+      "couple": "Couple",
+      "family": "Family",
+      "product": "Product",
+      "corporate": "Corporate",
+      "student": "Student",
+      "other": "Other"
+    }
+  },
+  "form": {
+    "title": "Booking Details",
+    "fullName": "Full Name",
+    "fullNamePlaceholder": "Enter your full name",
+    "whatsapp": "WhatsApp Number",
+    "whatsappPlaceholder": "08xxxxxxxxxx",
+    "email": "Email",
+    "emailPlaceholder": "name@email.com",
+    "guestsCountMax5": "Number of Guests (Max 5)",
+    "notes": "Additional Notes (Optional)",
+    "notesPlaceholder": "Any special requests or instructions...",
+    "required": "Required",
+    "guestsCount": "Number of People"
   },
   "payment": {
     "options": "Payment Options",
@@ -70,7 +96,8 @@
     "termsAgree": "I agree with",
     "termsLink": "Morain Studio Terms & Conditions",
     "termsNote": "By checking this box, you agree to all applicable terms and conditions.",
-    "payNow": "Pay Now"
+    "payNow": "Pay Now",
+    "timeLeft": "Time Remaining"
   },
   "summary": {
     "title": "Booking Summary",
@@ -84,7 +111,10 @@
     "notes": "Additional Notes (Optional)",
     "notesPlaceholder": "Any special requests? Write here...",
     "confirmBooking": "Confirm & Pay",
-    "processing": "Processing..."
+    "processing": "Processing...",
+    "paymentType": "Payment Type",
+    "dpAmount": "DP Amount",
+    "totalPrice": "Total Price"
   },
   "confirmation": {
     "success": "Booking Created Successfully!",
@@ -122,7 +152,21 @@
     "paymentLinkNotFound": "Payment link not found.",
     "bookingCancelled": "Booking Cancelled",
     "bookingCancelledDesc": "Booking has been successfully cancelled.",
-    "cancelFailed": "Failed to Cancel"
+    "cancelFailed": "Failed to Cancel",
+    "incompleteTitle": "Incomplete Data",
+    "incompleteDescription": "Please complete your booking details (Date/Time)",
+    "slotTakenTitle": "Slot Already Taken",
+    "slotTakenDescription": "Sorry, this slot was just booked by someone else. Please choose another time.",
+    "saveFailed": "Failed to save booking",
+    "invalidSession": "Invalid login session. Please log in again.",
+    "paymentFailed": "Failed to Process Payment",
+    "transactionFailed": "Failed to create payment transaction"
+  },
+  "whatsapp": {
+    "studioMessage": "Hello Morain Studio! 👋\n\nI would like to confirm my booking:\n\n📋 Booking Code: {{code}}\n📦 Package: {{package}}\n⏱ Duration: {{duration}} {{hours}}\n📅 Date: {{date}}\n🕐 Time: {{time}} WITA\n👤 Name: {{name}}\n👥 Guests: {{guests}} {{people}}\n🎯 Purpose: {{purpose}}\n💳 Payment: {{paymentMethod}} ({{paymentType}})\n💰 Total Amount: {{total}}\n💵 Amount Paid: {{paid}}\n\nThank you! 🙏",
+    "photoboxMessage": "Hello Morain Studio! 👋\n\nI would like to book Photobox:\n\n📋 Code: {{code}}\n🎨 Style: {{style}}\n📅 Date: {{date}}\n🕐 Time: {{time}} WITA\n👤 Name: {{name}}\n👥 Guests: {{guests}} {{people}}\n💳 Payment: {{paymentMethod}} ({{paymentType}})\n💰 Total: {{total}}\n💵 Amount Paid: {{paid}}\n\nThank you! 🙏",
+    "fullPayment": "Full Payment",
+    "dpPayment": "DP 50%"
   },
   "pendingModal": {
     "title": "You have a pending booking",

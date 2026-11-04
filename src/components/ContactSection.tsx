@@ -6,7 +6,7 @@ export const ContactSection = () => {
   const { t } = useTranslation(['landing', 'common']);
   
   const handleWhatsApp = () => {
-    const message = encodeURIComponent('Halo Morain Studio! Saya ingin bertanya tentang layanan studio rental. 📸');
+    const message = encodeURIComponent(t('contact.whatsappMessage'));
     window.open(`https://wa.me/6289531511894?text=${message}`, '_blank');
   };
 
@@ -75,7 +75,7 @@ export const ContactSection = () => {
                   <MapPin className="w-5 h-5 text-primary" />
                 </div>
                 <div>
-                  <p className="font-medium mb-1">Location</p>
+                  <p className="font-medium mb-1">{t('contact.locationLabel')}</p>
                   <p className="text-muted-foreground">
                     Jl. Teuku Umar, Denpasar, Bali
                   </p>
@@ -87,9 +87,9 @@ export const ContactSection = () => {
                   <Clock className="w-5 h-5 text-primary" />
                 </div>
                 <div>
-                  <p className="font-medium mb-1">Operating Hours</p>
+                  <p className="font-medium mb-1">{t('contact.hoursLabel')}</p>
                   <p className="text-muted-foreground">
-                    09:00 - 20:00 WITA (Daily)
+                    {t('contact.hoursValue')}
                   </p>
                 </div>
               </div>
@@ -118,9 +118,9 @@ export const ContactSection = () => {
             
             {/* Floating card */}
             <div className="absolute bottom-6 left-6 right-6 p-4 bg-card/95 backdrop-blur-sm rounded-xl shadow-medium">
-              <p className="font-display font-semibold mb-1">Morain Studio</p>
+              <p className="font-display font-semibold mb-1">{t('contact.floatingCardTitle')}</p>
               <p className="text-sm text-muted-foreground">
-                Professional Photo Studio • Teuku Umar, Denpasar
+                {t('contact.floatingCardSubtitle')}
               </p>
             </div>
           </div>

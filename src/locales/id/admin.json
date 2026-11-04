@@ -4,6 +4,7 @@
     "administratorAccess": "Administrator Access",
     "accessDeniedTitle": "Akses Ditolak",
     "accessDeniedDesc": "Anda tidak memiliki akses ke halaman admin.",
+    "welcome": "Selamat datang, {{name}}",
     "nav": {
       "overview": "Overview",
       "bookings": "Bookings",
@@ -42,12 +43,24 @@
       "package": "Paket",
       "total": "Total",
       "status": "Status",
-      "action": "Aksi"
+      "action": "Aksi",
+      "code": "Kode",
+      "client": "Klien",
+      "service": "Layanan",
+      "paymentStatus": "Status Bayar",
+      "bookingStatus": "Status Booking"
     },
     "remaining": "Sisa: {{amount}}",
     "loading": "Memuat data...",
     "noFiltered": "Tidak ada data booking yang sesuai filter.",
-    "errorFetch": "Gagal memuat data booking"
+    "errorFetch": "Gagal memuat data booking",
+    "tabList": "Daftar Booking",
+    "noData": "Tidak ada data booking",
+    "markPaid": "Lunas",
+    "markDone": "Selesai",
+    "updateSuccess": "Berhasil",
+    "updateSuccessDesc": "Status berhasil diupdate ke {{status}}",
+    "updateError": "Gagal update status"
   },
   "calendar": {
     "title": "Kalender",
@@ -57,7 +70,9 @@
     "scheduledSessions": "{{count}} Sesi Terjadwal",
     "noEvents": "Tidak ada booking untuk tanggal ini",
     "pickOtherDate": "Pilih tanggal lain untuk melihat jadwal.",
-    "errorFetch": "Gagal memuat data kalender"
+    "errorFetch": "Gagal memuat data kalender",
+    "selectDate": "Pilih Tanggal",
+    "bookingsOn": "Booking pada {{date}}"
   },
   "users": {
     "title": "Users",
@@ -70,7 +85,8 @@
       "whatsapp": "WhatsApp",
       "role": "Role",
       "registered": "Terdaftar",
-      "action": "Aksi"
+      "action": "Aksi",
+      "joined": "Bergabung"
     },
     "roles": {
       "admin": "Admin",
@@ -83,7 +99,9 @@
     "confirmChangeRole": "Apakah Anda yakin ingin mengubah role user ini menjadi {{role}}?",
     "roleSuccess": "User berhasil di-{{action}}",
     "errorFetch": "Gagal memuat data pengguna",
-    "errorUpdateRole": "Gagal mengubah role"
+    "errorUpdateRole": "Gagal mengubah role",
+    "tabList": "Pengguna",
+    "noUsersData": "Tidak ada data pengguna"
   },
   "settings": {
     "title": "Settings",

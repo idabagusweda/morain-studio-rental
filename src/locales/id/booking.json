@@ -7,6 +7,7 @@
   },
   "modal": {
     "title": "Book Studio",
+    "bookingTitle": "Booking {{name}}",
     "selectPackage": "Pilih Paket",
     "selectDate": "Pilih Tanggal",
     "selectTime": "Pilih Jam (WITA)",
@@ -43,6 +44,8 @@
     "noSlots": "Tidak ada slot tersedia untuk tanggal ini",
     "infoTitle": "Informasi Waktu",
     "infoDescription": "Waktu yang tertera adalah WITA (Waktu Indonesia Tengah). Mohon hadir 15 menit sebelum jadwal.",
+    "timeInfo": "Informasi Waktu",
+    "photoboxSessionDuration": "Setiap sesi photobox berdurasi 15 menit (WITA). Mohon hadir tepat waktu.",
     "selectDateFirst": "Silakan pilih tanggal terlebih dahulu",
     "continue": "Lanjutkan"
   },
@@ -50,7 +53,30 @@
     "title": "Data Pemesan",
     "guestCount": "Jumlah Orang",
     "purpose": "Keperluan Foto",
-    "selectCategory": "Pilih kategori"
+    "selectCategory": "Pilih kategori",
+    "purposes": {
+      "portrait": "Portrait",
+      "couple": "Couple",
+      "family": "Family",
+      "product": "Product",
+      "corporate": "Corporate",
+      "student": "Student",
+      "other": "Lainnya"
+    }
+  },
+  "form": {
+    "title": "Data Pemesan",
+    "fullName": "Nama Lengkap",
+    "fullNamePlaceholder": "Masukkan nama lengkap Anda",
+    "whatsapp": "Nomor WhatsApp",
+    "whatsappPlaceholder": "08xxxxxxxxxx",
+    "email": "Email",
+    "emailPlaceholder": "nama@email.com",
+    "guestsCountMax5": "Jumlah Orang (Maksimal 5)",
+    "notes": "Catatan Tambahan (Opsional)",
+    "notesPlaceholder": "Tuliskan catatan atau permintaan khusus...",
+    "required": "Wajib diisi",
+    "guestsCount": "Jumlah Orang"
   },
   "payment": {
     "options": "Opsi Pembayaran",
@@ -70,7 +96,8 @@
     "termsAgree": "Saya setuju dengan",
     "termsLink": "Terms & Conditions Morain Studio",
     "termsNote": "Dengan mencentang ini, Anda menyetujui semua syarat dan ketentuan yang berlaku.",
-    "payNow": "Bayar Sekarang"
+    "payNow": "Bayar Sekarang",
+    "timeLeft": "Waktu Tersisa"
   },
   "summary": {
     "title": "Ringkasan Booking",
@@ -84,7 +111,10 @@
     "notes": "Catatan Tambahan (Opsional)",
     "notesPlaceholder": "Ada request khusus? Tulis disini...",
     "confirmBooking": "Konfirmasi & Bayar",
-    "processing": "Memproses..."
+    "processing": "Memproses...",
+    "paymentType": "Jenis Pembayaran",
+    "dpAmount": "Jumlah DP",
+    "totalPrice": "Total Harga"
   },
   "confirmation": {
     "success": "Booking Berhasil Dibuat!",
@@ -96,7 +126,7 @@
     "backHome": "Kembali ke Beranda"
   },
   "photobox": {
-    "title": "Book Photobox",
+    "title": "Booking Photobox",
     "selectTheme": "Pilih Tema",
     "themes": {
       "cowboy": "Cowboy",
@@ -122,7 +152,21 @@
     "paymentLinkNotFound": "Link pembayaran tidak ditemukan.",
     "bookingCancelled": "Booking Dibatalkan",
     "bookingCancelledDesc": "Booking berhasil dibatalkan.",
-    "cancelFailed": "Gagal Membatalkan"
+    "cancelFailed": "Gagal Membatalkan",
+    "incompleteTitle": "Data tidak lengkap",
+    "incompleteDescription": "Mohon lengkapi data booking (Tanggal/Jam)",
+    "slotTakenTitle": "Slot Sudah Terisi",
+    "slotTakenDescription": "Maaf, slot ini baru saja dipesan orang lain. Silakan pilih waktu lain.",
+    "saveFailed": "Gagal menyimpan booking",
+    "invalidSession": "Sesi login tidak valid. Silakan login ulang.",
+    "paymentFailed": "Gagal Memproses Pembayaran",
+    "transactionFailed": "Gagal membuat transaksi pembayaran"
+  },
+  "whatsapp": {
+    "studioMessage": "Halo Morain Studio! 👋\n\nSaya ingin konfirmasi booking:\n\n📋 Kode Booking: {{code}}\n📦 Paket: {{package}}\n⏱ Durasi: {{duration}} {{hours}}\n📅 Tanggal: {{date}}\n🕐 Jam: {{time}} WITA\n👤 Nama: {{name}}\n👥 Jumlah: {{guests}} {{people}}\n🎯 Keperluan: {{purpose}}\n💳 Pembayaran: {{paymentMethod}} ({{paymentType}})\n💰 Total Tagihan: {{total}}\n💵 Nominal Dibayar: {{paid}}\n\nTerima kasih! 🙏",
+    "photoboxMessage": "Halo Morain Studio! 👋\n\nSaya ingin booking Photobox:\n\n📋 Kode: {{code}}\n🎨 Style: {{style}}\n📅 Tanggal: {{date}}\n🕐 Jam: {{time}} WITA\n👤 Nama: {{name}}\n👥 Jumlah: {{guests}} {{people}}\n💳 Pembayaran: {{paymentMethod}} ({{paymentType}})\n💰 Total: {{total}}\n💵 Bayar: {{paid}}\n\nTerima kasih! 🙏",
+    "fullPayment": "Full Payment",
+    "dpPayment": "DP 50%"
   },
   "pendingModal": {
     "title": "Anda memiliki booking pending",

@@ -166,8 +166,8 @@ export const PhotoboxBookingModal = ({ isOpen, onClose, styles, initialSelectedS
   const saveBooking = async (code: string) => {
     if (!user || !selectedDate || !selectedTime) {
       toast({
-        title: "Data tidak lengkap",
-        description: "Mohon lengkapi data booking (Tanggal/Jam)",
+        title: t('booking:messages.incompleteTitle'),
+        description: t('booking:messages.incompleteDescription'),
         variant: "destructive"
       });
       return null;
@@ -210,13 +210,13 @@ export const PhotoboxBookingModal = ({ isOpen, onClose, styles, initialSelectedS
       // Check for unique constraint violation (double booking)
       if (error.code === '23505' || error.message?.includes('unique') || error.message?.includes('duplicate')) {
         toast({
-          title: 'Slot Sudah Terisi',
-          description: 'Maaf, slot ini baru saja dipesan orang lain. Silakan pilih waktu lain.',
+          title: t('booking:messages.slotTakenTitle'),
+          description: t('booking:messages.slotTakenDescription'),
           variant: 'destructive'
         });
       } else {
         toast({
-          title: 'Gagal menyimpan booking',
+          title: t('booking:messages.saveFailed'),
           description: error.message,
           variant: 'destructive'
         });
@@ -234,8 +234,8 @@ export const PhotoboxBookingModal = ({ isOpen, onClose, styles, initialSelectedS
 
       if (!accessToken) {
         toast({
-          title: 'Error',
-          description: 'Sesi login tidak valid. Silakan login ulang.',
+          title: t('common:messages.error'),
+          description: t('booking:messages.invalidSession'),
           variant: 'destructive'
         });
         return null;
@@ -258,7 +258,7 @@ export const PhotoboxBookingModal = ({ isOpen, onClose, styles, initialSelectedS
 
       if (!response.ok) {
         const errorData = await response.json();
-        throw new Error(errorData.error || 'Gagal membuat transaksi pembayaran');
+        throw new Error(errorData.error || t('booking:messages.transactionFailed'));
       }
 
       const data = await response.json();
@@ -266,8 +266,8 @@ export const PhotoboxBookingModal = ({ isOpen, onClose, styles, initialSelectedS
     } catch (error) {
       console.error('Payment initiation error:', error);
       toast({
-        title: 'Gagal Memproses Pembayaran',
-        description: error instanceof Error ? error.message : 'Terjadi kesalahan',
+        title: t('booking:messages.paymentFailed'),
+        description: error instanceof Error ? error.message : t('common:messages.error'),
         variant: 'destructive'
       });
       return null;
@@ -308,22 +308,26 @@ export const PhotoboxBookingModal = ({ isOpen, onClose, styles, initialSelectedS
     const styleName = styles.find(s => s.id === selectedStyle)?.name;
     const paymentMethodName = paymentMethodsList
       .flatMap(g => g.items)
-      .find(p => p.id === paymentMethod)?.name;
+      .find(p => p.id === paymentMethod)?.name || 'Midtrans';
 
-    const paymentTypeLabel = paymentType === 'full' ? 'Full Payment' : 'DP 50%';
+    const paymentTypeLabel = paymentType === 'full'
+      ? t('booking:whatsapp.fullPayment')
+      : t('booking:whatsapp.dpPayment');
 
     const message = encodeURIComponent(
-      `Halo Morain Studio! 👋\n\nSaya ingin booking Photobox:\n\n` +
-      `📋 Kode: ${bookingCode}\n` +
-      `🎨 Style: ${styleName}\n` +
-      `📅 Tanggal: ${selectedDate?.toLocaleDateString('id-ID')}\n` +
-      `🕐 Jam: ${selectedTime} WITA\n` +
-      `👤 Nama: ${formData.name}\n` +
-      `👥 Jumlah: ${formData.guests} orang\n` +
-      `💳 Pembayaran: ${paymentMethodName} (${paymentTypeLabel})\n` +
-      `💰 Total: Rp ${price.toLocaleString('id-ID')}\n` +
-      `💵 Bayar: Rp ${paymentAmount.toLocaleString('id-ID')}\n\n` +
-      `Terima kasih! 🙏`
+      t('booking:whatsapp.photoboxMessage', {
+        code: bookingCode,
+        style: styleName || '-',
+        date: selectedDate ? formatDate(selectedDate, 'd MMMM yyyy', i18n.language) : '',
+        time: selectedTime,
+        name: formData.name,
+        guests: formData.guests,
+        people: t('common:labels.people'),
+        paymentMethod: paymentMethodName,
+        paymentType: paymentTypeLabel,
+        total: formatCurrency(price, i18n.language),
+        paid: formatCurrency(paymentAmount, i18n.language),
+      })
     );
     window.open(`https://wa.me/6289531511894?text=${message}`, '_blank');
     handleClose();
@@ -440,7 +444,7 @@ export const PhotoboxBookingModal = ({ isOpen, onClose, styles, initialSelectedS
           <div className="p-6 border-b sticky top-0 bg-white z-20 flex flex-col gap-6">
             <DialogHeader className="p-0">
               <DialogTitle className="font-display text-2xl">
-                Booking Photobox
+                {t('booking:photobox.title')}
               </DialogTitle>
             </DialogHeader>
 
