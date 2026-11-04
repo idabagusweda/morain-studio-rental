@@ -1,6 +1,6 @@
 // Shared CORS headers for Edge Functions
 // Origin is restricted to the configured frontend URL.
-// Set FRONTEND_BASE_URL in Supabase Edge Function secrets (e.g. https://morain-studio.vercel.app).
+// Set FRONTEND_BASE_URL in Supabase Edge Function secrets (e.g. https://morainstudio.web.id).
 // Falls back to localhost for local development.
 const allowedOrigin = Deno.env.get("FRONTEND_BASE_URL") || "http://localhost:8080";
 
