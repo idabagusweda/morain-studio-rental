@@ -328,6 +328,20 @@ Deno.serve(async (req: Request) => {
 
         console.log(`Created new payment ${newPayment.id} for booking ${booking_id}, expires at ${expiresAt}`);
 
+        // Update booking with midtrans_order_id for easy lookup from payment return page
+        const { error: updateBookingError } = await supabaseAdmin
+            .from("bookings")
+            .update({ 
+                midtrans_order_id: orderId,
+                expires_at: expiresAt 
+            })
+            .eq("id", booking_id);
+
+        if (updateBookingError) {
+            console.error("Error updating booking with midtrans_order_id:", updateBookingError);
+            // Non-fatal, payment record already created
+        }
+
         // Return success response
         return new Response(
             JSON.stringify({
